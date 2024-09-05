@@ -1,0 +1,24 @@
+
+.tagify__text-color-white {
+    color: hsl(0, 0%, 100%) !important;
+}
+.bgi-size-cover {
+    background-size: contain;
+}
+
+.modal-backdrop.stacked-backdrop {
+    z-index: 1055 !important; /* เพิ่ม z-index เพื่อให้ครอบคลุม modal ที่อยู่ด้านหลัง */
+}
+
+.modal.stacked-modal {
+    z-index: 1060 !important; /* ลด z-index ของ modal ที่อยู่ด้านหน้า */
+}
+.pt-40 {
+    padding-top: 15rem !important;
+}
+.fslightbox-slide-btn svg {
+    display: none;
+}
+.h-630px {
+    height: 630px !important;
+  }
