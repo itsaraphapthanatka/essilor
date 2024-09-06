@@ -120,6 +120,9 @@ var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) {
 											<div class="menu-item px-5">
 												<a id="trancate" class="menu-link px-5">Transaction trancate</a>
 											</div>
+											<div class="menu-item px-5">
+												<a id="trancateMaster" class="menu-link px-5">Master trancate</a>
+											</div>
                                         <?php } ?>
                                         <?php if(session()->get('m_name') == "ghost" || session()->get('mtype') == "member"){ ?>
 											<div class="menu-item px-5">

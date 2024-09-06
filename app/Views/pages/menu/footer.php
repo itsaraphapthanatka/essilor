@@ -82,6 +82,53 @@
 					}
 				});
 			});
+			$("#trancateMaster").on('click', function(){
+				Swal.fire({
+					text: "Are you sure you want to truncate the data? This action cannot be undone.",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonText: "Yes, truncate it!",
+					cancelButtonText: "No, cancel",
+					customClass: {
+						confirmButton: "btn btn-danger",
+						cancelButton: "btn btn-secondary"
+					}
+				}).then(function(result) {
+					if (result.isConfirmed) {
+						$.ajax({
+							type: 'GET',
+							url: '<?=base_url();?>controlData/trancateMasterData',
+							success: function(response) {
+								Swal.fire({
+									text: response.message,
+									icon: response.status,
+									buttonsStyling: false,
+									confirmButtonText: "Ok, got it!",
+									customClass: {
+										confirmButton: "btn btn-success"
+									}
+								}).then(function(result) {
+									if (result.isConfirmed) {
+										console.log('Truncate operation completed.');
+										location.reload();
+									}
+								});
+							},
+							error: function(xhr, status, error) {
+								console.error('AJAX error:', status, error);
+								Swal.fire({
+									text: "An error occurred during the truncation process.",
+									icon: "error",
+									confirmButtonText: "Ok",
+									customClass: {
+										confirmButton: "btn btn-danger"
+									}
+								});
+							}
+						});
+					}
+				});
+			});
 			$("#backup").on('click', function(){
 				Swal.fire({
 					text: "Are you sure you want to backup the data? This action cannot be undone.",

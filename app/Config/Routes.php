@@ -140,6 +140,7 @@ $routes->post('SaveRejectQC','QCAnswer::SaveRejectQC');
     $routes->group('controlData',static function ($routes)
     {
         $routes->get('trancateData','Data::trancateData');
+        $routes->get('trancateMasterData','Data::trancateMasterData');
         $routes->get('backup','Data::backup');
 
         $routes->get('insert100rows','Data::insert100rows');

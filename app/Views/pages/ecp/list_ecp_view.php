@@ -401,7 +401,9 @@
             done("Naha, you don't.");
         } else {
             done();
-            window.location.href = "/home/member";
+            setTimeout(() => {
+                window.location.href = "<?=base_url();?>home/member";
+            }, 2000);
         }
     }
 });

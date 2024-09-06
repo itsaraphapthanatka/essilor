@@ -13,6 +13,7 @@ use App\Models\JobtagsModel;
 use App\Models\JobbetaModel;
 use App\Models\JobtaskModel;
 use App\Models\TaskImageModel;
+
 class Data extends BaseController{
     protected $helpers = ['form'];
     public function __construct()
@@ -148,9 +149,9 @@ class Data extends BaseController{
                         'leave_bill' => $leave_bill,
                         'store_comment' => $store_comment,
                         'logis_remark' => $logis_remark,
-                        'morning_only' => $morning_only,
-                        'evening_only' => $evening_only,
-                        'working_day_only' => $working_day_only,
+                        'morning_only' => !$morning_only ? "": $morning_only,
+                        'evening_only' => !$evening_only ? "": $evening_only,
+                        'working_day_only' => !$working_day_only ? "" : $working_day_only,
                         'logis_note' => $logis_note,
                         'logis_note2' => $logis_note2,
                         'logis_delivery' => $logis_delivery,
@@ -204,6 +205,27 @@ class Data extends BaseController{
         $JobtagsModel->truncate();
         $JobbetaModel->truncate();
         $TaskImageModel->truncate();
+    
+        $db->query('SET FOREIGN_KEY_CHECKS = 1;');
+    
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Tables truncated successfully.'
+        ]);
+    }
+    public function trancateMasterData() {
+        $db = db_connect();
+        $db->query('SET FOREIGN_KEY_CHECKS = 0;');
+
+        $tag = new TagsModel();
+        $tagcategory = new TagsCategoryModel();
+        $ecp = new EcpModel();
+
+    
+  
+        $tag->truncate();
+        $tagcategory->truncate();
+        $ecp->truncate();
     
         $db->query('SET FOREIGN_KEY_CHECKS = 1;');
     

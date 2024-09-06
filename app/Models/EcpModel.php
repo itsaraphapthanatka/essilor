@@ -9,12 +9,17 @@ class EcpModel extends Model{
 
 	public function insertValue($data){
 		$builder = $this->db->table('ecp');
-		return $builder->insert($data);
+		return $builder->upsert($data,'customer_cd');
 	}
 
 	public function trancateData(){
+
+		$this->db->query('SET FOREIGN_KEY_CHECKS = 0'); // Disable foreign key checks
+
 		$builder = $this->db->table('ecp');
-		return $builder->truncate();
+		$builder->truncate();
+
+		return $this->db->query('SET FOREIGN_KEY_CHECKS = 1'); // Re-enable foreign key checks
 	}
 
 }
