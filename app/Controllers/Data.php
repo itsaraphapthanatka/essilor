@@ -142,6 +142,7 @@ class Data extends BaseController{
                         'promo_start_date' => $promo_start_date,
                         'promo_end_date' => $promo_end_date,
                         'promo_details' => $promo_details,
+                        'customer_type' => $customer_type,
                         'region' => $region,
                         'routecode' => $routecode,
                         'routename' => $routename,

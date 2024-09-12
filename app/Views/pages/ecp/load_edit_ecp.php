@@ -51,7 +51,7 @@
                             <div class="row">
                                 <div class="col-lg-12 fv-row">
                                     <input type="hidden" name="ecpid" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="ECP Code" value="<?=$ecp['id']?>" />
-                                    <input type="text" name="ecpcode" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="ECP Code" value="<?=$ecp['customer_cd']?>" />
+                                    <input type="text" name="ecpcode" readonly class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="ECP Code" value="<?=$ecp['customer_cd']?>" />
                                 </div>
                             </div>
                         </div>
@@ -82,12 +82,10 @@
                     <div class="row mb-6">
                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Customer Alert 1</label>
                         <div class="col-lg-8">
-                            <div class="row">
-                                <div class="col-lg-12 fv-row">
-                                    <select name="customer_alert1" data-control="select2" data-placeholder="Select a format" data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                        <option value="credit" selected>สาขาท่าพระ แมสฯวิ่ง 2 รอบ</option>
-                                        <option value="cash">สาขาพระราม5 แมสฯวิ่งรอบเช้า 1 รอบ</option>
-                                    </select>
+                            <div class="col-lg-12 fv-row">
+                                <div class="form-floating">
+                                    <textarea class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Leave a comment here" id="customer_alert1" name="customer_alert1" style="height: 100px"><?=$ecp['customer_alert_1'];?></textarea>
+                                    <label for="floatingTextarea2">Customer Alert 1</label>
                                 </div>
                             </div>
                         </div>
@@ -95,12 +93,10 @@
                     <div class="row mb-6">
                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Customer Alert 2</label>
                         <div class="col-lg-8">
-                            <div class="row">
-                                <div class="col-lg-12 fv-row">
-                                    <select name="customer_alert_2" data-control="select2" data-placeholder="Select a format" data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                        <option value="credit" selected>สาขาบางบอน แมสฯวิ่งรอบเช้า 1 รอบ</option>
-                                        <option value="cash">สาขาพระราม5 แมสฯวิ่งรอบเช้า 2 รอบ</option>
-                                    </select>
+                            <div class="col-lg-12 fv-row">
+                                <div class="form-floating">
+                                    <textarea class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Leave a comment here" id="customer_alert_2" name="customer_alert_2" style="height: 100px"><?=$ecp['customer_alert_2'];?></textarea>
+                                    <label for="floatingTextarea2">Customer Alert 2</label>
                                 </div>
                             </div>
                         </div>
@@ -108,12 +104,10 @@
                     <div class="row mb-6">
                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Customer Alert 3</label>
                         <div class="col-lg-8">
-                            <div class="row">
-                                <div class="col-lg-12 fv-row">
-                                    <select name="customer_alert_3" data-control="select2" data-placeholder="Select a format" data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                        <option value="credit" selected>สาขาพระราม5 แมสฯวิ่งรอบเช้า 1 รอบ</option>
-                                        <option value="cash">สาขาพระราม5 แมสฯวิ่งรอบเช้า 2 รอบ</option>
-                                    </select>
+                            <div class="col-lg-12 fv-row">
+                                <div class="form-floating">
+                                    <textarea class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Leave a comment here" id="customer_alert_3" name="customer_alert_3" style="height: 100px"><?=$ecp['customer_alert_3'];?></textarea>
+                                    <label for="floatingTextarea2">Customer Alert 3</label>
                                 </div>
                             </div>
                         </div>

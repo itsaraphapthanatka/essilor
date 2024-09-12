@@ -83,6 +83,7 @@ class Tags extends BaseController{
             $data = [
                 'category_name' => $add['categoryname'],
                 'category_status' => $add['tag_category_status'],
+                'isStock' => $add['isStock'],
                 'CreatedDate' => date('Y-m-d H:i:s'),
                 'CreatedBy' => session()->get('m_name'),
             ];
@@ -110,6 +111,7 @@ class Tags extends BaseController{
             $data = [
                 'category_name' => $add['categoryname'],
                 'category_status' => $add['tag_category_status'],
+                'isStock' => $add['isStock'],
                 'UpdatedDate' => date('Y-m-d H:i:s'),
                 'UpdatedBy' => session()->get('m_name'),
             ];

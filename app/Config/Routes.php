@@ -109,7 +109,7 @@ $routes->get('myjobvip', 'Keyin::myjobvip');
 $routes->get('myjobfifo', 'Keyin::myjobfifo');
 $routes->get('myjobstock', 'Keyin::myjobstock');
 $routes->get('takejob/(:num)', 'Keyin::takejob/$1');
-$routes->get('returnjob/(:num)', 'Keyin::returnjob/$1');
+$routes->get('returnjob/(:num)/(:any)', 'Keyin::returnjob/$1/$2');
 $routes->post('SaveCommentByTrackingID', 'Keyin::SaveCommentByTrackingID');
 
 // QC/Answer
@@ -117,6 +117,11 @@ $routes->get('myjobqc','QCAnswer::myjobqc');
 $routes->get('myCalljobqc','QCAnswer::myCalljobqc');
 $routes->post('SaveQC','QCAnswer::saveqc');
 $routes->post('SaveRejectQC','QCAnswer::SaveRejectQC');
+
+// support
+$routes->get('loadtable/(:num)','Support::loadtable/$1');
+
+
 
     $routes->group('import',static function ($routes)
     {
@@ -136,6 +141,7 @@ $routes->post('SaveRejectQC','QCAnswer::SaveRejectQC');
         $routes->get('getJobtaskStockTags/(:num)', 'Transaction::getJobtaskStockTags/$1');
         $routes->get('getJobtaskQCProcess/(:num)', 'Transaction::getJobtaskQCProcess/$1');
         $routes->get('getAllTags', 'Tags::getAllTags');
+        $routes->get('getJobtaskSupport/(:num)', 'Support::getJobtaskSupport/$1');
     });
     $routes->group('controlData',static function ($routes)
     {

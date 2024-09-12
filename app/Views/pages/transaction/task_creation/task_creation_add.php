@@ -508,10 +508,18 @@
                         $("#ecpid").val(response.data.id);
                         
                         let tagsData = response.tags; // Array of tag details
-                        let tagsUse = response.tt.map(tag => tag.toLowerCase()); // Normalize tagsUse to lowercase for case-insensitive matching
+                        let tagsUse = [];
+
+                        if (Array.isArray(response.tt)) {
+                            tagsUse = response.tt.map(tag => tag.toLowerCase());
+                        } else {
+                            console.error("response.tt is not an array");
+                        }
+                        // let tagsUse = response.tt.map(tag => tag.toLowerCase()); // Normalize tagsUse to lowercase for case-insensitive matching
                         let cycle = response.cycle;
-                        console.log(cycle);
+                        // console.log(cycle);
                         if (tagsData && tagsData.length) {
+                            
                             var inputElement = document.getElementById("tagsbeta");
                             // Prepare the tag data for Tagify (convert Select2 data to Tagify-friendly format)
                             var tagItems = tagsData.map(tag => ({
@@ -520,7 +528,7 @@
                                 textColor: hexToHsl(tag.text_color),
                                 backgroundColor: hexToHsl(tag.background_color)
                             }));
-
+                            console.log(tagItems);
                             // Initialize Tagify with custom styling for each tag
                             var tagify = new Tagify(inputElement, {
                                 enforceWhitelist: true,  // Only allow tags from the list
@@ -543,60 +551,11 @@
                                 .filter(tag => tagsUse.includes(tag.tag_name.toLowerCase()))  // Filter tags that exist in tagsUse
                                 .map(tag => tag.tag_name);  // Map the filtered tags to just their names
                                 tagify.removeAllTags();
-                                console.log(selectedTags);
+                                // console.log(selectedTags);
                                 tagify.addTags(selectedTags);  // Add these tags to the Tagify instance
                                 
                         }
-                        if (cycle) {
-                            // Convert the cycle array to a comma-separated string
-                            var cycleText = cycle.join(', ');
-
-                            // Get the input field
-                            var input1 = document.querySelector("#cycle");
-
-                            // Check if Tagify is already initialized on the input
-                            if (input1._tagify) {
-                                // If Tagify is already initialized, update the value
-                                input1._tagify.removeAllTags();
-                                input1._tagify.addTags(cycleText);
-                            } else {
-                                // If Tagify is not initialized, set the value and initialize Tagify with custom template
-                                input1.value = cycleText;
-
-                                // Initialize Tagify with custom colors using HSL
-                                new Tagify(input1, {
-                                    // Function to customize each tag's appearance using HSL colors
-                                    templates: {
-                                        tag: function(tagData) {
-                                            let hslColor;
-
-                                            // Define HSL color logic based on the tag's value
-                                            switch (tagData.value) {
-                                                case 'วิ่งเช้ารอบเดียว':
-                                                    hslColor = 'hsl(211, 100%, 50%)';  // Bootstrap Primary Color (Blue)
-                                                    break;
-                                                case 'วิ่งเย็นรอบเดียว':
-                                                    hslColor = 'hsl(120, 100%, 40%)'; // Green (Hue = 120)
-                                                    break;
-                                                case 'วิ่งแค่ จ-ศ':
-                                                    hslColor = 'hsl(0, 100%, 50%)';   // Red (Hue = 0)
-                                                    break;
-                                                default:
-                                                    hslColor = 'hsl(211, 100%, 50%)'; // Fallback to Bootstrap Primary Color
-                                            }
-
-                                            return `
-                                                <tag title="${tagData.value}" contenteditable='false' spellcheck="false" tabIndex="-1" class="tagify__tag" style="background-color: ${hslColor};">
-                                                    <x title="remove tag" class="tagify__tag__removeBtn"></x>
-                                                    <div>
-                                                        <span class="tagify__tag-text">${tagData.value}</span>
-                                                    </div>
-                                                </tag>`;
-                                        }
-                                    }
-                                });
-                            }
-                        }
+                      
                     },
                     error: function(xhr, status, error) {
                         console.error('AJAX error:', status, error);

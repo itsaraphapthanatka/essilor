@@ -150,3 +150,8 @@ var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) {
 
             </div>
             <!--end::Header-->
+    <script>
+        $('#kt_header_navs_keyin').on('click',function(){
+            window.location.href = "<?php echo base_url();?>main";
+        })
+    </script>

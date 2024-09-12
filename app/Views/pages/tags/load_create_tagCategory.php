@@ -58,6 +58,17 @@
                         </div>
                     </div>
                     <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">is Stock</label>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="form-check form-check-custom form-check-solid">
+                                        <input class="form-check-input" type="checkbox" value="Y" id="isStock"/>
+                                    <input type="hidden" name="isStock" id="stockValue">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-6">
                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Status</label>
                         <div class="col-lg-8">
                             <div class="row">
@@ -186,5 +197,12 @@
      KTUtil.onDOMContentLoaded(function () {
 		 KTAppEcommerceSaveProduct.init();
 	 });
+    $('#isStock').on('click',function(){
+        if($('#isStock').prop('checked')) {
+            $("#stockValue").val('Y');
+        }else{
+            $("#stockValue").val('N');
+        }
 
+    });
 </script>

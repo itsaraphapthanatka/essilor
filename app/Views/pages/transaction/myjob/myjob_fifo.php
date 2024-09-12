@@ -438,7 +438,14 @@
 
 											<div class="modal-footer">
 												<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-												<button type="button" id="saveComment${row.id}" class="btn btn-primary" onclick="showSelectedComment('${row.id}')">Complete</button>
+												<button type="button" class="btn btn-primary me-10" id="saveComment${row.id}" onclick="showSelectedComment('${row.id}')">
+													<span class="indicator-label">
+														Complete
+													</span>
+													<span class="indicator-progress">
+														Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+													</span>
+												</button>
 											</div>
 
 										</div>
@@ -489,7 +496,14 @@
 
 											<div class="modal-footer">
 												<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-												<button type="button" id="saveComment${row.id}" class="btn btn-primary" onclick="showSelectedCommentNoTracking('${row.id}')">Complete</button>
+												<button type="button" class="btn btn-primary me-10" id="saveCommentno${row.id}" onclick="showSelectedCommentNoTracking('${row.id}')">
+													<span class="indicator-label">
+														Complete
+													</span>
+													<span class="indicator-progress">
+														Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+													</span>
+												</button>
 											</div>
 
 										</div>
@@ -541,65 +555,162 @@
 										}
 									}
 
-									function showSelectedComment(rowid) {
-										const selectedComment = document.getElementById('selectedComment' + rowid).value;
+									// function showSelectedComment(rowid) {
+									// 	const selectedComment = document.getElementById('selectedComment' + rowid).value;
 										
-										if (selectedComment) {
-											alert("Selected Comment Value: " + selectedComment);
+									// 	if (selectedComment) {
+									// 		alert("Selected Comment Value: " + selectedComment);
 											
-											const trackingID = document.getElementById('trackingID' + rowid).value;
-											const taskID = document.getElementById('taskID' + rowid).value;
+									// 		const trackingID = document.getElementById('trackingID' + rowid).value;
+									// 		const taskID = document.getElementById('taskID' + rowid).value;
 
-											// Ensure the URL is correctly parsed by PHP
-											$.ajax({
-												type: 'POST',
-												url: '<?= base_url("SaveCommentByTrackingID") ?>',  // This will correctly generate the base URL
-												data: { 
-													trackingID: trackingID, 
-													comment: selectedComment, 
-													taskID: taskID 
-												},
-												success: function(response) {
-													console.log(response);
-													window.location.href = "<?= base_url('myjobfifo') ?>";  // Use PHP to dynamically generate the URL
-												},
-												error: function(xhr, status, error) {
-													console.error('AJAX error:', status, error);
-												}
-											});
+									// 		// Ensure the URL is correctly parsed by PHP
+									// 		$.ajax({
+									// 			type: 'POST',
+									// 			url: '<?= base_url("SaveCommentByTrackingID") ?>',  // This will correctly generate the base URL
+									// 			data: { 
+									// 				trackingID: trackingID, 
+									// 				comment: selectedComment, 
+									// 				taskID: taskID 
+									// 			},
+									// 			success: function(response) {
+									// 				console.log(response);
+									// 				window.location.href = "<?= base_url('myjobfifo') ?>";  // Use PHP to dynamically generate the URL
+									// 			},
+									// 			error: function(xhr, status, error) {
+									// 				console.error('AJAX error:', status, error);
+									// 			}
+									// 		});
+									// 	} else {
+									// 		alert("Please select a comment.");
+									// 	}
+									// }
+
+									function showSelectedComment(rowid) {
+										var button = document.querySelector("#saveComment${row.id}");
+										button.setAttribute("data-kt-indicator", "on");
+										const selectedComment = $('#selectedComment' + rowid).val();
+										
+										
+										console.log("RowID :" + rowid);
+										const trackingID = $('#trackingID' + rowid).val();
+										const taskID = $('#taskID' + rowid).val();
+										
+										// Regular expression to match RX or BL followed by 10 digits
+										const trackingPattern = /^(RX|BL)/;
+										const trimmedID = $.trim(trackingID); // jQuery trim method
+										if (trackingPattern.test(trimmedID)) {
+											if(trimmedID.length === 12){
+												$.ajax({
+													type: 'POST',
+													url: '<?= base_url("SaveCommentByTrackingID") ?>', // Ensure the URL is correct
+													data: { 
+														trackingID: trimmedID, 
+														comment: selectedComment, 
+														taskID: taskID 
+													},
+													success: function(response) {
+														console.log(response);
+														window.location.href = "<?= base_url('myjobfifo') ?>"; // Ensure the URL is correct
+													},
+													error: function(xhr, status, error) {
+														console.error('AJAX error:', status, error);
+														toastr.error("AJAX error:', status, error");
+													}
+												});
+
+											}else{
+												button.removeAttribute("data-kt-indicator");
+												toastr.warning("Please enter a valid trackingID,length of 12 characters.");
+											}
+											
 										} else {
-											alert("Please select a comment.");
+											button.removeAttribute("data-kt-indicator");
+											toastr.warning("Please input a valid trackingID in the format of 'RX' or 'BL' followed by 10 digits.");
 										}
 									}
 
+
+									// function showSelectedCommentNoTracking(rowid) {
+									// 	const selectedComment = document.getElementById('selectedCommentcomplete' + rowid).value;
+									// 	const trackingID = document.getElementById('trackingIDcomplete' + rowid).value;
+									// 	console.log(trackingID);
+
+									// 	// Regular expression to match RX or BL followed by 10 digits
+									// 	const trackingPattern = /^(RX|BL)\d{8}$/;
+
+									// 	if (trackingID) {
+									// 		// Check if trackingID matches the RX or BL pattern
+									// 		console.log(trackingPattern.test(trackingID));
+									// 		if (trackingPattern.test(trackingID)) {
+									// 			const taskID = document.getElementById('taskID' + rowid).value;
+
+									// 			// Ensure the URL is correctly parsed by PHP
+									// 			$.ajax({
+									// 				type: 'POST',
+									// 				url: '<?= base_url("SaveCommentByTrackingID") ?>',  // This will correctly generate the base URL
+									// 				data: { 
+									// 					trackingID: trackingID, 
+									// 					comment: selectedComment, 
+									// 					taskID: taskID 
+									// 				},
+									// 				success: function(response) {
+									// 					console.log(response);
+									// 					window.location.href = "<?= base_url('myjobvip') ?>";  // Use PHP to dynamically generate the URL
+									// 				},
+									// 				error: function(xhr, status, error) {
+									// 					console.error('AJAX error:', status, error);
+									// 				}
+									// 			});
+									// 		} else {
+									// 			alert("Invalid trackingID. Please ensure it starts with 'RX' or 'BL' followed by 10 digits.");
+									// 		}
+									// 	} else {
+									// 		alert("Please input a trackingID.");
+									// 	}
+									// }
+
 									function showSelectedCommentNoTracking(rowid) {
+										var button = document.querySelector("#saveCommentno${row.id}");
+										button.setAttribute("data-kt-indicator", "on");
 										const selectedComment = document.getElementById('selectedCommentcomplete' + rowid).value;
 										const trackingID = document.getElementById('trackingIDcomplete' + rowid).value;
 										console.log(trackingID);
-										if (trackingID) {
-											const taskID = document.getElementById('taskID' + rowid).value;
 
-											// Ensure the URL is correctly parsed by PHP
-											$.ajax({
-												type: 'POST',
-												url: '<?= base_url("SaveCommentByTrackingID") ?>',  // This will correctly generate the base URL
-												data: { 
-													trackingID: trackingID, 
-													comment: selectedComment, 
-													taskID: taskID 
-												},
-												success: function(response) {
-													console.log(response);
-													window.location.href = "<?= base_url('myjobvip') ?>";  // Use PHP to dynamically generate the URL
-												},
-												error: function(xhr, status, error) {
-													console.error('AJAX error:', status, error);
-												}
-											});
+										const trackingPattern = /^(RX|BL)/;
+										const trimmedID = $.trim(trackingID); // jQuery trim method
+
+										if (trackingPattern.test(trimmedID)) {
+											if(trimmedID.length === 12){
+												const taskID = document.getElementById('taskID' + rowid).value;
+
+												// Ensure the URL is correctly parsed by PHP
+												$.ajax({
+													type: 'POST',
+													url: '<?= base_url("SaveCommentByTrackingID") ?>',  // This will correctly generate the base URL
+													data: { 
+														trackingID: trackingID, 
+														comment: selectedComment, 
+														taskID: taskID 
+													},
+													success: function(response) {
+														console.log(response);
+														window.location.href = "<?= base_url('myjobfifo') ?>";  // Use PHP to dynamically generate the URL
+													},
+													error: function(xhr, status, error) {
+														console.error('AJAX error:', status, error);
+													}
+												});
+											}else{
+												button.removeAttribute("data-kt-indicator");
+												toastr.warning("Please enter a valid trackingID,length of 12 characters.");
+											}
 										} else {
-											alert("Please Input a trackingID.");
+										 	button.removeAttribute("data-kt-indicator");
+											toastr.warning("Please input a valid trackingID in the format of 'RX' or 'BL' followed by 10 digits.");
 										}
 									}
+
 								<\/script>
 							`;
 						},
@@ -611,7 +722,7 @@
 						className: 'text-center',
 						render: function (data, type, row) {
                             return `
-								<a href="<?php echo base_url();?>returnjob/${data.id}" class="btn btn-light-danger btn-sm">
+								<a href="<?php echo base_url();?>returnjob/${data.id}/myjobfifo" class="btn btn-light-danger btn-sm">
 									Return Job
 								</a>
 							`;

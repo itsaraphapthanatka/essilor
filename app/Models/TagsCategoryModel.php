@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 class TagsCategoryModel extends Model{
     protected $table = 'tagscategory';
 	protected $primaryKey = 'id';
-	protected $allowedFields = ['id','category_name','CreatedDate','CreatedBy','UpdatedDate','UpdatedBy','DeletedDate','category_status'];
+	protected $allowedFields = ['id','category_name','CreatedDate','isStock','CreatedBy','UpdatedDate','UpdatedBy','DeletedDate','category_status'];
 
 	public function getTagCategoryUsage($categoryId){
         $db = db_connect();

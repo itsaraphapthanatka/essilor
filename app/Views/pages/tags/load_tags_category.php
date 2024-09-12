@@ -66,7 +66,8 @@
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                             <th class="min-w-20px">No.</th>
                             <th class="min-w-100px">TAG Category NAME</th>
-                            <th class="text-center min-w-125px">STATUS</th>
+                            <th class="min-w-100px">isStock</th>
+                            <th class="min-w-125px">STATUS</th>
                             <th class="text-end min-w-100px" data-priority="2">DETAILS</th>
                         </tr>
                         </thead>
@@ -119,16 +120,33 @@
 				columns: [
 					{ data: 'id' },
 					{ data: 'category_name' },
+					{ data: 'isStock' },
 					{ data: 'category_status' },
 					{ data: null },
 				],
 				columnDefs: [
                     {
-                        targets: 2, //tag_name
+                        targets: 1, //tag_name
                         className: 'text-center',
                     },
                     {
-                        targets: 3, //status
+                        targets: 2, //isstock
+                        className: 'text-center',
+						render: function (data, type, row) {
+							if (row.isStock == "Y") {
+								return `
+									<i class="ki-duotone ki-check-circle fs-2 text-success">
+										<span class="path1"></span>
+										<span class="path2"></span>
+									</i>
+								`;
+							} else {
+								return ``;
+							}
+						},
+                    },
+					{
+                        targets: 4, //status
                         className: 'text-center',
                     },
 					{

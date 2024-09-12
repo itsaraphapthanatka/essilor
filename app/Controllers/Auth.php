@@ -4,6 +4,7 @@ use CodeIgniter\Controller;
 use App\Models\UsersModel;
 use App\Models\UserOnlineModel;
 use App\Models\JobtaskModel;
+use App\Models\commentTypeModel;
 class Auth extends BaseController{
     public function __construct()
     {
@@ -137,7 +138,9 @@ class Auth extends BaseController{
                 echo view('pages/transaction/keyin/list_keyin_view');
                 break;
             case 'support' :
-                echo view('pages/transaction/support/list_support_view');
+                $commentType = new commentTypeModel();
+                $data['commentType'] = $commentType->getCommentCounts();
+                echo view('pages/transaction/support/list_support_view',$data);
                 break;
             case 'feedback' :
                 $jobtask = new JobtaskModel();

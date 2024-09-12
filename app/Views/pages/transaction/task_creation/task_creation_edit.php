@@ -528,61 +528,37 @@
                                 templateResult: formatState,
                                 templateSelection: formatState
                             });
+                            var inputElement = document.getElementById("tagsbeta");
+                            // Prepare the tag data for Tagify (convert Select2 data to Tagify-friendly format)
+                            var tagItems = tagsData.map(tag => ({
+                                value: tag.tag_name,
+                                id: tag.id,
+                                textColor: hexToHsl(tag.text_color),
+                                backgroundColor: hexToHsl(tag.background_color)
+                            }));
+                            var tagify = new Tagify(inputElement, {
+                                enforceWhitelist: true,  // Only allow tags from the list
+                                whitelist: tagItems,  // Set the whitelist to the tagItems array
+                                templates: {
+                                    tag: function(tagData) {
+                                        return `
+                                            <tag title="${tagData.value}" contenteditable='false' spellcheck="false" tabIndex="-1" class="tagify__tag" style="color: ${tagData.textColor}; background-color: ${tagData.backgroundColor};">
+                                                <x title="remove tag" class="tagify__tag__removeBtn"></x>
+                                                <div>
+                                                    <span class="tagify__tag-text">${tagData.value}</span>
+                                                </div>
+                                            </tag>`;
+                                    }
+                                }
+                            });
 
                             // Set the selected values based on the tagsUse array
-                            var selectedIds = tagsData.filter(tag => tagsUse.includes(tag.tag_name.toLowerCase())).map(tag => tag.id);
-                            console.log(selectedIds);
+                            var selectedIds = tagsData.filter(tag => tagsUse.includes(tag.tag_name.toLowerCase())).map(tag => tag.tag_name);
+                            var selectedTags = tagsData.filter(tag => tagsUse.includes(tag.tag_name.toLowerCase())).map(tag => tag.tag_name);
+                            // console.log(selectedIds);
+                            tagify.removeAllTags();
+                            tagify.addTags(selectedTags); 
                             $tagSelect.val(selectedIds).trigger('change');
-                        }
-                        if (cycle) {
-                            // Convert the cycle array to a comma-separated string
-                            var cycleText = cycle.join(', ');
-
-                            // Get the input field
-                            var input1 = document.querySelector("#cycle");
-
-                            // Check if Tagify is already initialized on the input
-                            if (input1._tagify) {
-                                // If Tagify is already initialized, update the value
-                                input1._tagify.removeAllTags();
-                                input1._tagify.addTags(cycleText);
-                            } else {
-                                // If Tagify is not initialized, set the value and initialize Tagify with custom template
-                                input1.value = cycleText;
-
-                                // Initialize Tagify with custom colors using HSL
-                                new Tagify(input1, {
-                                    // Function to customize each tag's appearance using HSL colors
-                                    templates: {
-                                        tag: function(tagData) {
-                                            let hslColor;
-
-                                            // Define HSL color logic based on the tag's value
-                                            switch (tagData.value) {
-                                                case 'วิ่งเช้ารอบเดียว':
-                                                    hslColor = 'hsl(210, 100%, 95%)';  // Bootstrap Primary Color (Blue)
-                                                    break;
-                                                case 'วิ่งเย็นรอบเดียว':
-                                                    hslColor = 'hsl(45, 100%, 48%)'; // Green (Hue = 120)
-                                                    break;
-                                                case 'วิ่งแค่ จ-ศ':
-                                                    hslColor = 'hsl(259, 81%, 57%)';   // Red (Hue = 0)
-                                                    break;
-                                                default:
-                                                    hslColor = 'hsl(211, 100%, 50%)'; // Fallback to Bootstrap Primary Color
-                                            }
-
-                                            return `
-                                                <tag title="${tagData.value}" contenteditable='false' spellcheck="false" tabIndex="-1" class="tagify__tag" style="background-color: ${hslColor};">
-                                                    <x title="remove tag" class="tagify__tag__removeBtn"></x>
-                                                    <div>
-                                                        <span class="tagify__tag-text">${tagData.value}</span>
-                                                    </div>
-                                                </tag>`;
-                                        }
-                                    }
-                                });
-                            }
                         }
                     },
                     error: function(xhr, status, error) {
@@ -727,55 +703,7 @@
                             console.log(selectedTags);
                             tagify.addTags(selectedTags);  // Add these tags to the Tagify instance
                     }
-                    if (cycle) {
-                            // Convert the cycle array to a comma-separated string
-                            var cycleText = cycle.join(', ');
-
-                            // Get the input field
-                            var input1 = document.querySelector("#cycle");
-
-                            // Check if Tagify is already initialized on the input
-                            if (input1._tagify) {
-                                // If Tagify is already initialized, update the value
-                                input1._tagify.removeAllTags();
-                                input1._tagify.addTags(cycleText);
-                            } else {
-                                // If Tagify is not initialized, set the value and initialize Tagify with custom template
-                                input1.value = cycleText;
-
-                                // Initialize Tagify with custom colors using HSL
-                                new Tagify(input1, {
-                                    // Function to customize each tag's appearance using HSL colors
-                                    templates: {
-                                        tag: function(tagData) {
-                                            let hslColor;
-                                            // Define HSL color logic based on the tag's value
-                                            switch (tagData.value) {
-                                                case 'วิ่งเช้ารอบเดียว':
-                                                    hslColor = 'hsl(210, 100%, 95%)';  // Bootstrap Primary Color (Blue)
-                                                    break;
-                                                case 'วิ่งเย็นรอบเดียว':
-                                                    hslColor = 'hsl(45, 100%, 48%)'; // Green (Hue = 120)
-                                                    break;
-                                                case 'วิ่งแค่ จ-ศ':
-                                                    hslColor = 'hsl(259, 81%, 57%)';   // Red (Hue = 0)
-                                                    break;
-                                                default:
-                                                    hslColor = 'hsl(211, 100%, 50%)'; // Fallback to Bootstrap Primary Color
-                                            }
-
-                                            return `
-                                                <tag title="${tagData.value}" contenteditable='false' spellcheck="false" tabIndex="-1" class="tagify__tag" style="background-color: ${hslColor};">
-                                                    <x title="remove tag" class="tagify__tag__removeBtn"></x>
-                                                    <div>
-                                                        <span class="tagify__text-color-white">${tagData.value}</span>
-                                                    </div>
-                                                </tag>`;
-                                        }
-                                    }
-                                });
-                            }
-                        }
+                    
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX error:', status, error);

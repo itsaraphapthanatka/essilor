@@ -244,7 +244,7 @@
 						orderable: false,
 						className: 'text-end',
 						render: function (data, type, row) {
-							if(row.trackingId == null){
+							if(!row.trackingId){
 								return `
 									<a href="<?php echo base_url();?>edittask/${data.id}" class="btn btn-light-primary btn-sm">
 										Edit

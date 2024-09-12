@@ -78,7 +78,7 @@ class TaskCreation extends BaseController{
         $JobtaskData = [
             'ecpid' => $add['ecpid'],
             'ecpcode' => $add['ecpcode'],
-            'orderCycleId' => $add['cycleID'],
+            'orderCycleId' => $add['cycle'],
             'tagsCategoryId' => $add['tagCategory'],
             'categoryId' => $add['Categorize'],
             'capture' => $add['kt_docs_tinymce_basic'],
@@ -146,7 +146,7 @@ class TaskCreation extends BaseController{
             'ecpid' => $add['ecpid'],
             'trackingId' => $add['trackingID'],
             'ecpcode' => $add['ecpcode'],
-            'orderCycleId' => $add['cycleID'],
+            'orderCycleId' => $add['cycle'],
             'tagsCategoryId' => $add['tagCategory'],
             'categoryId' => $add['Categorize'],
             'capture' => $add['kt_docs_tinymce_basic'],

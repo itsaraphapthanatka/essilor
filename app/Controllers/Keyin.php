@@ -85,10 +85,10 @@ class Keyin extends BaseController{
     public function SaveCommentByTrackingID(){
         $taskJob = new JobtaskModel();
         $add = $this->request->getPost();
-
+    
         $data = [
             'trackingId' => !$add['trackingID'] ? null : $add['trackingID'],
-            'comment' => !$add['comment'] ? null : $add['trackincommentgID'],
+            'comment' => !$add['comment'] ? null : $add['comment'],
             'jobStatus' => 3,
             'updateuser' => session()->get('m_name'),
             'updatedate' => date('Y-m-d H:i:s')
@@ -111,7 +111,7 @@ class Keyin extends BaseController{
         return $this->response->setJSON($data);
     }
 
-    public function returnjob($sag1 = false) {
+    public function returnjob($sag1 = false, $sag2 = false) {
         $jobtask = new JobtaskModel();
         $data = [
             'jobStatus' => 1,
@@ -121,7 +121,7 @@ class Keyin extends BaseController{
         
         if ($sag1) {
             $res = $jobtask->update($sag1, $data);
-            return redirect()->to('/myjobfifo/');
+            return redirect()->to('/'.$sag2.'/');
         } else {
             return false;
         }

@@ -248,11 +248,11 @@
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                             <th class="min-w-200px">ID</th>
                             <th class="min-w-200px">Customer ID</th>
-                            <th class="text-center min-w-150px">Tracking Number</th>
-                            <th class="text-center min-w-125px">Create Date</th>
-                            <th class="text-center min-w-125px">Request Date</th>
-                            <th class="text-center min-w-125px">Form</th>
-                            <th class="text-center min-w-125px">Last Editor</th>
+                            <th class="min-w-150px">Tracking Number</th>
+                            <th class="min-w-125px">Create Date</th>
+                            <th class="min-w-125px">Request Date</th>
+                            <th class="min-w-125px">Form</th>
+                            <th class="min-w-125px">Last Editor</th>
                             <th class="min-w-100px">QC Status</th>
                         </tr>
                         </thead>
@@ -310,11 +310,11 @@
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                             <th class="min-w-200px">ID</th>
                             <th class="min-w-200px">Customer ID</th>
-                            <th class="text-center min-w-150px">Tracking Number</th>
-                            <th class="text-center min-w-125px">Create Date</th>
-                            <th class="text-center min-w-125px">Request Date</th>
-                            <th class="text-center min-w-125px">Form</th>
-                            <th class="text-center min-w-125px">Last Editor</th>
+                            <th class="min-w-150px">Tracking Number</th>
+                            <th class="min-w-125px">Create Date</th>
+                            <th class="min-w-125px">Request Date</th>
+                            <th class="min-w-125px">Form</th>
+                            <th class="min-w-125px">Last Editor</th>
                             <th class="min-w-100px">QC Status</th>
                         </tr>
                         </thead>

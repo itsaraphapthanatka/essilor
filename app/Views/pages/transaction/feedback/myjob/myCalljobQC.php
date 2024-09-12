@@ -25,7 +25,7 @@
                                 <!--begin::Item-->
                                 <div class="d-flex flex-stack">
                                     <!--begin::Section-->
-                                    <a href="#" class="text-primary fw-semibold fs-6 me-2"><?=$value->ecpcode;?>: <?=$value->trackingId;?></a>
+                                    <span class="text-primary fw-semibold fs-6 me-2"><?=$value->ecpcode;?>: <?=$value->trackingId;?></span>
                                     <!--end::Section-->
                                     <!--begin::Action-->
                                     <button type="button" class="btn btn-icon btn-sm h-auto btn-color-gray-400 btn-active-color-primary justify-content-end" data-bs-toggle="modal" data-bs-target="#task<?=$value->id;?>">
