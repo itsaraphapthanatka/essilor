@@ -19,7 +19,7 @@ class QCAnswer extends BaseController{
         $task = new JobtaskModel();
         $commentType = new commentTypeModel();
         $data['commentType'] = $commentType->where(['commentType' => 'qc'])->orderBy('id','ASC')->findAll();
-       $task->updateCallQC();
+        $task->updateCallQC();
 
         $data['res'] = $task->getJobtaskMyQC();
         echo view('pages/menu/header',$data);

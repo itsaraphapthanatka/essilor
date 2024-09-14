@@ -8,7 +8,7 @@ class JobtaskModel extends Model {
     protected $allowedFields = [
         'id', 'trackingId', 'ecpid', 'ecpcode', 'orderCycleId', 'tagsCategoryId', 'tagsBeta', 
         'tags', 'categoryId', 'capture', 'createdate', 'createuser', 'updatedate',
-        'updateuser', 'deldate', 'deluser','jobStatus','calljob','calluser', 'comment','QCStatus','callQC','callQCuser','commentQC','commentNote','updateqcdate'
+        'updateuser', 'deldate', 'deluser','jobStatus','calljob','calluser', 'comment','QCStatus','callQC','callQCuser','commentQC','commentNote','updateqcdate','ticketCode'
     ];
     public function getJobtask($sag1) {
         $db = db_connect();
@@ -799,6 +799,7 @@ class JobtaskModel extends Model {
     }
     public function getJobtaskSupport($sag1 = false){
         $db = db_connect();
+        $this->generateUniqueCode($sag1);
         $builder = $db->table('jobtask jt');
         $builder->select('
             jt.id,
@@ -830,7 +831,8 @@ class JobtaskModel extends Model {
             e.customer_cd as ecp_code,
             e.customer_name,
             mt.commentName,
-            js.statusname
+            js.statusname,
+            ticketCode
         ');
         $builder->join('ecp e', 'jt.ecpid = e.id');
         $builder->join('comment_type mt', 'jt.comment = mt.id');
@@ -849,4 +851,31 @@ class JobtaskModel extends Model {
         ];
         
     }
+
+    public function generateUniqueCode($sag1 = false)
+{
+    $prefix = "TIK";
+
+    // Fetch records where 'ticketCode' is NULL and 'comment' matches $sag1
+    $codeRecords = $this->where(['ticketCode' => NULL, 'comment' => $sag1])
+                        ->orderBy('id', 'asc')
+                        ->findAll();
+
+    // Loop through each record and generate a unique code
+    foreach ($codeRecords as $record) {
+        // Generate unique code with current time and random number for uniqueness
+        $uniqueNumber = substr(time(), -6) . rand(100, 999);
+        $uniqueCode = $prefix . $uniqueNumber;
+
+        // Update the record with the new unique code
+        $data = ['ticketCode' => $uniqueCode];
+
+        // Update the record based on its ID
+        $this->update($record['id'], $data);
+    }
+
+    return true; // Return true after updating all records
+}
+
+
 }

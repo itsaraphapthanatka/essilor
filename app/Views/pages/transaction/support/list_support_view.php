@@ -286,7 +286,7 @@
                                             <?php foreach ($commentType as $row):?>
                                             <!--begin::Contact group-->
                                             <div class="d-flex flex-stack">
-                                                <a onclick="handleIssue('<?=$row->id;?>')" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
+                                                <a style="cursor: pointer;" onclick="handleIssue('<?=$row->id;?>')"  class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
                                                 <div class="badge badge-light-primary"><?= $row->comment_count; ?></div>
                                             </div>
                                             <!--begin::Contact group-->

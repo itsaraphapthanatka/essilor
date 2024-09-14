@@ -55,12 +55,18 @@
 					{ data: 'ecpcode' },
 					{ data: 'trackingId' },
 					{ data: 'jobStatus' },
-					{ data: 'trackingId' },
+					{ data: 'ticketCode' },
 					{ data: null },
 				],
 				columnDefs: [
 					{
 						target: 0,
+						render: function(data, type, row){
+							return `<div class="position-relative ps-6 pe-3 py-2">
+										<span class="bullet bullet-dot bg-success me-2 h-10px w-10px"></span>
+										<span class="fw-bold text-gray-600 fs-6">1</span>
+									</div>`;
+						}
 					},
 					{
 						targets: 2,
@@ -111,7 +117,7 @@
 																	<path d="M14.8563 9.1903C15.0606 8.94984 15.3771 8.9385 15.6175 9.14289C15.858 9.34728 15.8229 9.66433 15.6185 9.9048L11.863 14.6558C11.6554 14.9001 11.2876 14.9258 11.048 14.7128L8.47656 12.4271C8.24068 12.2174 8.21944 11.8563 8.42911 11.6204C8.63877 11.3845 8.99996 11.3633 9.23583 11.5729L11.3706 13.4705L14.8563 9.1903Z" fill="white"/>
 																</svg>
 															</span>
-															Ticket ID :
+															Ticket ID : ${data.ticketCode}
 														</a>
 													</div>
 													
