@@ -286,13 +286,18 @@
                                             <?php foreach ($commentType as $row):?>
                                             <!--begin::Contact group-->
                                             <div class="d-flex flex-stack">
-                                                <a style="cursor: pointer;" onclick="handleIssue('<?=$row->id;?>')"  class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
+                                                <a style="cursor: pointer;" onclick="handleIssue('<?=$row->id;?>')" id="issue<?=$row->id;?>" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
                                                 <div class="badge badge-light-primary"><?= $row->comment_count; ?></div>
                                             </div>
                                             <!--begin::Contact group-->
                                             <script>
                                                 function handleIssue(rowid) {
-                                                    $('#loadtable').load('<?=base_url();?>loadtable/'+rowid);
+                                                    $('#loadtable').load('<?= base_url(); ?>loadtable/' + rowid);
+                                                    console.log(rowid);
+                                                    // Remove the active class from all issues
+                                                    $('a[id^="issue"]').removeClass('text-primary').addClass('text-gray-800');
+                                                    // Add active class to the selected issue
+                                                    $('#issue' + rowid).addClass('text-primary').removeClass('text-gray-800');
                                                 }
                                             </script>
                                             <?php endforeach;?>

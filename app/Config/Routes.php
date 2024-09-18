@@ -120,6 +120,9 @@ $routes->post('SaveRejectQC','QCAnswer::SaveRejectQC');
 
 // support
 $routes->get('loadtable/(:num)','Support::loadtable/$1');
+$routes->get('loadActionType/(:any)/(:num)','Support::loadActionType/$1/$2');
+$routes->get('loadContactType/(:any)/(:num)','Support::loadContactType/$1/$2');
+$routes->post('CreateTransactionSupport','Support::CreateTransactionSupport');
 
 
 

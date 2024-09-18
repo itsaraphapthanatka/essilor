@@ -830,6 +830,7 @@ class JobtaskModel extends Model {
             jt.updateqcdate,
             e.customer_cd as ecp_code,
             e.customer_name,
+            mt.id as commentID,
             mt.commentName,
             js.statusname,
             ticketCode

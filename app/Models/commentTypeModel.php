@@ -16,7 +16,7 @@ class commentTypeModel extends Model{
         $builder = $db->table('comment_type ct')
                       ->select('ct.id,ct.commentName, COUNT(j.comment) as comment_count')
                       ->join('jobtask j', 'ct.id = j.comment', 'left')
-					  ->where(['ct.commentType' => 'keyin'])
+					  ->whereIn('ct.commentType', ['keyin','support','urgent'])
                       ->groupBy('ct.id');
         
         // Execute and return the result
