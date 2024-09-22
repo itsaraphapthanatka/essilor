@@ -146,6 +146,7 @@ $routes->get('loadbadgeCountPending/(:num)', 'Support::loadbadgeCountPending/$1'
         $routes->get('getJobtaskQCProcess/(:num)', 'Transaction::getJobtaskQCProcess/$1');
         $routes->get('getAllTags', 'Tags::getAllTags');
         $routes->get('getJobtaskSupport/(:num)/(:any)/(:num)/(:num)', 'Support::getJobtaskSupport/$1/$2/$3/$4');
+        $routes->get('getEcpCodes', 'Data::getEcpCodes');
     });
     $routes->group('controlData',static function ($routes)
     {

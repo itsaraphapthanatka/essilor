@@ -232,7 +232,7 @@
                 <!--begin::Dropdowns-->
                     <!--begin::Dropdowns-->
                     <div class="d-flex">
-                        <select id="month" class="form-select me-3" aria-label="Select month">
+                        <select id="month" class="form-select me-3" aria-label="Select month" style="width: 150px;">
                             <?php
                             $currentMonth = date('m');
 

@@ -29,7 +29,7 @@
                         <td><?= $transaction['actionName'] ?></td>
                         <td>follow Up</td>
                         <td></td>
-                        <td><?= date('d/m/Y', strtotime($transaction['createDate'])) ?></td>
+                        <td><?= date('d/m/Y', $transaction['createDate']) ?></td>
                         <td><?= $transaction['commentName'] ?></td>
                     </tr>
                 <?php endforeach; ?>

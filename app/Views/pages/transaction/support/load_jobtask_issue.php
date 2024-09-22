@@ -89,8 +89,11 @@
 					},
                     {   target: 4,
                         render: function(data,type,row){
+							
+							let status = row.jobStatus == 12 ? row.statusname : row.statusname;
+							let color = row.jobStatus == 12 ? 'badge-light-success' : 'badge-light-warning';
                             return `
-									<span class="badge badge-light-success fs-6" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="">${row.statusname}</span>
+									<span class="badge ${color} fs-6" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="">${status}</span>
 								`;
                         }
                     },
@@ -172,6 +175,9 @@
 												</div>
 													
 												<!--end::Table-->
+											</div>
+											<div class="modal-footer">
+												<button type="button" id="closeModal${data.ticketCode}" onclick="closeModal('${data.ticketCode}','${data.commentID}')" class="btn btn-light" data-bs-dismiss="modal">Close</button>
 											</div>
 										</div>
 									</div>
@@ -327,9 +333,11 @@
 
 										const contactName = document.getElementById('contactName' + rowID).value;
 										const actionType = document.getElementById('actionType' + rowID).value;
+										const actionTypeFlag = document.getElementById('actionTypeFlag' + rowID).value;
 										const contactType = document.getElementById('contactType' + rowID).value;
 										console.log("AA : "+contactName);
 										console.log("BB : "+actionType);
+										console.log("Action Type Flag : "+actionTypeFlag);
 										console.log("CC : "+contactType);
 
 										if(!contactType){
@@ -350,6 +358,7 @@
 											formData.append('contactName', contactName);
 											formData.append('contactType', contactType);
 											formData.append('actionType', actionType);
+											formData.append('actionTypeFlag', actionTypeFlag);
 											
 											// ส่งข้อมูลด้วย AJAX
 											$.ajax({
@@ -375,13 +384,14 @@
 															if (result.isConfirmed) {
 																
 																loadTransaction(response.ticketCode);
-																$('#loadtable').load('<?= base_url(); ?>loadtable/'+response.issueID+'/pending/'+response.month+'/'+response.year);
+																//$('#loadtable').load('<?= base_url(); ?>loadtable/'+response.issueID+'/pending/'+response.month+'/'+response.year);
 																
-																$('#takejob${data.id}').modal('hide');
-																$('#transaction${data.ticketCode}').modal('hide');
+																
+																$('#takejob' + rowID).modal('hide');
+																$('#transaction' + rowID).modal('hide');
 																$('.modal-backdrop').remove();
 																$('body').removeClass('modal-open');
-																$('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/${data.id}');
+																
 															}
 														});
 
@@ -414,7 +424,15 @@
 											});
 										}
 									}
-
+									function closeModal(ticketCode,commentID) {
+										console.log('closeModal'+ticketCode);
+										const currentMonth = new Date().getMonth() + 1;
+										const currentYear = new Date().getFullYear();
+										const modal = document.getElementById('takejob' + ticketCode);
+										$('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/1');
+										$('#loadtable').load('<?= base_url(); ?>loadtable/' + commentID + '/pending/' + currentMonth + '/' + currentYear);
+										$('#loadtableInprogress').load('<?= base_url(); ?>loadtable/' + commentID + '/inprogress/' + currentMonth + '/' + currentYear);
+									}
 								<\/script>
 							`;
 						}

@@ -53,11 +53,8 @@
                         <!--begin::Col-->
                         <div class="col-md-3 fv-row">
                             <label class="required fs-6 fw-semibold mb-2">ECP Code From Beta</label>
-                            <select class="form-select form-select-solid" data-control="select2" data-hide-search="false" data-placeholder="Select a Code" id="ecpcode" name="ecpcode">
-                            <option value="" selected></option>
-                            <?php foreach ($ecp as $key => $value) {?>
-                                    <option value="<?=$value['customer_cd'];?>"><?=$value['customer_cd'];?></option>
-                                <?php } ?>
+                            <select class="form-select form-select-solid" data-control="select2" data-hide-search="false" data-placeholder="เลือกรหัส" id="ecpcode" name="ecpcode">
+                                <option value="" selected></option>
                             </select>
                         </div>
                         <!--end::Col-->
@@ -724,7 +721,32 @@
 		 KTAppEcommerceSaveProduct.init();
 	 });
 
-
+     $(document).ready(function() {
+    $('#ecpcode').select2({
+        ajax: {
+            url: '<?= base_url('jsondata/getEcpCodes') ?>',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    search: params.term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.customer_cd,
+                            id: item.customer_cd
+                        }
+                    })
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 2
+    });
+});
 
 </script>
 

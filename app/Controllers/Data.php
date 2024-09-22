@@ -32,6 +32,17 @@ class Data extends BaseController{
         ];
         return $this->response->setJSON($arr);
     }
+    public function getEcpCodes()
+    {
+        $search = $this->request->getGet('search');
+        $ecp = new EcpModel();
+        $data = $ecp->select('customer_cd','customer_name')
+                    ->like('customer_cd', $search)
+                    ->limit(10)
+                    ->findAll();
+        
+        return $this->response->setJSON($data);
+    }
     public function getTags(){
         $tags = new TagsModel();
         $result = $tags->getTags();

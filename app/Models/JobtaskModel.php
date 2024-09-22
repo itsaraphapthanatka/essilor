@@ -848,8 +848,9 @@ class JobtaskModel extends Model {
 
 
             $builder->where('jt.jobStatus !=', 11);
+            $builder->where('jt.jobStatus !=', 12);
         } elseif ($sag2 == 'inprogress') {
-            $builder->where('jt.jobStatus', 11);
+            $builder->whereIn('jt.jobStatus', [11,12]);
         }
         
         $builder->groupBy('jt.ticketCode'); // Group by ticketCode

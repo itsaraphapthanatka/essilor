@@ -88,8 +88,17 @@ var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) {
                                     </div>
                                     <!--end::Name-->
                                     <!--begin::Symbol-->
+                                    <?php
+                                    $db = \Config\Database::connect();
+                                    $query = $db->query("SELECT user_img FROM users where id = '".session()->get('userid')."' limit 1");
+                                    $users = $query->getResult();
+                                    $user_img = $users[0]->user_img;
+                                    if($user_img == null){
+                                        $user_img = "no_avatar.jpg";
+                                    }
+                                    ?>
                                     <div class="symbol symbol-30px symbol-md-40px">
-                                        <img src="<?php echo base_url();?>theme/demo20/assets/media/avatars/300-1.jpg" alt="image" />
+                                        <img src="<?php echo base_url();?>profile/<?=$user_img;?>" alt="image" />
                                     </div>
                                     <!--end::Symbol-->
                                 </div>
@@ -101,7 +110,8 @@ var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) {
                                         <div class="menu-content d-flex align-items-center px-3">
                                             <!--begin::Avatar-->
                                             <div class="symbol symbol-50px me-5">
-                                                <img alt="Logo" src="<?php echo base_url();?>theme/demo20/assets/media/avatars/300-1.jpg" />
+                                               
+                                                <img alt="Logo" src="<?php echo base_url();?>profile/<?=$user_img;?>" />
                                             </div>
                                             <!--end::Avatar-->
                                             <!--begin::Username-->

@@ -1,17 +1,18 @@
 <input type="hidden" id="actionType<?=$ticketID;?>" name="actionType" value=""/>
+<input type="text" id="actionTypeFlag<?=$ticketID;?>" name="actionTypeFlag" value=""/>
 
 <?=$issueID;?>
 <div class="d-flex flex-column flex-md-row gap-5">
     <div class="fv-row flex-row-fluid">
         <?php foreach ($action as $key => $value):?>
             <div class="d-grid gap-2">
-                <button id="chk<?=$value['id'];?><?=$ticketID;?>" onclick="handleChkAction('<?=$ticketID;?>','<?=$value['id'];?>')"  class="btn btn-outline btn-outline-dashed btn-active-primary mb-2"><?=$value['actionName']?></button>
+                <button id="chk<?=$value['id'];?><?=$ticketID;?>" onclick="handleChkAction('<?=$ticketID;?>','<?=$value['id'];?>','<?=$value['completeFlag'];?>')"  class="btn btn-outline btn-outline-dashed btn-active-primary mb-2"><?=$value['actionName']?></button>
             </div>
         <?php endforeach; ?>
     </div>
 </div>
 <script>
-    function handleChkAction(ticketCode, action) {
+    function handleChkAction(ticketCode, action, completeFlag) {
        // // Remove 'btn-primary' class from all buttons for the current ticket
          $('#chk'+ action + ticketCode)
              .removeClass('btn-primary')
@@ -30,6 +31,7 @@
 
         // Update the hidden input field with the selected action
         $('#actionType' + ticketCode).val(action);
+        $('#actionTypeFlag' + ticketCode).val(completeFlag);
 
         // Log or perform further actions (such as making AJAX calls) based on the selected action
         console.log('Ticket:', ticketCode, 'Action:', action);

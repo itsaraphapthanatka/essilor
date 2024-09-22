@@ -14,7 +14,7 @@ class commentTypeModel extends Model{
 
         // Build the query
         $builder = $db->table('comment_type ct')
-                      ->select('ct.id,ct.commentName, SUM(CASE WHEN j.jobStatus != 11 THEN 1 ELSE 0 END) AS comment_count', false)
+                      ->select('ct.id,ct.commentName, SUM(CASE WHEN j.jobStatus != 11 AND j.jobStatus != 12 THEN 1 ELSE 0 END) AS comment_count', false)
                       ->join('jobtask j', 'ct.id = j.comment', 'left')
 					  ->whereIn('ct.commentType', ['keyin','support','urgent'])
                       ->groupBy('ct.id');
@@ -73,7 +73,7 @@ class commentTypeModel extends Model{
         $db = db_connect();
         // สร้างคิวรี่สำหรับนับจำนวนงานที่มีสถานะ 11 แยกตามประเภทความคิดเห็น
         $builder = $db->table('comment_type ct')
-            ->select('ct.id, ct.commentName, SUM(CASE WHEN j.jobStatus = 11 THEN 1 ELSE 0 END) AS comment_count', false)
+            ->select('ct.id, ct.commentName, SUM(CASE WHEN j.jobStatus in (11,12) THEN 1 ELSE 0 END) AS comment_count', false)
             ->join('jobtask j', 'ct.id = j.comment', 'left')
             ->whereIn('ct.commentType', ['keyin', 'support', 'urgent'])
             ->groupBy('ct.id');
@@ -83,7 +83,7 @@ class commentTypeModel extends Model{
     public function getCommentCountsPending($id = false){
         $db = db_connect();
         $builder = $db->table('comment_type ct')
-            ->select('ct.id, ct.commentName, SUM(CASE WHEN j.jobStatus != 11 THEN 1 ELSE 0 END) AS comment_count', false)
+            ->select('ct.id, ct.commentName, SUM(CASE WHEN j.jobStatus != 11 AND j.jobStatus != 12 THEN 1 ELSE 0 END) AS comment_count', false)
             ->join('jobtask j', 'ct.id = j.comment', 'left')
             ->whereIn('ct.commentType', ['keyin', 'support', 'urgent'])
             ->groupBy('ct.id');

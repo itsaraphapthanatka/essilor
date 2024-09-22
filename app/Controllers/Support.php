@@ -51,6 +51,7 @@ class Support extends BaseController{
     }
     public function CreateTransactionSupport(){
         $add = $this->request->getPost();
+        $actionTypeFlag = $add['actionTypeFlag'];
         // สร้างอินสแตนซ์ของโมเดล SupportJob
         $supportJobModel = new supportJobModel();
         // สร้างรหัสธุรกรรมแบบสุ่ม 8 หลัก
@@ -76,11 +77,18 @@ class Support extends BaseController{
         $result = $supportJobModel->insertSupportJob($data);
 
         // อัปเดตสถานะงานในตาราง jobtask
-        $jobtaskModel = new JobtaskModel();
-        $jobtaskModel->where('ticketCode', $add['ticketid'])
-                     ->set(['jobStatus' => 11])
+        if($actionTypeFlag == 1){
+            $jobtaskModel = new JobtaskModel();
+            $jobtaskModel->where('ticketCode', $add['ticketid'])
+                     ->set(['jobStatus' => 11,'updateUser' => session()->get('m_name'),'updatedate' => date('Y-m-d H:i:s')])
                      ->update();
-                     
+        }
+        if($actionTypeFlag == 2){
+            $jobtaskModel = new JobtaskModel();
+            $jobtaskModel->where('ticketCode', $add['ticketid'])
+                     ->set(['jobStatus' => 12,'updateUser' => session()->get('m_name'),'updatedate' => date('Y-m-d H:i:s')])
+                     ->update();
+        }
         if ($result) {
             $response = [
                 'transactionCode' => $transactionCode,
@@ -108,7 +116,6 @@ class Support extends BaseController{
         return $this->response->setJSON($response);
         return $this->response->setJSON($add);
     }
-
     public function loadTransaction($ticketCode = false) {
  
       
