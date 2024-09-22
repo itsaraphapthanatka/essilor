@@ -119,11 +119,12 @@ $routes->post('SaveQC','QCAnswer::saveqc');
 $routes->post('SaveRejectQC','QCAnswer::SaveRejectQC');
 
 // support
-$routes->get('loadtable/(:num)','Support::loadtable/$1');
+$routes->get('loadtable/(:num)/(:any)/(:num)/(:num)','Support::loadtable/$1/$2/$3/$4');
 $routes->get('loadActionType/(:any)/(:num)','Support::loadActionType/$1/$2');
 $routes->get('loadContactType/(:any)/(:num)','Support::loadContactType/$1/$2');
 $routes->post('CreateTransactionSupport','Support::CreateTransactionSupport');
-
+$routes->get('loadTransaction/(:any)', 'Support::loadTransaction/$1');
+$routes->get('loadbadgeCountPending/(:num)', 'Support::loadbadgeCountPending/$1');
 
 
     $routes->group('import',static function ($routes)
@@ -144,7 +145,7 @@ $routes->post('CreateTransactionSupport','Support::CreateTransactionSupport');
         $routes->get('getJobtaskStockTags/(:num)', 'Transaction::getJobtaskStockTags/$1');
         $routes->get('getJobtaskQCProcess/(:num)', 'Transaction::getJobtaskQCProcess/$1');
         $routes->get('getAllTags', 'Tags::getAllTags');
-        $routes->get('getJobtaskSupport/(:num)', 'Support::getJobtaskSupport/$1');
+        $routes->get('getJobtaskSupport/(:num)/(:any)/(:num)/(:num)', 'Support::getJobtaskSupport/$1/$2/$3/$4');
     });
     $routes->group('controlData',static function ($routes)
     {

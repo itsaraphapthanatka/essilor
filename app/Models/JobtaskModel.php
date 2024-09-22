@@ -797,9 +797,10 @@ class JobtaskModel extends Model {
             ->update();
         }
     }
-    public function getJobtaskSupport($sag1 = false){
+    public function getJobtaskSupport($sag1 = false,$sag2 = false,$sag3 = false,$sag4 = false){
         $db = db_connect();
         $this->generateUniqueCode($sag1);
+
         $builder = $db->table('jobtask jt');
         $builder->select('
             jt.id,
@@ -833,13 +834,30 @@ class JobtaskModel extends Model {
             mt.id as commentID,
             mt.commentName,
             js.statusname,
-            ticketCode
+            jt.ticketCode,
+            COUNT(sj.ticketcode) AS ticketCodeCount
         ');
         $builder->join('ecp e', 'jt.ecpid = e.id');
         $builder->join('comment_type mt', 'jt.comment = mt.id');
         $builder->join('jobstatus js', 'jt.jobStatus = js.id');
+        $builder->join('supportjob sj', 'jt.ticketCode = sj.ticketcode', 'left'); // Join with supportjob
         $builder->where(['jt.comment' => $sag1]);
-        $builder->orderBy('createdate', 'ASC');
+        $builder->where('MONTH(jt.updatedate)', $sag3); 
+        $builder->where('YEAR(jt.updatedate)', $sag4);
+        if ($sag2 == 'pending') {
+
+
+            $builder->where('jt.jobStatus !=', 11);
+        } elseif ($sag2 == 'inprogress') {
+            $builder->where('jt.jobStatus', 11);
+        }
+        
+        $builder->groupBy('jt.ticketCode'); // Group by ticketCode
+        $builder->orderBy('jt.createdate', 'ASC');
+        
+
+
+
 
         $query = $builder->get();
         $result = $query->getResult();
@@ -854,29 +872,29 @@ class JobtaskModel extends Model {
     }
 
     public function generateUniqueCode($sag1 = false)
-{
-    $prefix = "TIK";
+    {
+        $prefix = "TIK";
 
-    // Fetch records where 'ticketCode' is NULL and 'comment' matches $sag1
-    $codeRecords = $this->where(['ticketCode' => NULL, 'comment' => $sag1])
-                        ->orderBy('id', 'asc')
-                        ->findAll();
+        // Fetch records where 'ticketCode' is NULL and 'comment' matches $sag1
+        $codeRecords = $this->where(['ticketCode' => NULL, 'comment' => $sag1])
+                            ->orderBy('id', 'asc')
+                            ->findAll();
 
-    // Loop through each record and generate a unique code
-    foreach ($codeRecords as $record) {
-        // Generate unique code with current time and random number for uniqueness
-        $uniqueNumber = substr(time(), -6) . rand(100, 999);
-        $uniqueCode = $prefix . $uniqueNumber;
+        // Loop through each record and generate a unique code
+        foreach ($codeRecords as $record) {
+            // Generate unique code with current time and random number for uniqueness
+            $uniqueNumber = substr(time(), -6) . rand(100, 999);
+            $uniqueCode = $prefix . $uniqueNumber;
 
-        // Update the record with the new unique code
-        $data = ['ticketCode' => $uniqueCode];
+            // Update the record with the new unique code
+            $data = ['ticketCode' => $uniqueCode];
 
-        // Update the record based on its ID
-        $this->update($record['id'], $data);
+            // Update the record based on its ID
+            $this->update($record['id'], $data);
+        }
+
+        return true; // Return true after updating all records
     }
-
-    return true; // Return true after updating all records
-}
 
 
 }

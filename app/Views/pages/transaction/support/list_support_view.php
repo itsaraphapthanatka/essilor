@@ -53,7 +53,7 @@
                                             <!--begin::Statistics-->
                                             <div class="d-flex align-items-center mb-2">
                                                 <!--begin::Value-->
-                                                <span class="fs-7hx fw-bold text-gray-800 me-2 lh-1 ls-n2">00</span>
+                                                <span class="fs-7hx fw-bold text-gray-800 me-2 lh-1 ls-n2"> <?=$countJobtasksByStatus['pending'];?> </span>
                                                 <!--end::Value-->
                                                 <!--begin::Label-->
                                                 <!--end::Label-->
@@ -117,7 +117,7 @@
                                             <!--begin::Statistics-->
                                             <div class="d-flex align-items-center mb-2">
                                                 <!--begin::Value-->
-                                                <span class="fs-7hx fw-bold text-white me-2 lh-1 ls-n2">00</span>
+                                                <span class="fs-7hx fw-bold text-white me-2 lh-1 ls-n2"><?=$countJobtasksByStatus['inProgress'];?></span>
                                                 <!--end::Value-->
                                                 <!--begin::Label-->
                                                 <!--end::Label-->
@@ -181,9 +181,10 @@
                                             <!--begin::Statistics-->
                                             <div class="d-flex align-items-center flex-grow-1">
                                                 <!--begin::Value-->
-                                                <span class="fs-7hx fw-bold text-white me-2 lh-1 ls-n2">00</span>
+                                                <span class="fs-7hx fw-bold text-white me-2 lh-1 ls-n2"><?=$countJobtasksByStatus['complete'];?></span>
                                                 <!--end::Value-->
                                                 <!--begin::Label-->
+
                                                 <!--end::Label-->
                                             </div>
                                             <!--end::Statistics-->
@@ -229,34 +230,38 @@
                 <!--end:::Tabs-->
                 <!--begin::Button-->
                 <!--begin::Dropdowns-->
+                    <!--begin::Dropdowns-->
                     <div class="d-flex">
-                        <select class="form-select me-3" aria-label="Select month">
-                            <option selected value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
+                        <select id="month" class="form-select me-3" aria-label="Select month">
+                            <?php
+                            $currentMonth = date('m');
+
+                            $months = [
+                                '01' => 'January', '02' => 'February', '03' => 'March', '04' => 'April',
+                                '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August',
+                                '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December'
+                            ];
+                            foreach ($months as $value => $month) {
+                                $selected = ($value == $currentMonth) ? 'selected' : '';
+                                echo "<option value=\"$value\" $selected>$month</option>";
+                            }
+                            ?>
                         </select>
 
-                        <select class="form-select" aria-label="Select year">
-                            <option selected value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026">2026</option>
-                            <option value="2027">2027</option>
-                            <option value="2028">2028</option>
-                            <option value="2029">2029</option>
-                            <option value="2030">2030</option>
+                        <select id="year" class="form-select" aria-label="Select year">
+                            <?php
+                            $currentYear = date('Y');
+
+                            for ($year = $currentYear; $year <= $currentYear + 6; $year++) {
+                                $selected = ($year == $currentYear) ? 'selected' : '';
+                                echo "<option value=\"$year\" $selected>$year</option>";
+                            }
+                            ?>
                         </select>
                     </div>
                 <!--end::Dropdowns-->
             </div>
+
             
             <!--begin::Tab content-->
             <div class="tab-content">
@@ -282,25 +287,8 @@
                                     <!--begin::Card body-->
                                     <div class="card-body pt-5">
                                         <!--begin::Contact groups-->
-                                        <div class="d-flex flex-column gap-5">
-                                            <?php foreach ($commentType as $row):?>
-                                            <!--begin::Contact group-->
-                                            <div class="d-flex flex-stack">
-                                                <a style="cursor: pointer;" onclick="handleIssue('<?=$row->id;?>')" id="issue<?=$row->id;?>" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
-                                                <div class="badge badge-light-primary"><?= $row->comment_count; ?></div>
-                                            </div>
-                                            <!--begin::Contact group-->
-                                            <script>
-                                                function handleIssue(rowid) {
-                                                    $('#loadtable').load('<?= base_url(); ?>loadtable/' + rowid);
-                                                    console.log(rowid);
-                                                    // Remove the active class from all issues
-                                                    $('a[id^="issue"]').removeClass('text-primary').addClass('text-gray-800');
-                                                    // Add active class to the selected issue
-                                                    $('#issue' + rowid).addClass('text-primary').removeClass('text-gray-800');
-                                                }
-                                            </script>
-                                            <?php endforeach;?>
+                                        <div id="actionTypeContainer">
+                                           
                                         </div>
                                         <!--end::Contact groups-->
                                     </div>
@@ -333,176 +321,87 @@
                         <!--end::Contacts App- Getting Started-->
                     </div>
                     <!--end::Post-->
-                   
                 </div>
                 <!--end::Tab pane-->
                 <!--begin::Tab pane-->
                 <div class="tab-pane fade" id="kt_ecommerce_sales_order_history" role="tab-panel">
-                   
-                    <!--begin::Orders-->
-                    <div class="d-flex flex-column gap-7 gap-lg-10">
-                        <!--begin::Order history-->
-                        <div class="card card-flush py-4 flex-row-fluid">
-                            <!--begin::Card header-->
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h2>Order History</h2>
+                    <!--begin::Post-->
+                    <div class="content flex-row-fluid" id="kt_content">
+                        <!--begin::Contacts App- Getting Started-->
+                        <div class="row g-7">
+                            <!--begin::Contact groups-->
+                            <div class="col-lg-6 col-xl-3">
+                                <!--begin::Contact group wrapper-->
+                                <div class="card card-flush">
+                                    <!--begin::Card header-->
+                                    <div class="card-header pt-7" id="kt_chat_contacts_header">
+                                        <!--begin::Card title-->
+                                        <div class="card-title">
+                                            <h2>Issue</h2>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body pt-5">
+                                        <!--begin::Contact groups-->
+                                        <div class="d-flex flex-column gap-5">
+                                            <?php foreach ($commentTypeInprogress as $row):?>
+                                            <!--begin::Contact group-->
+                                            <div class="d-flex flex-stack">
+                                                <a style="cursor: pointer;" onclick="handleIssueInprogress('<?=$row->id;?>')" id="issueinprogress<?=$row->id;?>" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
+                                                <div class="badge badge-light-primary"><?= $row->comment_count; ?></div>
+                                            </div>
+                                            <!--begin::Contact group-->
+                                            <script>
+
+                                                function handleIssueInprogress(rowid) {
+                                                    var selectedMonth = $('#month').val();
+                                                    var selectedYear = $('#year').val();
+                                                    $('#loadtableInprogress').load('<?= base_url(); ?>loadtable/' + rowid + '/inprogress/' + selectedMonth + '/' + selectedYear);
+                                                    console.log(rowid);
+
+                                                    // Remove the active class from all issues
+                                                    $('a[id^="issueinprogress"]').removeClass('text-primary').addClass('text-gray-800');
+                                                    // Add active class to the selected issue
+                                                    $('#issueinprogress' + rowid).addClass('text-primary').removeClass('text-gray-800');
+                                                }
+                                            </script>
+                                            <?php endforeach;?>
+                                        </div>
+                                        <!--end::Contact groups-->
+                                    </div>
+                                    <!--end::Card body-->
                                 </div>
+                                <!--end::Contact group wrapper-->
                             </div>
-                            <!--end::Card header-->
-                            <!--begin::Card body-->
-                            <div class="card-body pt-0">
-                                <div class="table-responsive">
-                                    <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
-                                        <thead>
-                                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                                <th class="min-w-100px">Date Added</th>
-                                                <th class="min-w-175px">Comment</th>
-                                                <th class="min-w-70px">Order Status</th>
-                                                <th class="min-w-100px">Customer Notifed</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="fw-semibold text-gray-600">
-                                            <tr>
-                                                <td>29/03/2024</td>
-                                                <td>Order completed</td>
-                                                <td>
-                                                    <!--begin::Badges-->
-                                                    <div class="badge badge-light-success">Completed</div>
-                                                    <!--end::Badges-->
-                                                </td>
-                                                <td>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>28/03/2024</td>
-                                                <td>Order received by customer</td>
-                                                <td>
-                                                    <!--begin::Badges-->
-                                                    <div class="badge badge-light-success">Delivered</div>
-                                                    <!--end::Badges-->
-                                                </td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>27/03/2024</td>
-                                                <td>Order shipped from warehouse</td>
-                                                <td>
-                                                    <!--begin::Badges-->
-                                                    <div class="badge badge-light-primary">Delivering</div>
-                                                    <!--end::Badges-->
-                                                </td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>26/03/2024</td>
-                                                <td>Payment received</td>
-                                                <td>
-                                                    <!--begin::Badges-->
-                                                    <div class="badge badge-light-primary">Processing</div>
-                                                    <!--end::Badges-->
-                                                </td>
-                                                <td>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>25/03/2024</td>
-                                                <td>Pending payment</td>
-                                                <td>
-                                                    <!--begin::Badges-->
-                                                    <div class="badge badge-light-warning">Pending</div>
-                                                    <!--end::Badges-->
-                                                </td>
-                                                <td>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>24/03/2024</td>
-                                                <td>Payment method updated</td>
-                                                <td>
-                                                    <!--begin::Badges-->
-                                                    <div class="badge badge-light-warning">Pending</div>
-                                                    <!--end::Badges-->
-                                                </td>
-                                                <td>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>23/03/2024</td>
-                                                <td>Payment method expired</td>
-                                                <td>
-                                                    <!--begin::Badges-->
-                                                    <div class="badge badge-light-danger">Failed</div>
-                                                    <!--end::Badges-->
-                                                </td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>22/03/2024</td>
-                                                <td>Pending payment</td>
-                                                <td>
-                                                    <!--begin::Badges-->
-                                                    <div class="badge badge-light-warning">Pending</div>
-                                                    <!--end::Badges-->
-                                                </td>
-                                                <td>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>21/03/2024</td>
-                                                <td>Order received</td>
-                                                <td>
-                                                    <!--begin::Badges-->
-                                                    <div class="badge badge-light-warning">Pending</div>
-                                                    <!--end::Badges-->
-                                                </td>
-                                                <td>Yes</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <!--end::Table-->
+                            <!--end::Contact groups-->
+                            <!--begin::Content-->
+                            <div class="col-xl-9">
+                                <!--begin::Card-->
+                                <div class="card card-flush py-4 flex-row-fluid">
+                                    <!--begin::Card header-->
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <h2>In Progress</h2>
+                                        </div>
+                                    </div>
+
+
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body pt-0">
+                                       <div id="loadtableInprogress"></div>
+                                    </div>
+                                    <!--end::Card body-->
                                 </div>
+                                <!--end::Card-->
                             </div>
-                            <!--end::Card body-->
+                            <!--end::Content-->
                         </div>
-                        <!--end::Order history-->
-                        <!--begin::Order data-->
-                        <div class="card card-flush py-4 flex-row-fluid">
-                            <!--begin::Card header-->
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h2>Order Data</h2>
-                                </div>
-                            </div>
-                            <!--end::Card header-->
-                            <!--begin::Card body-->
-                            <div class="card-body pt-0">
-                                <div class="table-responsive">
-                                    <!--begin::Table-->
-                                    <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5">
-                                        <tbody class="fw-semibold text-gray-600">
-                                            <tr>
-                                                <td class="text-muted">IP Address</td>
-                                                <td class="fw-bold text-end">172.68.221.26</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-muted">Forwarded IP</td>
-                                                <td class="fw-bold text-end">89.201.163.49</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-muted">User Agent</td>
-                                                <td class="fw-bold text-end">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-muted">Accept Language</td>
-                                                <td class="fw-bold text-end">en-GB,en-US;q=0.9,en;q=0.8</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <!--end::Table-->
-                                </div>
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Order data-->
+                        <!--end::Contacts App- Getting Started-->
                     </div>
-                    <!--end::Orders-->
+                    <!--end::Post-->
                 </div>
                 <!--end::Tab pane-->
             </div>
@@ -517,4 +416,36 @@
     $("#kt_header_navs_support").addClass('active');
     $("#kt_header_navs_tab_3").addClass('active show');
     $("#dashboardSupportMenu").addClass('btn-light-primary');
+    $('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/1');
+
+    // เพิ่มฟังก์ชันนี้ที่ด้านล่างของไฟล์
+    function updateContent() {
+        var selectedMonth = $('#month').val();
+        var selectedYear = $('#year').val();
+        var activeIssueId = $('a[id^="issuepending"].text-primary').attr('id').replace('issuepending', '');   
+        var activeIssueIdInprogress = $('a[id^="issueinprogress"].text-primary').attr('id').replace('issueinprogress', '');
+        
+        // อัปเดตเนื้อหาสำหรับ Pending Ticket
+
+        $('#loadtable').load('<?= base_url(); ?>loadtable/' + activeIssueId + '/pending/' + selectedMonth + '/' + selectedYear);
+        
+        // อัปเดตเนื้อหาสำหรับ In progress
+
+        $('#loadtableInprogress').load('<?= base_url(); ?>loadtable/' + activeIssueIdInprogress + '/inprogress/' + selectedMonth + '/' + selectedYear);
+        
+        // อัปเดต badge counts
+
+        $('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/' + activeIssueId + '/' + selectedMonth + '/' + selectedYear);
+    }
+
+
+    // เพิ่ม event listeners สำหรับ dropdowns
+    $('#month, #year').change(function() {
+        updateContent();
+    });
+
+    // เรียกใช้ฟังก์ชันเมื่อโหลดหน้าเว็บ
+    $(document).ready(function() {
+        updateContent();
+    });
 </script>

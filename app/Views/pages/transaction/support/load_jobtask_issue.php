@@ -1,8 +1,9 @@
 <div class="table-responsive">
     <!--begin::Table-->
-    <table  id="kt_datatable_horizontal_scroll" class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
+    <table  id="kt_datatable_horizontal_scroll<?=$status;?>" class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
         <thead>
             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
                 <th class="min-w-100px">transaction</th>
                 <th class="min-w-175px">Last Action</th>
                 <th class="min-w-70px">Customer ID</th>
@@ -31,12 +32,13 @@
 		var dt;
 		var filterPayment;
 		var channalid = '10';
-		var list = "jsondata/getJobtaskSupport/<?=$issueid;?>";
+		var list = "jsondata/getJobtaskSupport/<?=$issueid;?>/<?=$status;?>/<?=$month;?>/<?=$year;?>";
 		// Private functions
 		var initDatatable = function () {
-			dt = $("#kt_datatable_horizontal_scroll").DataTable({
+			dt = $("#kt_datatable_horizontal_scroll<?=$status;?>").DataTable({
 				searchDelay: 500,
 				processing: true,
+
 				serverSide: true,
 				order: [[0, 'asc']],
 				stateSave: false,  
@@ -61,10 +63,17 @@
 				columnDefs: [
 					{
 						target: 0,
-						render: function(data, type, row){
+						render: function(data, type, row) {
+							let bulletColor = 'bg-success';
+							if (row.ticketCodeCount >= 5) {
+								bulletColor = 'bg-danger';
+							} else if (row.ticketCodeCount > 2) {
+								bulletColor = 'bg-warning';
+							}
+							
 							return `<div class="position-relative ps-6 pe-3 py-2">
-										<span class="bullet bullet-dot bg-success me-2 h-10px w-10px"></span>
-										<span class="fw-bold text-gray-600 fs-6">1</span>
+										<span class="bullet bullet-dot ${bulletColor} me-2 h-10px w-10px"></span>
+										<span class="fw-bold text-gray-600 fs-6">${row.ticketCodeCount == 0 ? 1 : row.ticketCodeCount}</span>
 									</div>`;
 						}
 					},
@@ -89,7 +98,7 @@
 						targets: -1,
 						render: function(data, type, row) {
 							return `
-								<a data-bs-toggle="modal" data-bs-target="#takejob${data.id}" class="btn btn-light-primary btn-sm">
+								<a data-bs-toggle="modal" id="ticketCode${data.ticketCode}" onclick="loadTransaction('${data.ticketCode}')" data-bs-target="#takejob${data.id}" class="btn btn-light-primary btn-sm">
 									Update
 								</a>
 								<div  class="modal fade" tabindex="-1" id="takejob${data.id}">
@@ -125,9 +134,10 @@
 													<!--begin::Page title-->
 													<div class="page-title d-flex flex-column align-items-start me-3 py-2 py-lg-0 gap-2">
 														<!--begin::Breadcrumb-->
-														<span class="text-primary mt-1 fw-semibold fs-2">รายการติดตามผล <div class="badge badge-light-primary">0</div></span>
+														<span class="text-primary mt-1 fw-semibold fs-2">รายการติดตามผล <div class="badge fs-2 badge-primary">${data.ticketCodeCount}</div></span>
 														
 														<!--end::Breadcrumb-->
+
 													</div>
 													<!--end::Page title-->
 													<!--begin::Actions-->
@@ -137,26 +147,30 @@
 													<!--end::Actions-->
 												</div>
 												<!--begin::Table-->
-												<div class="table-responsive">
-													<!--begin::Datatable-->
-													<table id="kt_datatable_horizontal_scroll" class="table align-middle table-row-dashed fs-6 gy-5" >
-														<thead>
-															<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-																<th class="min-w-200px">Transaction ID</th>
-																<th class="min-w-200px">Ticket ID</th>
-																<th class="min-w-125px">Contact Type</th>
-																<th class="min-w-12px">Action Type</th>
-																<th class="min-w-125px">Result</th>
-																<th class="min-w-200px">Comment</th>
-																<th class="min-w-125px">Follow Up</th>
-																<th class="min-w-125px">Issue Type</th>
-															</tr>
-														</thead>
-														<tbody class="text-gray-600 fw-semibold">
-														</tbody>
-													</table>
-													<!--end::Datatable-->
+												<div id="loadtransaction${data.ticketCode}">
+													<div class="table-responsive">
+														<!--begin::Datatable-->
+														<table id="kt_datatable_horizontal_scroll<?=$status;?>" class="table align-middle table-row-dashed fs-6 gy-5" >
+															<thead>
+																<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+
+																	<th class="min-w-200px">Transaction ID</th>
+																	<th class="min-w-200px">Ticket ID</th>
+																	<th class="min-w-125px">Contact Type</th>
+																	<th class="min-w-12px">Action Type</th>
+																	<th class="min-w-125px">Result</th>
+																	<th class="min-w-200px">Comment</th>
+																	<th class="min-w-125px">Follow Up</th>
+																	<th class="min-w-125px">Issue Type</th>
+																</tr>
+															</thead>
+															<tbody class="text-gray-600 fw-semibold">
+															</tbody>
+														</table>
+														<!--end::Datatable-->
+													</div>
 												</div>
+													
 												<!--end::Table-->
 											</div>
 										</div>
@@ -195,7 +209,8 @@
 													<div class="col-lg-8">
 														<div class="row">
 															<div class="col-lg-12 fv-row">
-																<input type="text" name="ticketid" readonly class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Ticket ID" value="${data.ticketCode}" />
+																<input type="text" name="ticketid" readonly class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Ticket ID" value="${row.ticketCode}" />
+																<input type="hidden" name="comment" value="${data.commentID}">
 															</div>
 														</div>
 													</div>
@@ -250,6 +265,24 @@
 									</div>
 								</div>
 								<script>
+									function loadTransaction(ticketCode) {
+										console.log('loadTransaction'+ticketCode);
+										const transactionContainer = document.getElementById('loadtransaction'+ticketCode);
+										if (transactionContainer) {
+											fetch('<?= base_url(); ?>loadTransaction/'+ticketCode)
+												.then(response => response.text())
+												.then(data => {
+													transactionContainer.innerHTML = data;
+												})
+												.catch(error => {
+													console.error('เกิดข้อผิดพลาดในการโหลดข้อมูล:', error);
+													transactionContainer.innerHTML = 'เกิดข้อผิดพลาดในการโหลดข้อมูล';
+												});
+										}
+									}
+
+									
+									
 									var elements = Array.prototype.slice.call(document.querySelectorAll("[data-bs-stacked-modal]"));
 									if (elements && elements.length > 0) {
 										elements.forEach((element) => {
@@ -309,31 +342,74 @@
 											toastr.warning("Please input Action Type.");
 											submitButton.removeAttribute('data-kt-indicator');
 										}else{
+											// สร้าง FormData object จากฟอร์ม
+											const formData = new FormData(form);
+											
+											// เพิ่มข้อมูลเพิ่มเติมที่ต้องการส่ง
+											formData.append('ticketid', rowID);
+											formData.append('contactName', contactName);
+											formData.append('contactType', contactType);
+											formData.append('actionType', actionType);
+											
+											// ส่งข้อมูลด้วย AJAX
 											$.ajax({
-												type: form.method,
-												url: form.action,
-												data: $(form).serialize(),
-												success: function (data) {
-													console.log(data);
+												type: 'POST',
+												url: '<?= base_url('CreateTransactionSupport'); ?>',
+												data: formData,
+												processData: false,
+												contentType: false,
+												success: function(response) {
+													console.log(response);
+													submitButton.removeAttribute('data-kt-indicator');
+													
+													if(response.status === 'สำเร็จ') {
+														Swal.fire({
+															text: response.message,
+															icon: 'success',
+															buttonsStyling: false,
+															confirmButtonText: "ตกลง",
+															customClass: {
+																confirmButton: "btn btn-success"
+															}
+														}).then(function (result) {
+															if (result.isConfirmed) {
+																
+																loadTransaction(response.ticketCode);
+																$('#loadtable').load('<?= base_url(); ?>loadtable/'+response.issueID+'/pending/'+response.month+'/'+response.year);
+																
+																$('#takejob${data.id}').modal('hide');
+																$('#transaction${data.ticketCode}').modal('hide');
+																$('.modal-backdrop').remove();
+																$('body').removeClass('modal-open');
+																$('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/${data.id}');
+															}
+														});
+
+
+													} else {
+														Swal.fire({
+															text: response.message,
+															icon: 'error',
+															buttonsStyling: false,
+															confirmButtonText: "ตกลง",
+															customClass: {
+																confirmButton: "btn btn-danger"
+															}
+														});
+													}
+												},
+												error: function(xhr, status, error) {
+													console.error(error);
 													submitButton.removeAttribute('data-kt-indicator');
 													Swal.fire({
-														text: data.message,
-														icon: data.status,
+														text: "เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง",
+														icon: 'error',
 														buttonsStyling: false,
-														confirmButtonText: "Ok, got it!",
+														confirmButtonText: "ตกลง",
 														customClass: {
-															confirmButton: "btn btn-success"
-														}
-													}).then(function (result) {
-														if (result.isConfirmed) {
-															// window.location.href = "<?php echo base_url();?>main";
+															confirmButton: "btn btn-danger"
 														}
 													});
-												},
-												error: function (xhr, status, error) {
-													console.error("Error occurred:", error);
-													submitButton.removeAttribute('data-kt-indicator');
-													submitButton.disabled = false;
 												}
 											});
 										}

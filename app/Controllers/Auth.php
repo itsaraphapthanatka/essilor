@@ -139,9 +139,12 @@ class Auth extends BaseController{
                 break;
             case 'support' :
                 $commentType = new commentTypeModel();
+                $data['countJobtasksByStatus'] = $commentType->countJobtasksByStatus();
                 $data['commentType'] = $commentType->getCommentCounts();
+                $data['commentTypeInprogress'] = $commentType->getCommentCountsInprogress();
                 echo view('pages/transaction/support/list_support_view',$data);
                 break;
+
             case 'feedback' :
                 $jobtask = new JobtaskModel();
                 $data['countJob'] = $jobtask->CountJobtask();
