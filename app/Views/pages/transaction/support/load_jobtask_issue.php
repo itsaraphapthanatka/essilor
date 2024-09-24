@@ -104,14 +104,14 @@
 								<a data-bs-toggle="modal" id="ticketCode${data.ticketCode}" onclick="loadTransaction('${data.ticketCode}')" data-bs-target="#takejob${data.id}" class="btn btn-light-primary btn-sm">
 									Update
 								</a>
-								<div  class="modal fade" tabindex="-1" id="takejob${data.id}">
+								<div  class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"  id="takejob${data.id}">
 									<div class="modal-dialog modal-xl">
 										<div class="modal-content">
 											<div class="modal-header">
 												<h5 class="modal-title">Pending Ticket Transaction Record</h5>
 
 												<!--begin::Close-->
-												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+												<div  onclick="closeModal('${data.ticketCode}','${data.commentID}')" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
 													<i class="ki-duotone ki-cross fs-2x"><span class="path1"></span><span class="path2"></span></i>
 												</div>
 												<!--end::Close-->
@@ -425,13 +425,22 @@
 										}
 									}
 									function closeModal(ticketCode,commentID) {
+										var status = '<?=$status;?>';
+										console.log('Comment ID : '+commentID);
 										console.log('closeModal'+ticketCode);
-										const currentMonth = new Date().getMonth() + 1;
+										const currentMonth = ('0' + (new Date().getMonth() + 1)).slice(-2);
 										const currentYear = new Date().getFullYear();
 										const modal = document.getElementById('takejob' + ticketCode);
-										$('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/1');
-										$('#loadtable').load('<?= base_url(); ?>loadtable/' + commentID + '/pending/' + currentMonth + '/' + currentYear);
-										$('#loadtableInprogress').load('<?= base_url(); ?>loadtable/' + commentID + '/inprogress/' + currentMonth + '/' + currentYear);
+										console.log("commentID : "+commentID);
+										console.log("currentMonth : "+currentMonth);
+										console.log("currentYear : "+currentYear);
+										if(status == 'pending'){
+											$('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/'+commentID);
+											$('#loadtable').load('<?= base_url(); ?>loadtable/' + commentID + '/pending/' + currentMonth + '/' + currentYear);
+										}else if(status == 'inprogress'){
+											$('#loadtableInprogress').load('<?= base_url(); ?>loadtable/' + commentID + '/inprogress/' + currentMonth + '/' + currentYear);
+										}
+										$('#countView').load('<?= base_url(); ?>loadCountView');
 									}
 								<\/script>
 							`;
@@ -565,4 +574,5 @@
         })
         .catch(console.error);
     }
+	
 </script>
