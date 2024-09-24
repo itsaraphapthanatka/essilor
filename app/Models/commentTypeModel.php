@@ -31,6 +31,7 @@ class commentTypeModel extends Model{
 		$builderPending = $db->table('jobtask')
 					  ->select('COUNT(*) as count')
 					  ->where('jobStatus !=', 11)
+					  ->where('jobStatus !=', 12)
 					  ->where('DATE(updatedate)', date('Y-m-d'))
 					  ->where('comment IS NOT NULL');
 
