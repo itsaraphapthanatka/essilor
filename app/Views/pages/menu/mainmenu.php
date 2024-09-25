@@ -138,6 +138,9 @@ var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) {
 											<div class="menu-item px-5">
 												<a id="backup" class="menu-link px-5">Backup Database</a>
 											</div>
+											<div class="menu-item px-5">
+												<a id="exportExcel" class="menu-link px-5">Export to Excel</a>
+											</div>
                                         <?php } ?>
 											<div class="menu-item px-5">
 												<a href="<?=base_url();?>guest" class="menu-link px-5">Change Duty</a>

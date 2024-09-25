@@ -14,6 +14,7 @@ use App\Models\JobbetaModel;
 use App\Models\JobtaskModel;
 use App\Models\TaskImageModel;
 
+
 class Data extends BaseController{
     protected $helpers = ['form'];
     public function __construct()
@@ -281,8 +282,99 @@ class Data extends BaseController{
         // Send the backup file for download
         return $this->response->download($path . $filename, null)->setFileName($filename);
     }
+
+     // backup database for xampp
+     public function backup_xampp() {
+        helper('filesystem');  // Load the filesystem helper
     
+        // Database credentials
+        $db = \Config\Database::connect();
+        $dbHost = $db->hostname;
+        $dbUsername = $db->username;
+        $dbPassword = $db->password;
+        $dbName = $db->database;
     
+        // Set file path and name
+        $path = 'uploads\\bk\\database\\';  // Windows-style path
+        $filename = $dbName . '_' . date('dMY_Hi') . '.sql.gz'; // .gz extension for gzip compression
+        $backupFile = escapeshellarg($path . $filename);
+    
+        // Ensure the directory exists or create it
+        if (!is_dir($path)) {
+            if (!mkdir($path, 0777, true) && !is_dir($path)) {
+                return $this->response->setStatusCode(500)->setBody("Failed to create backup directory.");
+            }
+        }
+    
+        // Path to mysqldump.exe in XAMPP on Windows
+        $mysqldumpPath = 'C:\\xampp\\mysql\\bin\\mysqldump.exe';  // Adjust if needed
+    
+        // MySQL dump command
+        $command = "{$mysqldumpPath} --host={$dbHost} --user={$dbUsername} --password={$dbPassword} {$dbName} > {$backupFile}";
+    
+        if (function_exists('shell_exec') && function_exists('exec')) {
+            echo 'Shell commands are enabled <br/>';
+        } else {
+            echo 'Shell commands are disabled <br/>';
+        }
+    
+        // Execute the command and capture output
+        exec($command, $output, $result);
+        var_dump($output);
+        var_dump($result);
+    
+        // Check if the command was successful
+        if ($result !== 0) {
+            return $this->response->setStatusCode(500)->setBody("Backup generation failed. Please check server permissions.");
+        }
+    
+        // Send the backup file for download
+        return $this->response->download($path . $filename, null)->setFileName($filename);
+    }
+    
+    public function exportExcel(){
+        $db = db_connect();
+        $query = $db->query("SELECT e.customer_name, j.ecpcode FROM jobtask j 
+                                LEFT JOIN ecp e ON j.ecpid = e.id"
+                            );
+        $data = $query->getResultArray();
+    
+        // Load PHPExcel library
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+    
+         // Set header
+         $header = array_keys($data[0]);
+         $header[0] = 'ECP Code'; // Change the first header text
+         $header[1] = 'Customer Name'; // Change the second header text
+         $sheet->fromArray($header, NULL, 'A1');
+        // Set data
+        $row = 2;
+        foreach ($data as $record) {
+            $sheet->setCellValue('A' . $row, $record['ecpcode']);
+            $sheet->setCellValue('B' . $row, $record['customer_name']);
+            $row++;
+        }
+    
+        $path = 'uploads/bk/excel/';  // Path to save the file
+    
+        // Ensure the directory exists or create it
+        if (!is_dir($path)) {
+            if (!mkdir($path, 0777, true) && !is_dir($path)) {
+                return $this->response->setStatusCode(500)->setBody("Failed to create backup directory."); 
+            }
+        }
+        
+        // Write to Excel file
+        $filename = 'jobtask_export_' . date('Ymd_His') . '.xlsx';
+        $filePath = $path . $filename;
+        
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $writer->save($filePath);
+    
+        // Return the file as a download response
+        return $this->response->download($filePath, null)->setFileName($filename);
+    }
     
     public function insert100rows(){
         $job = new JobtaskModel();
@@ -291,7 +383,7 @@ class Data extends BaseController{
         $res = $job->asArray()->where(['id' => 26])->first();
         $resbeta = $beta->where(['jobid' => 26])->orderBy('id','asc')->findAll();
         $resTag = $tag->where(['jobid' => 26])->orderBy('id','asc')->findAll();
-        for ($i = 0; $i < 500; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $data = [
                 'ecpid' => $res['ecpid'],
                 'ecpcode' => $res['ecpcode'],

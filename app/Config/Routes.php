@@ -155,6 +155,8 @@ $routes->get('loadCountView', 'Support::loadCountView');
         $routes->get('trancateData','Data::trancateData');
         $routes->get('trancateMasterData','Data::trancateMasterData');
         $routes->get('backup','Data::backup');
+        $routes->get('backup_xampp','Data::backup_xampp');
+        $routes->get('exportExcel','Data::exportExcel');
 
         $routes->get('insert100rows','Data::insert100rows');
     });

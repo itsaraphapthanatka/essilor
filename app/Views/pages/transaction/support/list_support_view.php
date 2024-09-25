@@ -238,7 +238,6 @@
         $('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/' + activeIssueId + '/' + selectedMonth + '/' + selectedYear);
     }
 
-
     // เพิ่ม event listeners สำหรับ dropdowns
     $('#month, #year').change(function() {
         updateContent();

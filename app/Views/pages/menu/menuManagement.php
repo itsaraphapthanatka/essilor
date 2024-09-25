@@ -121,6 +121,9 @@
 												<div class="menu-item px-5">
 													<a id="backup" class="menu-link px-5">Backup Database</a>
 												</div>
+												<div class="menu-item px-5">
+													<a id="exportExcel" class="menu-link px-5">Export to Excel</a>
+												</div>
                                         	<?php } ?>
 											<?php if(session()->get('m_name') == "ghost"){ ?>
 												<div class="menu-item px-5">
