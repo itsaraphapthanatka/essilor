@@ -1,12 +1,17 @@
 <div class="d-flex flex-column gap-5">
     <?php foreach ($commentType as $row):?>
     <!--begin::Contact group-->
+    <?php if($type == 'pending'):?>
     <div class="d-flex flex-stack">
-        <a style="cursor: pointer;" onclick="handleIssue('<?=$row->id;?>')" id="issuepending<?=$row->id;?>" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
+        <a style="cursor: pointer;" onclick="handleIssue('<?=$row->id;?>','<?=$type;?>')" id="issuepending<?=$row->id;?>" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
         <div id="badgeCountPending<?=$row->id;?>" class="badge badge-light-primary"><?= $row->comment_count; ?></div>
     </div>
-    <!--begin::Contact group-->
-
+    <?php else:?>
+    <div class="d-flex flex-stack">
+        <a style="cursor: pointer;" onclick="handleIssue('<?=$row->id;?>','<?=$type;?>')" id="issueinprogress<?=$row->id;?>" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
+        <div id="badgeCountInprogress<?=$row->id;?>" class="badge badge-light-primary"><?= $row->comment_count; ?></div>
+    </div>
+    <?php endif;?>  
     <?php endforeach;?>
     <script>
         // โหลดตารางเริ่มต้นเมื่อโหลดหน้า
@@ -43,18 +48,37 @@
             // เพิ่มคลาส text-primary ให้กับ issue ที่ระบุ
             $('#issuepending' + issueId).addClass('text-primary').removeClass('text-gray-800');
         }
+        function addTextPrimaryClassAfterSaveInprogress(issueId) {
+            // ลบคลาส text-primary จากทุก issue
+            $('a[id^="issueinprogress"]').removeClass('text-primary').addClass('text-gray-800');
+            // เพิ่มคลาส text-primary ให้กับ issue ที่ระบุ
+            $('#issueinprogress' + issueId).addClass('text-primary').removeClass('text-gray-800');
+        }
 
         // ตัวอย่างการเรียกใช้ฟังก์ชัน (คุณอาจต้องเรียกใช้ฟังก์ชันนี้หลังจากบันทึกธุรกรรมสำเร็จ)
         // addTextPrimaryClassAfterSave(issueId);
-        function handleIssue(rowid) {
+        function handleIssue(rowid,type) {
+            console.log(rowid);
+            console.log(type);  
             var selectedMonth = $('#month').val();
             var selectedYear = $('#year').val();
-            $('#loadtable').load('<?= base_url(); ?>loadtable/' + rowid + '/pending/' + selectedMonth + '/' + selectedYear);
-            console.log(rowid);
-            // Remove the active class from all issues
-            $('a[id^="issuepending"]').removeClass('text-primary').addClass('text-gray-800');
-            // Add active class to the selected issue
-            $('#issuepending' + rowid).addClass('text-primary').removeClass('text-gray-800');
+            if(type == 'pending'){
+                $('#loadtable').load('<?= base_url(); ?>loadtable/' + rowid + '/pending/' + selectedMonth + '/' + selectedYear);
+                addTextPrimaryClassAfterSave(rowid);
+                // console.log('pending');
+                console.log(rowid);
+                console.log(selectedMonth);
+                console.log(selectedYear);
+            }else{
+                $('#loadtableInprogress').load('<?= base_url(); ?>loadtable/' + rowid + '/inprogress/' + selectedMonth + '/' + selectedYear);
+                addTextPrimaryClassAfterSaveInprogress(rowid);
+                // console.log('inprogress');
+                console.log(rowid);
+                console.log(selectedMonth);
+                console.log(selectedYear);
+            }
+            
+           
         }
     </script>
 </div>

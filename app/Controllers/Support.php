@@ -21,9 +21,16 @@ class Support extends BaseController{
 
         echo view('pages/transaction/support/load_jobtask_issue',$data);
     }
-    public function loadbadgeCountPending($sag1 = false,){
+    public function loadbadgeCountPending($sag1 = false,$sag2 = false, $sag3 = false){
         $commentType = new commentTypeModel();
-        $data['commentType'] = $commentType->getCommentCountsPending($sag1);
+        $data['type'] = 'pending';
+        $data['commentType'] = $commentType->getCommentCountsPending($sag1,$sag2,$sag3);
+        echo view('pages/transaction/support/loadIssueMenu',$data);
+    }
+    public function loadbadgeCountInprogress($sag1 = false,$sag2 = false, $sag3 = false){
+        $commentType = new commentTypeModel();
+        $data['type'] = 'inprogress';
+        $data['commentType'] = $commentType->getCommentCountsInprogress($sag1,$sag2,$sag3);
         echo view('pages/transaction/support/loadIssueMenu',$data);
     }
     public function loadCountView(){

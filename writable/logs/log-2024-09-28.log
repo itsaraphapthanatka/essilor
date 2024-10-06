@@ -1,0 +1,66 @@
+INFO - 2024-09-28 08:33:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-09-28 08:33:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-09-28 08:33:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-09-28 08:33:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-09-28 08:33:56 --> Undefined array key 0
+in APPPATH\Views\pages\menu\menuManagement.php on line 78.
+ 1 APPPATH\Views\pages\menu\menuManagement.php(78): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'APPPATH\\Views\\pages\\menu\\menuManagement.php', 78)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\pages\\menu\\menuManagement.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1184): CodeIgniter\View\View->render('pages/menu/menuManagement', [], true)
+ 5 APPPATH\Controllers\Pages.php(25): view('pages/menu/menuManagement')
+ 6 SYSTEMPATH\CodeIgniter.php(934): App\Controllers\Pages->view('member')
+ 7 SYSTEMPATH\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Pages))
+ 8 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+INFO - 2024-09-28 08:35:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-09-28 08:35:17 --> Undefined array key 0
+in APPPATH\Views\pages\menu\menuManagement.php on line 78.
+ 1 APPPATH\Views\pages\menu\menuManagement.php(78): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'APPPATH\\Views\\pages\\menu\\menuManagement.php', 78)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\pages\\menu\\menuManagement.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1184): CodeIgniter\View\View->render('pages/menu/menuManagement', [], true)
+ 5 APPPATH\Controllers\Pages.php(25): view('pages/menu/menuManagement')
+ 6 SYSTEMPATH\CodeIgniter.php(934): App\Controllers\Pages->view('member')
+ 7 SYSTEMPATH\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Pages))
+ 8 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+INFO - 2024-09-28 08:35:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-09-28 08:35:32 --> Undefined array key 0
+in APPPATH\Views\pages\menu\menuManagement.php on line 78.
+ 1 APPPATH\Views\pages\menu\menuManagement.php(78): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'APPPATH\\Views\\pages\\menu\\menuManagement.php', 78)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\pages\\menu\\menuManagement.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1184): CodeIgniter\View\View->render('pages/menu/menuManagement', [], true)
+ 5 APPPATH\Controllers\Pages.php(25): view('pages/menu/menuManagement')
+ 6 SYSTEMPATH\CodeIgniter.php(934): App\Controllers\Pages->view('member')
+ 7 SYSTEMPATH\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Pages))
+ 8 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+INFO - 2024-09-28 08:39:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-09-28 08:39:07 --> Undefined array key 0
+in APPPATH\Views\pages\menu\menuManagement.php on line 78.
+ 1 APPPATH\Views\pages\menu\menuManagement.php(78): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'APPPATH\\Views\\pages\\menu\\menuManagement.php', 78)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\pages\\menu\\menuManagement.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1184): CodeIgniter\View\View->render('pages/menu/menuManagement', [], true)
+ 5 APPPATH\Controllers\Pages.php(25): view('pages/menu/menuManagement')
+ 6 SYSTEMPATH\CodeIgniter.php(934): App\Controllers\Pages->view('member')
+ 7 SYSTEMPATH\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Pages))
+ 8 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+INFO - 2024-09-28 08:40:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-09-28 08:40:01 --> Undefined array key 0
+in APPPATH\Views\pages\menu\menuManagement.php on line 79.
+ 1 APPPATH\Views\pages\menu\menuManagement.php(79): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'APPPATH\\Views\\pages\\menu\\menuManagement.php', 79)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\pages\\menu\\menuManagement.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1184): CodeIgniter\View\View->render('pages/menu/menuManagement', [], true)
+ 5 APPPATH\Controllers\Pages.php(25): view('pages/menu/menuManagement')
+ 6 SYSTEMPATH\CodeIgniter.php(934): App\Controllers\Pages->view('member')
+ 7 SYSTEMPATH\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Pages))
+ 8 SYSTEMPATH\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+INFO - 2024-09-28 08:45:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-09-28 08:45:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-09-28 08:45:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

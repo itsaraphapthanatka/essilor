@@ -334,9 +334,51 @@ class Data extends BaseController{
     
     public function exportExcel(){
         $db = db_connect();
-        $query = $db->query("SELECT e.customer_name, j.ecpcode FROM jobtask j 
-                                LEFT JOIN ecp e ON j.ecpid = e.id"
-                            );
+        // $query = $db->query("SELECT 
+        //                         e.customer_name,
+        //                         j.ecpcode
+        //                     FROM jobtask j 
+        //                     LEFT JOIN ecp e ON j.ecpid = e.id
+        //                     LEFT JOIN jobtask_image jti ON j.id = jti.jobid
+        //                     "
+        //                     );
+        $query = $db->query('
+                              SELECT
+                                jt.id,
+                                jt.ecpcode AS ecpcode,
+                                e.customer_name,
+                                jt.trackingId AS trackingId,
+                                GROUP_CONCAT(DISTINCT tb.tag_name SEPARATOR " , ") AS tagsBeta,
+                                GROUP_CONCAT(DISTINCT tj.tag_name SEPARATOR " , ") AS tagsJob,
+                                GROUP_CONCAT(DISTINCT ai.ass_imgg SEPARATOR " , ") AS image_url,
+                                ct.categoriesName,
+                                DATE_FORMAT(jt.createdate, "%d/%m/%Y %H:%i") AS createdate,
+                                js.statusname,
+                                e.morning_only,
+                                e.evening_only,
+                                e.working_day_only,
+                                e.customer_type,
+                                jt.calljob,
+                                jt.capture,
+                                jt.jobStatus,
+                                jt.qcstatus,
+                                jt.createuser,
+                                oc.cyclename,
+                                jt.orderCycleId as ocid
+                            FROM jobtask jt
+                            JOIN ecp e ON jt.ecpid = e.id
+                            LEFT JOIN tagsbeta tbeta ON jt.id = tbeta.jobid
+                            LEFT JOIN tagsjob tjob ON jt.id = tjob.jobid
+                            LEFT JOIN tags tb ON tbeta.tagsid = tb.id
+                            LEFT JOIN tags tj ON tjob.tagsid = tj.id
+                            LEFT JOIN categories ct ON jt.categoryId = ct.id
+                            LEFT JOIN jobstatus js ON jt.jobStatus = js.id
+                            LEFT JOIN ordercycle oc ON jt.orderCycleId = oc.id
+                            LEFT JOIN ass_img ai ON ai.ass_code = jt.id
+                            GROUP BY jt.id, jt.ecpcode, e.customer_name, jt.trackingId, ct.categoriesName, jt.createdate, js.statusname,
+                                    e.morning_only, e.evening_only, e.working_day_only, e.customer_type, jt.calljob, jt.capture,
+                                    jt.jobStatus, jt.qcstatus, jt.createuser, oc.cyclename, jt.orderCycleId
+                            ');
         $data = $query->getResultArray();
     
         // Load PHPExcel library
@@ -347,12 +389,68 @@ class Data extends BaseController{
          $header = array_keys($data[0]);
          $header[0] = 'ECP Code'; // Change the first header text
          $header[1] = 'Customer Name'; // Change the second header text
-         $sheet->fromArray($header, NULL, 'A1');
+         $header[2] = 'trackingId';  // Change the second header text
+         $header[3] = 'capture'; // Change the second header text
+         $header[4] = 'tagsBeta'; // Change the second header text 
+         $header[5] = 'tagsJob'; // Change the second header text
+         $header[6] = 'image_url'; // Change the second header text
+         $header[7] = 'categoriesName'; // Change the second header text
+         $header[8] = 'createdate'; // Change the second header text
+         $header[9] = 'statusname'; // Change the second header text
+         $header[10] = 'customer_type'; // Change the second header text
+         $header[11] = 'jobStatus'; // Change the second header text
+         $header[12] = 'createuser'; // Change the second header text
+         $header[13] = 'cyclename'; // Change the second header text
+
+          // ตั้งค่าความกว้างของคอลัมน์
+        $sheet->getColumnDimension('A')->setWidth(15); // ECP Code  
+        $sheet->getColumnDimension('B')->setWidth(50); // Customer Name
+        $sheet->getColumnDimension('C')->setWidth(20); // trackingId
+        $sheet->getColumnDimension('D')->setWidth(30); // capture
+        $sheet->getColumnDimension('E')->setWidth(30); // tagsBeta  
+        $sheet->getColumnDimension('F')->setWidth(30); // tagsJob
+        $sheet->getColumnDimension('G')->setWidth(40); // image_url 
+        $sheet->getColumnDimension('H')->setWidth(20); // categoriesName
+        $sheet->getColumnDimension('I')->setWidth(20); // createdate    
+        $sheet->getColumnDimension('J')->setWidth(15); // statusname
+        $sheet->getColumnDimension('K')->setWidth(15); // customer_type 
+        $sheet->getColumnDimension('L')->setWidth(15); // jobStatus
+        $sheet->getColumnDimension('M')->setWidth(20); // createuser            
+        $sheet->getColumnDimension('N')->setWidth(25); // cyclename
+        $sheet->fromArray($header, NULL, 'A1');
+
+         // ตั้งค่าเส้นขอบคอลัมน์
+        $lastColumn = $sheet->getHighestColumn();
+        $lastRow = $sheet->getHighestRow();
+        $range = 'A1:' . $lastColumn . $lastRow;
+        $styleBorder = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+                'vertical' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+        $sheet->getStyle($range)->applyFromArray($styleBorder);
         // Set data
         $row = 2;
         foreach ($data as $record) {
             $sheet->setCellValue('A' . $row, $record['ecpcode']);
             $sheet->setCellValue('B' . $row, $record['customer_name']);
+            $sheet->setCellValue('C' . $row, $record['trackingId']);
+            $sheet->setCellValue('D' . $row, $record['capture']);
+            $sheet->setCellValue('E' . $row, $record['tagsBeta']);
+            $sheet->setCellValue('F' . $row, $record['tagsJob']);
+            $sheet->setCellValue('G' . $row, base_url().'uploads/taskImage/' . $record['image_url']);
+            $sheet->setCellValue('H' . $row, $record['categoriesName']);
+            $sheet->setCellValue('I' . $row, $record['createdate']);
+            $sheet->setCellValue('J' . $row, $record['statusname']);
+            $sheet->setCellValue('K' . $row, $record['customer_type']);
+            $sheet->setCellValue('L' . $row, $record['jobStatus']);
+            $sheet->setCellValue('M' . $row, $record['createuser']);
+            $sheet->setCellValue('N' . $row, $record['cyclename']);
             $row++;
         }
     

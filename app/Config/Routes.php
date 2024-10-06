@@ -124,7 +124,8 @@ $routes->get('loadActionType/(:any)/(:num)','Support::loadActionType/$1/$2');
 $routes->get('loadContactType/(:any)/(:num)','Support::loadContactType/$1/$2');
 $routes->post('CreateTransactionSupport','Support::CreateTransactionSupport');
 $routes->get('loadTransaction/(:any)', 'Support::loadTransaction/$1');
-$routes->get('loadbadgeCountPending/(:num)/', 'Support::loadbadgeCountPending/$1');
+$routes->get('loadbadgeCountPending/(:num)/(:num)/(:num)', 'Support::loadbadgeCountPending/$1/$2/$3');
+$routes->get('loadbadgeCountInprogress/(:num)/(:num)/(:num)', 'Support::loadbadgeCountInprogress/$1/$2/$3');
 $routes->get('loadCountView', 'Support::loadCountView');
 
 

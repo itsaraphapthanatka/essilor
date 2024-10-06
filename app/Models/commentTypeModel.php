@@ -68,26 +68,134 @@ class commentTypeModel extends Model{
 		];
 
 	}
-	public function getCommentCountsInprogress()
-    {
-        // Get the database connection
+	// public function getCommentCountsInprogress(){
+    //     $db = db_connect();
+    //     $builder = $db->query("
+    //         SELECT 
+    //             combined.id, 
+    //             combined.commentName, 
+    //             SUM(combined.comment_count) AS comment_count
+    //         FROM 
+    //             (
+    //                 SELECT 
+    //                     ct.id, 
+    //                     ct.commentName, 
+    //                     SUM(CASE WHEN j1.QCStatus in (7) THEN 1 ELSE 0 END) AS comment_count
+    //                 FROM 
+    //                     comment_type ct
+    //                 LEFT JOIN
+    //                     jobtask j1 ON ct.id = j1.commentQC
+    //                 WHERE 
+    //                     ct.commentType IN ('keyin', 'support', 'urgent', 'qc')
+    //                 GROUP BY 
+    //                     ct.id
+    //                 UNION ALL
+    //                 SELECT 
+    //                     ct.id, 
+    //                     ct.commentName, 
+    //                     SUM(CASE WHEN j.jobStatus in (11,12) OR j.qcStatus in(7) THEN 1 ELSE 0 END) AS comment_count
+    //                 FROM 
+    //                     comment_type ct
+    //                 LEFT JOIN 
+    //                     jobtask j ON ct.id = j.comment
+    //                 WHERE 
+    //                     ct.commentType IN ('keyin', 'support', 'urgent', 'qc')
+    //                 GROUP BY 
+    //                     ct.id
+    //             ) AS combined
+    //         GROUP BY 
+    //             combined.id, 
+    //             combined.commentName;
+    //     ");
+    //     return $builder->getResult();
+    // }
+
+
+
+
+
+    public function getCommentCountsPending($id = false,$month = false,$year = false ){
         $db = db_connect();
-        // สร้างคิวรี่สำหรับนับจำนวนงานที่มีสถานะ 11 แยกตามประเภทความคิดเห็น
-        $builder = $db->table('comment_type ct')
-            ->select('ct.id, ct.commentName, SUM(CASE WHEN j.jobStatus in (11,12) THEN 1 ELSE 0 END) AS comment_count', false)
-            ->join('jobtask j', 'ct.id = j.comment', 'left')
-            ->whereIn('ct.commentType', ['keyin', 'support', 'urgent'])
-            ->groupBy('ct.id');
-        // ดำเนินการคิวรี่และส่งคืนผลลัพธ์
-        return $builder->get()->getResult();
+        $builder = $db->query("
+        SELECT 
+            combined.id, 
+            combined.commentName, 
+            SUM(combined.comment_count) AS comment_count
+        FROM 
+            (
+                SELECT 
+                    ct.id, 
+                    ct.commentName, 
+                    SUM(CASE WHEN j1.QCStatus IN ('4','5','6','7','8') AND j1.commentQC IS NOT NULL THEN 1 ELSE 0 END) AS comment_count
+                FROM 
+                    comment_type ct
+                LEFT JOIN
+                    jobtask j1 ON ct.id = j1.commentQC
+                WHERE 
+                    ct.commentType IN ('keyin', 'support', 'urgent', 'qc')
+                GROUP BY 
+                    ct.id
+                UNION ALL
+                SELECT 
+                    ct.id, 
+                    ct.commentName, 
+                    SUM(CASE WHEN j.jobStatus NOT IN (11, 12) OR j.qcStatus != 7 THEN 1 ELSE 0 END) AS comment_count
+                FROM 
+                    comment_type ct
+                LEFT JOIN 
+                    jobtask j ON ct.id = j.comment
+                WHERE 
+                    ct.commentType IN ('keyin', 'support', 'urgent', 'qc')
+                    AND j.updatedate LIKE '$year-$month%'
+                GROUP BY 
+                    ct.id
+            ) AS combined
+        GROUP BY 
+            combined.id, 
+            combined.commentName;
+    ");
+        return $builder->getResult();
     }
-    public function getCommentCountsPending($id = false){
+    public function getCommentCountsInprogress($id = false,$month = false,$year = false ){
         $db = db_connect();
-        $builder = $db->table('comment_type ct')
-            ->select('ct.id, ct.commentName, SUM(CASE WHEN j.jobStatus != 11 AND j.jobStatus != 12 THEN 1 ELSE 0 END) AS comment_count', false)
-            ->join('jobtask j', 'ct.id = j.comment', 'left')
-            ->whereIn('ct.commentType', ['keyin', 'support', 'urgent'])
-            ->groupBy('ct.id');
-        return $builder->get()->getResult();
+        $builder = $db->query("
+            SELECT 
+                combined.id, 
+                combined.commentName, 
+                SUM(combined.comment_count) AS comment_count
+            FROM 
+                (
+                    SELECT 
+                        ct.id, 
+                        ct.commentName, 
+                        SUM(CASE WHEN j1.QCStatus in (7) THEN 1 ELSE 0 END) AS comment_count
+                    FROM 
+                        comment_type ct
+                    LEFT JOIN
+                        jobtask j1 ON ct.id = j1.commentQC
+                    WHERE 
+                        ct.commentType IN ('keyin', 'support', 'urgent', 'qc')
+                    GROUP BY 
+                        ct.id
+                    UNION ALL
+                    SELECT 
+                        ct.id, 
+                        ct.commentName, 
+                        SUM(CASE WHEN j.jobStatus in (11) OR j.qcStatus in(7) THEN 1 ELSE 0 END) AS comment_count
+                    FROM 
+                        comment_type ct
+                    LEFT JOIN 
+                        jobtask j ON ct.id = j.comment
+                    WHERE 
+                        ct.commentType IN ('keyin', 'support', 'urgent', 'qc')
+                        AND j.updatedate LIKE '$year-$month%'
+                    GROUP BY 
+                        ct.id
+                ) AS combined
+            GROUP BY 
+                combined.id, 
+                combined.commentName;
+        ");
+        return $builder->getResult();
     }
 }

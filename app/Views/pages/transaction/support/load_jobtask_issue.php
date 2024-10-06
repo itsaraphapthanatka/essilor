@@ -65,9 +65,9 @@
 						target: 0,
 						render: function(data, type, row) {
 							let bulletColor = 'bg-success';
-							if (row.ticketCodeCount >= 5) {
+							if (row.ticketCodeCount >= 3) {
 								bulletColor = 'bg-danger';
-							} else if (row.ticketCodeCount > 2) {
+							} else if (row.ticketCodeCount >= 2) {
 								bulletColor = 'bg-warning';
 							}
 							
@@ -78,13 +78,45 @@
 						}
 					},
 					{
+						targets: 1,
+						render: function(data, type, row) {
+							let textColor = 'gray-800';
+							if (row.ticketCodeCount >= 3) {
+								textColor = 'danger';
+							}
+							return `<div class="d-flex align-items-center">
+										<div class="d-flex justify-content-start flex-column">
+											<div class="text-${textColor} mb-1">${row.commentName}</div>
+										</div>
+									</div>`;
+						}
+					},
+					{
 						targets: 2,
 						render: function(data, type, row) {
+							let textColor = 'gray-800';
+							if (row.ticketCodeCount >= 3) {
+								textColor = 'danger';
+							}
 							return `<div class="d-flex align-items-center">
                                         <div class="d-flex justify-content-start flex-column">
-                                            <div class="text-gray-800 mb-1">${row.ecpcode}_${row.customer_name}</div>
+                                            <div class="text-${textColor} mb-1">${row.ecpcode}_${row.customer_name}</div>
                                         </div>
                                     </div>`;
+						}
+					},
+					{
+						target: 3,
+						render: function(data, type, row) {
+								let textColor = 'gray-800';
+								if (row.ticketCodeCount >= 3) {
+									textColor = 'danger';
+								}
+							return `<div class="d-flex align-items-center">
+										<div class="d-flex justify-content-start flex-column">
+											<div class="text-${textColor} mb-1">${row.trackingId}</div>
+										</div>			
+									</div>`;
 						}
 					},
                     {   target: 4,
@@ -97,6 +129,20 @@
 								`;
                         }
                     },
+					{
+						target: 5,
+						render: function(data, type, row) {
+							let textColor = 'gray-800';
+							if (row.ticketCodeCount >= 3) {
+								textColor = 'danger';
+							}
+							return `<div class="d-flex align-items-center">
+										<div class="d-flex justify-content-start flex-column">
+											<div class="text-${textColor} mb-1">${row.ticketCode}</div>
+										</div>
+									</div>`;
+						}
+					},
 					{
 						targets: -1,
 						render: function(data, type, row) {

@@ -58,10 +58,13 @@ class QCAnswer extends BaseController{
         $add = $this->request->getPost();
         $task = new JobtaskModel();
         $data = [
+            'jobStatus' => '7',
             'QCStatus' => '5',
             'callQCuser' => session()->get('m_name'),
             'commentQC' => $add['commentQC'],
             'commentNote' =>  $add['note'],
+            'updatedate' => date('Y-m-d H:i:s'),
+            'updateuser' => session()->get('m_name'),
             'updateqcdate' => date('Y-m-d H:i:s')
         ];
         $res = $task->update($add['taskID'],$data);

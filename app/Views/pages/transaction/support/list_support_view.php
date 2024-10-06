@@ -13,17 +13,17 @@
                 <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-lg-n2 me-auto">
                     <!--begin:::Tab item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_ecommerce_sales_order_summary">Pending Ticket</a>
+                        <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" id="pending" href="#kt_ecommerce_sales_order_summary">Pending Ticket</a>
                     </li>
                     <!--end:::Tab item-->
                     <!--begin:::Tab item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary pb-4" hidden data-bs-toggle="tab" href="#kt_ecommerce_sales_order_history">Urgent Order</a>
+                        <a class="nav-link text-active-primary pb-4" hidden data-bs-toggle="tab" id="urgent" href="#kt_ecommerce_sales_order_history">Urgent Order</a>
                     </li>
                     <!--end:::Tab item-->
                     <!--begin:::Tab item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_ecommerce_sales_order_history">In progress</a>
+                        <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" id="inprogress" href="#kt_ecommerce_sales_order_history">In progress</a>
                     </li>
                     <!--end:::Tab item-->
                 </ul>
@@ -145,29 +145,8 @@
                                     <!--begin::Card body-->
                                     <div class="card-body pt-5">
                                         <!--begin::Contact groups-->
-                                        <div class="d-flex flex-column gap-5">
-                                            <?php foreach ($commentTypeInprogress as $row):?>
-                                            <!--begin::Contact group-->
-                                            <div class="d-flex flex-stack">
-                                                <a style="cursor: pointer;" onclick="handleIssueInprogress('<?=$row->id;?>')" id="issueinprogress<?=$row->id;?>" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
-                                                <div class="badge badge-light-primary"><?= $row->comment_count; ?></div>
-                                            </div>
-                                            <!--begin::Contact group-->
-                                            <script>
-
-                                                function handleIssueInprogress(rowid) {
-                                                    var selectedMonth = $('#month').val();
-                                                    var selectedYear = $('#year').val();
-                                                    $('#loadtableInprogress').load('<?= base_url(); ?>loadtable/' + rowid + '/inprogress/' + selectedMonth + '/' + selectedYear);
-                                                    console.log(rowid);
-
-                                                    // Remove the active class from all issues
-                                                    $('a[id^="issueinprogress"]').removeClass('text-primary').addClass('text-gray-800');
-                                                    // Add active class to the selected issue
-                                                    $('#issueinprogress' + rowid).addClass('text-primary').removeClass('text-gray-800');
-                                                }
-                                            </script>
-                                            <?php endforeach;?>
+                                        <div id="actionTypeInprogressContainer">
+                                           
                                         </div>
                                         <!--end::Contact groups-->
                                     </div>
@@ -213,17 +192,23 @@
 </div>
 <!--end::Container-->
 <script>
+    var month = $("#month").val();
+    var year = $("#year").val();
     $("#kt_header_navs_support").addClass('active');
     $("#kt_header_navs_tab_3").addClass('active show');
     $("#dashboardSupportMenu").addClass('btn-light-primary');
-    $('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/1');
+    console.log(month);
+    console.log(year);
+    $('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/1/'+month+'/'+year);
+    $('#actionTypeInprogressContainer').load('<?= base_url(); ?>loadbadgeCountInprogress/1/'+month+'/'+year);
     $('#countView').load('<?= base_url(); ?>loadCountView');
     // เพิ่มฟังก์ชันนี้ที่ด้านล่างของไฟล์
     function updateContent() {
         var selectedMonth = $('#month').val();
         var selectedYear = $('#year').val();
-        var activeIssueId = $('a[id^="issuepending"].text-primary').attr('id').replace('issuepending', '');   
-        var activeIssueIdInprogress = $('a[id^="issueinprogress"].text-primary').attr('id').replace('issueinprogress', '');
+        var activeIssueId = 1;   
+        var activeIssueIdInprogress = 1;
+        // console.log(activeIssueId);
         
         // อัปเดตเนื้อหาสำหรับ Pending Ticket
 
@@ -236,10 +221,15 @@
         // อัปเดต badge counts
 
         $('#actionTypeContainer').load('<?= base_url(); ?>loadbadgeCountPending/' + activeIssueId + '/' + selectedMonth + '/' + selectedYear);
+        $('#actionTypeInprogressContainer').load('<?= base_url(); ?>loadbadgeCountInprogress/' + activeIssueIdInprogress + '/' + selectedMonth + '/' + selectedYear);
     }
 
     // เพิ่ม event listeners สำหรับ dropdowns
     $('#month, #year').change(function() {
+        updateContent();
+    });
+
+    $('#pending, #urgent, #inprogress').click(function() {
         updateContent();
     });
 

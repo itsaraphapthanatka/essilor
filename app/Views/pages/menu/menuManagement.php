@@ -32,6 +32,7 @@
 										<!-- <img alt="Logo" src="<?php echo base_url();?>theme/demo20/assets/media/logos/demo20.svg" class="h-25px h-lg-30px" /> -->
 									</a>
 									<!--end::Logo-->
+									<!-- <h1><?=session()->get('m_name');?></h1> -->
 									<!--begin::Tabs wrapper-->
 									<div class="align-self-end overflow-auto" id="kt_brand_tabs">
 										<!--begin::Header tabs wrapper-->
@@ -72,13 +73,18 @@
 											<!--end::Name-->
 											<!--begin::Symbol-->
 											<?php
-												$db = \Config\Database::connect();
-												$query = $db->query("SELECT user_img FROM users where id = '".session()->get('userid')."' limit 1");
-												$users = $query->getResult();
-												$user_img = $users[0]->user_img;
-												if($user_img == null){
+												if(session()->get('userid') != 0){
+													$db = \Config\Database::connect();
+													$query = $db->query("SELECT user_img FROM users where id = '".session()->get('userid')."' limit 1");
+													$users = $query->getResult();
+													$user_img = $users[0]->user_img;
+													if($user_img == null){
+														$user_img = "no_avatar.jpg";
+													}
+												}else{
 													$user_img = "no_avatar.jpg";
 												}
+												
 											?>
 											<div class="symbol symbol-30px symbol-md-40px">
 												<img src="<?php echo base_url();?>profile/<?=$user_img;?>" alt="image" />
@@ -118,6 +124,9 @@
 												</div>
 											<?php } ?>
 											<?php if(session()->get('m_name') == "ghost" || session()->get('mtype') == "member"){ ?>
+												<div class="menu-item px-5">
+													<a id="trancate" class="menu-link px-5">Transaction trancate</a>
+												</div>
 												<div class="menu-item px-5">
 													<a id="backup" class="menu-link px-5">Backup Database</a>
 												</div>

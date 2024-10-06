@@ -841,20 +841,28 @@ class JobtaskModel extends Model {
         $builder->join('comment_type mt', 'jt.comment = mt.id');
         $builder->join('jobstatus js', 'jt.jobStatus = js.id');
         $builder->join('supportjob sj', 'jt.ticketCode = sj.ticketcode', 'left'); // Join with supportjob
+       if($sag1 >= 9 &&  $sag1 <= 12){
+        $builder->where(['jt.commentQC' => $sag1]);
+       }else{
         $builder->where(['jt.comment' => $sag1]);
+       }
         $builder->where('MONTH(jt.updatedate)', $sag3); 
         $builder->where('YEAR(jt.updatedate)', $sag4);
         if ($sag2 == 'pending') {
-
-
+            // $builder->where('jt.QCStatus !=', 4);
+            // $builder->where('jt.QCStatus !=', 5);
+            // $builder->where('jt.QCStatus !=', 6);
+            // $builder->where('jt.QCStatus !=', 7);
+            // $builder->where('jt.QCStatus !=', 8);
             $builder->where('jt.jobStatus !=', 11);
-            $builder->where('jt.jobStatus !=', 12);
+            $builder->where('jt.jobStatus !=', 12); 
         } elseif ($sag2 == 'inprogress') {
-            $builder->whereIn('jt.jobStatus', [11,12]);
+            $builder->whereIn('jt.jobStatus', [4,5,6,7,8,11]);
         }
         
-        $builder->groupBy('jt.ticketCode'); // Group by ticketCode
-        $builder->orderBy('jt.createdate', 'ASC');
+        $builder->groupBy('jt.ticketCode'); // Grou
+        $builder->orderBy('COUNT(sj.ticketcode) >=2', 'ASC');
+        $builder->orderBy('jt.updatedate', 'ASC');
         
 
 
