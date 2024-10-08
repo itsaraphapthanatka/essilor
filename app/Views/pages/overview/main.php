@@ -1,67 +1,4 @@
-<style>
-	.card-custom {
-		border-radius: 10px;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		text-align: center;
-		padding: 20px;
-	}
-	.status-box {
-		display: ruby;
-		justify-content: space-around;
-		margin-top: 20px;
-	}
-	.status-item {
-		width: 100px;
-		height: 100px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 10px;
-		font-size: 24px;
-		font-weight: bold;
-	}
-	.status-item-width {
-		width: 100px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 10px;
-		font-size: 24px;
-		font-weight: bold;
-	}
-	.status-item.pending {
-		background-color: #000;
-		color: #fff;
-	}
-	.status-item.ok {
-		background-color: #19c;
-		color: #fff;
-	}
-	.status-item.max {
-		background-color: #F64E60;
-		color: #fff;
-	}
-	.status-item.gray {
-		background-color: #EFF2F5;
-		color: #000000;
-	}
-	.white {
-		background-color: #808080;
-		color: #000000;
-	}
-	.status-item.yellow-text {
-		background-color: #EFF2F5;
-		color: #F1BC00;
-	}
-	.status-item.yellow-text {
-		background-color: #EFF2F5;
-		color: #F1BC00;
-	}
-	.status-item.green {
-		background-color: #50CD89;
-		color: #fff;
-	}
-</style>
+
 
 
 <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
@@ -229,37 +166,139 @@
 					<div class="row g-5 g-xl-10 g-xl-10">
 						<div class="col-xl-6 mb-5 mb-xl-10">     
 							<!--begin::List widget 6-->
-							<div class="card card-custom">
-								<h2 class="text-start">Support Duty</h2> 
-								
-								<div class="status-box">
-									<span class="text-bold ps-20"></span>
-									<span class="text-bold fs-3 ps-20">OK</span>
-									<span class="text-bold fs-3 ps-20">PENDING</span>
+							<div class="card card-flush h-md-100">
+								<!--begin::Header-->
+								<div class="card-header pb-10 pt-7">
+									<!--begin::Title-->
+									<h3 class="card-title align-items-start flex-column">
+										<span class="card-label fw-bold text-gray-800">Support Duty</span>
+									</h3>
+									<!--end::Title-->
 								</div>
-								<div class="status-box">
-									<div class="status-item ok fs-3">งานเดือนนี้</div>
-									<div class="status-item ok">19</div>
-									<div class="status-item green">202</div>
+								<!--end::Header-->
+								<!--begin::Card body-->
+								<div class="card-body d-flex justify-content-between flex-column pb-0 px-0 pt-1">
+									<!--begin::Items-->
+									<div class="d-flex flex-wrap d-grid gap-5 px-9 mb-5">
+										<!--begin::Item-->
+										<div class="me-md-2 badge badge-primary fs-base">
+											<span class="fs-2 fw-bold me-2 lh-1 ls-n2">งานเดือนนี้</span>
+										</div>
+										<!--end::Item-->
+										<!--begin::Item-->
+										<div class="border-start-dashed border-end-dashed border-start border-end border-gray-300 px-5 ps-md-10 pe-md-7 me-md-5">
+											<!--begin::Statistics-->
+											<div class="d-flex mb-2">
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">19</span>
+											</div>
+											<!--end::Statistics-->
+											<!--begin::Description-->
+											<span class="fs-6 fw-semibold text-gray-500">OK</span>
+											<!--end::Description-->
+										</div>
+										<!--end::Item-->
+										<!--begin::Item-->
+										<div class="m-0">
+											<!--begin::Statistics-->
+											<div class="d-flex align-items-center mb-2">
+												<!--begin::Value-->
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">202</span>
+												<!--end::Value-->
+											</div>
+											<!--end::Statistics-->
+											<!--begin::Description-->
+											<span class="fs-6 fw-semibold text-gray-500">PENDING</span>
+											<!--end::Description-->
+										</div>
+										<!--end::Item-->
+									</div>
+									<!--end::Items-->
+									<!--begin::Items-->
+									<div class="d-flex flex-wrap d-grid gap-5 px-9 mb-5">
+										<!--begin::Item-->
+										<div class="me-md-2 badge badge-dark fs-base">
+											<span class="fs-2 fw-bold me-2 lh-1 ls-n2">PENDING</span>
+										</div>
+										<!--end::Item-->
+										<!--begin::Item-->
+										<div class="border-start-dashed border-end-dashed border-start border-end border-gray-300 px-5 ps-md-10 pe-md-7 me-md-5">
+											<!--begin::Statistics-->
+											<div class="d-flex mb-2">
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">02</span>
+											</div>
+											<!--end::Statistics-->
+											<!--begin::Description-->
+											<span class="badge badge-light-success fs-base fs-6 fw-semibold">ค้าง 1 วัน</span>
+											<!--end::Description-->
+										</div>
+										<!--end::Item-->
+										<!--begin::Item-->
+										<div class="m-0">
+											<!--begin::Statistics-->
+											<div class="d-flex align-items-center mb-2">
+												<!--begin::Value-->
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">04</span>
+												<!--end::Value-->
+											</div>
+											<!--end::Statistics-->
+											<!--begin::Description-->
+											<span class="badge badge-light-primary fs-base fs-6 fw-semibold">ค้าง 2 วัน</span>
+											<!--end::Description-->
+										</div>
+										<!--end::Item-->
+										<div class="border-start-dashed border-end-dashed border-start border-end border-gray-300 px-5 ps-md-10 pe-md-7 me-md-5">
+											<!--begin::Statistics-->
+											<div class="d-flex align-items-center mb-2">
+												<!--begin::Value-->
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">03</span>
+												<!--end::Value-->
+											</div>
+											<!--end::Statistics-->
+											<!--begin::Description-->
+											<span class="badge badge-light-warning fs-base fs-6 fw-semibold">ค้าง 3 วัน</span>
+											<!--end::Description-->
+										</div>
+										<!--end::Item-->
+										<div class="m-0">
+											<!--begin::Statistics-->
+											<div class="d-flex align-items-center mb-2">
+												<!--begin::Value-->
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">05</span>
+												<!--end::Value-->
+											</div>
+											<!--end::Statistics-->
+											<!--begin::Description-->
+											<span class="badge badge-light-danger fs-base fs-6 fw-semibold">มากกว่า 3 วัน</span>
+											<!--end::Description-->
+										</div>
+										<!--end::Item-->
+									</div>
+									<!--end::Items-->
+									<!--begin::Items-->
+									<div class="d-flex flex-wrap d-grid gap-10 px-9 mb-5">
+										<!--begin::Item-->
+										<div class="me-md-2 badge badge-danger fs-base">
+											<span class="fs-2 fw-bold me-2 lh-1 ls-n2">MAX</span>
+										</div>
+										<!--end::Item-->
+										<!--begin::Item-->
+										<div class="border-start-dashed border-end-dashed border-start border-end border-gray-300 px-5 ps-md-10 pe-md-7 me-md-5">
+											<div class="badge badge-light-success">
+												<!--begin::Statistics-->
+												<div class="d-flex mb-2">
+													<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">05</span>
+												</div>
+												<!--end::Statistics-->
+												<!--begin::Description-->
+												<span class="fs-6 fw-semibold text-gray-500">เดือนนี้</span>
+												<!--end::Description-->
+											</div>
+										</div>
+										<!--end::Item-->
+									</div>
+									<!--end::Items-->
 								</div>
-								<div class="status-box justify-content-center">
-									<div class="status-item-width white fs-6 ms-12 me-12"></div>
-									<div class="status-item-width white fs-6">ค้าง 1 วัน</div>
-									<div class="status-item-width white fs-6">ค้าง 2 วัน</div>
-									<div class="status-item-width white fs-6">ค้าง 3 วัน</div>
-									<div class="status-item-width white fs-6">มากกว่า 3 วัน</div>
-									<span class="status-item-width white fs-6"></span>
-									<div class="status-item-width white fs-6">เดือนนี้</div>
-								</div>
-								<div class="status-box justify-content-center">
-									<div class="status-item pending fs-6 ms-2">PENDING</div>
-									<div class="status-item gray ms-2">02</div>
-									<div class="status-item gray ms-2">04</div>
-									<div class="status-item yellow-text ms-2">03</div>
-									<div class="status-item gray ms-2">05</div>
-									<span class="badge  badge-danger max ms-2">MAX</span>
-									<div class="status-item green ms-2">05</div>
-								</div>
+								<!--end::Card body-->
 							</div>
 							<!--end::List widget 6-->
 						</div>
@@ -273,23 +312,92 @@
 										<span class="card-label fw-bold text-gray-800">QC/Answer Duty</span>
 									</h3>
 									<!--end::Title-->
-
-									<!--begin::Toolbar-->
-									<div class="card-toolbar">   
-										<a href="<?=base_url()?>theme/dist/apps/ecommerce/catalog/categories.html" class="btn btn-sm btn-light">View All</a>        
-									</div>
-									<!--end::Toolbar-->
 								</div>
 								<!--end::Header-->
 
 								<!--begin::Body-->
 								<div class="card-body pt-4">                 
 									<!--begin::Table container-->
-									<div class="table-responsive">
-										<!--begin::Table-->
-										
-
-									</div>
+									<table class="table table-row-dashed align-middle mb-5">
+										<thead>
+											<tr>
+												<th rowspan="2"></th>
+											</tr>
+											<tr>
+												<th></th>
+												<th class="text-center"><span class="fs-6 fw-bold text-success m-5">Pass</span></th>
+												<th class="text-center"><span class="fs-6 fw-bold text-danger m-5">Reject</span></th>
+												<th class="text-center"><span class="fs-6 fw-bold text-primary m-5">Pending</span></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td rowspan="2" width="30%" class="text-center">
+													<div class="me-md-2  badge badge-primary fs-base">
+														<span class="fs-2 fw-bold m-5">QC</span>
+													</div>
+												</td>
+												<td class="ps-0"><span class="fs-6 fw-bold m-5">Today</span></td>
+												<td class="text-center"><span class="fs-6 text-gray-800 m-5">10</span></td>
+												<td class="text-center"><span class="fs-6 text-gray-800 m-5">12</span></td>
+												<td class="text-center"><span class="fs-6 text-gray-800 m-5">10</span></td>
+											</tr>
+											<tr>
+												<td class="ps-0"><span class="fs-6 fw-bold m-5">Month</span></td>
+												<td class="text-center"><span class="fs-6 text-gray-800 m-5">12</span></td>
+												<td class="text-center"><span class="fs-6 text-gray-800 m-5">17</span></td>
+												<td class="text-center"><span class="fs-6 text-gray-800 m-5">10</span></td>
+											</tr>
+										</tbody>
+									</table>
+									<!--end::Table-->
+									<!--begin::Table container-->
+									<table class="table table-row-dashed align-middle">
+										<thead>
+											<tr>
+												<th rowspan="2"></th>
+											</tr>
+											<tr>
+												<th class="text-center"><span class="fs-6 fw-bold text-danger m-5">No.1</span></th>
+												<th class="text-center"><span class="fs-6 fw-bold text-gray-800 m-5">No.2</span></th>
+												<th class="text-center"><span class="fs-6 fw-bold text-gray-800 m-5">No.3</span></th>
+												<th class="text-center"><span class="fs-6 fw-bold text-gray-800 m-5">No.4</span></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td rowspan="2" class="text-center">
+												<div class="me-md-2  badge badge-dark fs-base">
+													<span class="fs-2 fw-bold m-5">TOP 5 <br/> REJECT </span>
+												</div>
+												<td class="text-center">
+													<div class="mb-2">
+														<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">15</span>
+													</div>
+													<span class="badge badge-light-danger fs-base fs-6 fw-semibold">User1</span>
+												</td>
+												<td class="text-center">
+													<div class="mb-2">
+														<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">09</span>
+													</div>
+													<span class="badge badge-light-warning fs-base fs-6 fw-semibold">User4</span>
+												</td>
+												<td class="text-center">
+													<div class="mb-2">
+														<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">06</span>
+													</div>
+													<span class="badge badge-light-primary fs-base fs-6 fw-semibold">User3</span>
+												</td>
+												<td class="text-center">
+													<div class="mb-2">
+														<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">03</span>
+													</div>
+													<span class="badge badge-light-success fs-base fs-6 fw-semibold">User7</span>
+												</td>
+												
+											</tr>
+										</tbody>
+									</table>
 									<!--end::Table-->
 								</div>
 								<!--end::Body-->
