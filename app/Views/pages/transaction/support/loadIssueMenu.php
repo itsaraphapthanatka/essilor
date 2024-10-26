@@ -20,8 +20,11 @@
             var firstIssueId = $('a[id^="issuepending"]').first().attr('id').replace('issuepending', '');
             
             // ดึงค่าเดือนและปีปัจจุบัน
-            var currentMonth = new Date().getMonth() + 1; // เดือนเริ่มจาก 0
-            var currentYear = new Date().getFullYear();
+            // var currentMonth = new Date().getMonth() + 1; // เดือนเริ่มจาก 0
+            // var currentYear = new Date().getFullYear();
+
+            var currentMonth = $('#month').val();
+            var currentYear = $('#year').val();
             
             // โหลดตารางด้วย ID ของ issue แรก, เดือนและปีปัจจุบัน
             $('#loadtable').load('<?= base_url(); ?>loadtable/' + firstIssueId + '/pending/' + currentMonth + '/' + currentYear);

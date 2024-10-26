@@ -223,3 +223,17 @@
 						<!--end::Header navs-->
 					</div>
 					<!--end::Header-->
+					<script>
+						$("#tab_1").on('click',function(){
+							window.location.href = "<?=base_url();?>overview";
+						});
+						$("#tab_2").on('click',function(){
+							window.location.href = "<?=base_url();?>view_ecp";
+						});
+						$("#tab_3").on('click',function(){
+							window.location.href = "<?=base_url();?>view_tags";
+						});
+						$("#tab_4").on('click',function(){
+							window.location.href = "<?=base_url();?>usersManage";
+						});
+					</script>

@@ -208,6 +208,8 @@
         var selectedYear = $('#year').val();
         var activeIssueId = 1;   
         var activeIssueIdInprogress = 1;
+
+        console.log(selectedMonth);
         // console.log(activeIssueId);
         
         // อัปเดตเนื้อหาสำหรับ Pending Ticket

@@ -484,8 +484,11 @@
 										var status = '<?=$status;?>';
 										console.log('Comment ID : '+commentID);
 										console.log('closeModal'+ticketCode);
-										const currentMonth = ('0' + (new Date().getMonth() + 1)).slice(-2);
-										const currentYear = new Date().getFullYear();
+										// const currentMonth = ('0' + (new Date().getMonth() + 1)).slice(-2);
+										// const currentYear = new Date().getFullYear();
+										var currentMonth = $('#month').val();
+										var currentYear = $('#year').val();
+
 										const modal = document.getElementById('takejob' + ticketCode);
 										console.log("commentID : "+commentID);
 										console.log("currentMonth : "+currentMonth);
