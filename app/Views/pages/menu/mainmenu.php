@@ -45,18 +45,19 @@ var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) {
                                         <?php } ?>
                                         <?php if(session()->get('type') == 'keyin'){ ?>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-bs-toggle="tab" id="kt_header_navs_keyin" href="#kt_header_navs_tab_2">Keyin</a>
+                                            <a class="nav-link" data-bs-toggle="tab" href="#tab_Myjob1" id="tab_MyjobHead">Call Jobs</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-bs-toggle="tab" href="#tab_Myjob1" id="tab_MyjobHead">My Job</a>
+                                            <a class="nav-link" data-bs-toggle="tab" id="kt_header_navs_keyin" href="#kt_header_navs_tab_2">Keyin</a>
                                         </li>
+                                        
                                         <?php } ?>
                                         <?php if(session()->get('type') == 'support'){ ?>
                                         <li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" id="kt_header_navs_support" href="#kt_header_navs_tab_3">CS Support</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" hidden data-bs-toggle="tab" href="#tab_Myjob">My Job</a>
+                                            <a class="nav-link" hidden data-bs-toggle="tab" href="#tab_Myjob">Call Jobs</a>
                                         </li>
                                         <?php } ?>
                                         <?php if(session()->get('type') == 'feedback'){ ?>
@@ -64,7 +65,7 @@ var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) {
                                             <a class="nav-link" data-bs-toggle="tab" id="kt_header_navs_feedback" href="#kt_header_navs_tab_4">QC/Answer</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-bs-toggle="tab" href="#tab_Myjobqc1" id="tab_Myjobqc" >My Job</a>
+                                            <a class="nav-link" data-bs-toggle="tab" href="#tab_Myjobqc1" id="tab_Myjobqc" >Call Jobs</a>
                                         </li>
                                         <?php } ?>
                                     </ul>
@@ -165,6 +166,9 @@ var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) {
             <!--end::Header-->
     <script>
         $('#kt_header_navs_keyin').on('click',function(){
-            window.location.href = "<?php echo base_url();?>main";
+            window.location.href = "<?php echo base_url();?>list_task_view";
+        })
+        $('#tab_MyjobHead').on('click',function(){
+            window.location.href = "<?php echo base_url();?>myjobfifo";
         })
     </script>

@@ -66,7 +66,7 @@
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                 <th class="min-w-200px">Tracking ID</th>
                                 <th class="min-w-200px">ECPCode</th>
-                                <th class="min-w-125px">Tracking no.</th>
+                                <th class="min-w-125px">Order</th>
                                 <th class="text-center min-w-200px">TAG FROM BETA</th>
                                 <th class="text-center min-w-125px">ORDER CYCLE</th>
                                 <th class="text-center min-w-200px">TAG</th>
@@ -182,7 +182,7 @@
 				columns: [
 					{ data: 'id' },
 					{ data: 'ecpcode' },
-					{ data: 'trackingId' },
+					{ data: 'totalOrder' },
 					{ data: 'tagsBeta' },
 					{ data: 'morning_only' },
 					{ data: 'tagsJob' },

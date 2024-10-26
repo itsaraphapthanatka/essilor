@@ -4,7 +4,9 @@ use CodeIgniter\Controller;
 use App\Models\EcpModel;
 use App\Models\TagsCategoryModel;
 use App\Models\TagsModel;
-
+use App\Models\JobtaskModel;
+use App\Models\commentTypeModel;
+use App\Models\SetupModel;
 class Pages extends BaseController{
 
 	public function __construct()
@@ -13,7 +15,16 @@ class Pages extends BaseController{
 
 	}
 	public function overview(){
-		echo view('pages/menu/header');
+		$JobtaskModel = new JobtaskModel();
+		$commentType = new commentTypeModel();
+		$config = new SetupModel();
+		$data['dash'] = $JobtaskModel->dashboard();
+		$data['d_1'] = $JobtaskModel->keyin_d1();
+        $data['countJobtasksByStatus'] = $commentType->countJobtasksByStatusMonth();
+        $data['pendingCount'] = $commentType->countPendingSupport();
+		$data['config'] = $config->asArray()->where(['setup' => 'iframe'])->orderBy('id','ASC')->first();
+		$data['countJob'] = $JobtaskModel->CountJobtask();
+		echo view('pages/menu/header',$data);
 		echo view('pages/menu/menuManagement');
 		echo view('pages/overview/main');
 		echo view('pages/menu/footer');

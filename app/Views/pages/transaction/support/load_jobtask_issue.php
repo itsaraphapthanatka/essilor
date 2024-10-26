@@ -114,7 +114,7 @@
 								}
 							return `<div class="d-flex align-items-center">
 										<div class="d-flex justify-content-start flex-column">
-											<div class="text-${textColor} mb-1">${row.trackingId}</div>
+											<div class="text-${textColor} mb-1">${row.trackingId.split(',').join(',<br>')}</div>
 										</div>			
 									</div>`;
 						}
@@ -273,6 +273,16 @@
 														<div class="row">
 															<div class="col-lg-12 fv-row">
 																<input type="text" name="trackingid" readonly class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Tracking no." value="${data.trackingId}" />
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row mb-6">
+													<label class="col-lg-4 col-form-label fw-semibold fs-6">Ref. Tracking No.</label>
+													<div class="col-lg-8">
+														<div class="row">
+															<div class="col-lg-12 fv-row">
+																<input type="text" id="reftrackingno${data.ticketCode}" name="reftrackingno" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Ref. Tracking No" value="" />
 															</div>
 														</div>
 													</div>

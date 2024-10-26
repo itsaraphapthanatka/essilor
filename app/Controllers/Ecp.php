@@ -132,8 +132,9 @@ class Ecp extends BaseController{
             $ecp['evening_only'] === 'yes' ? 'วิ่งเย็นรอบเดียว' : null,
             $ecp['working_day_only'] === 'yes' ? 'วิ่งแค่ จ-ศ' : null
         ]));
-        // $arrs = [$ecp['payment_term_cd']];
-        $arrs = array_filter([$ecp['customer_type'], $ecp['payment_term_cd']]);
+        $arrs = array_filter([$ecp['customer_type'], $ecp['payment_term_cd'], $ecp['c_partner'], $ecp['c_experts'], $ecp['routecode']]);
+        // เปลี่ยนให้แสดงเฉพาะค่าที่ไม่ว่าง
+        $arrs = array_values(array_filter([$ecp['customer_type'], $ecp['payment_term_cd'], $ecp['c_partner'], $ecp['c_experts'], $ecp['routecode']]));
         $response = [
             'status' => 'success',
             'data' => $ecp,

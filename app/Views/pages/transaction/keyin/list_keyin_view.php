@@ -66,7 +66,7 @@
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                 <th class="min-w-200px">Tracking ID</th>
                                 <th class="min-w-200px">ECPCode</th>
-                                <th class="min-w-125px">Tracking no.</th>
+                                <th class="min-w-125px">Order</th>
                                 <th class="text-center min-w-200px">TAG FROM BETA</th>
                                 <th class="text-center min-w-125px">ORDER CYCLE</th>
                                 <th class="text-center min-w-200px">TAG</th>
@@ -182,7 +182,7 @@
 				columns: [
 					{ data: 'id' },
 					{ data: 'ecpcode' },
-					{ data: 'trackingId' },
+					{ data: 'totalOrder' },
 					{ data: 'tagsBeta' },
 					{ data: 'cyclename' },
 					{ data: 'tagsJob' },
@@ -200,10 +200,31 @@
 					{
 						targets: 1,
 						render: function(data, type, row) {
+							function convertDate(dateString) {
+								// ตรวจสอบว่า dateString ไม่ว่างเปล่าและมีรูปแบบที่ถูกต้อง
+								if (!dateString || !dateString.includes('/')) {
+									console.error("Invalid date string:", dateString);
+									return null; // คืนค่า null หาก dateString ไม่ถูกต้อง
+								}
+								const dateParts = dateString.split(' ')[0].split('/'); // แยกโดยใช้พื้นที่ว่างเพื่อไม่สนใจเวลา จากนั้นแยกโดยใช้ '/'
+								const day = dateParts[0];
+								const month = dateParts[1];
+								const year = dateParts[2];
+								return `${year}-${month}-${day}`; // ส่งคืนในรูปแบบ 'YYYY-MM-DD'
+							}
+							const today = new Date().toISOString().split('T')[0]; 
+							const formattedUpdateDate = convertDate(row.createdate);
+							console.log("Today: "+ today +" > CreateDate: "+ formattedUpdateDate);
+							let textColor = 'gray-800';
+							let textColorspan = 'gray-400';
+							if (formattedUpdateDate < today) {
+								textColor = 'danger';
+								textColorspan = 'danger';
+							}
 							return `<div class="d-flex align-items-center">
                                         <div class="d-flex justify-content-start flex-column">
-                                            <div class="text-gray-800 fw-bold mb-1 fs-5">${row.ecpcode}</div>
-                                            <span class="text-gray-400 fw-semibold d-block fs-6">${row.customer_name}</span>
+                                            <div class="text-${textColor} fw-bold mb-1 fs-5">${row.ecpcode}</div>
+                                            <span class="text-${textColorspan} fw-semibold d-block fs-6">${row.customer_name}</span>
                                         </div>
                                     </div>`;
 						}

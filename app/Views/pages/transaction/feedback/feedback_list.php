@@ -457,10 +457,38 @@
 						target: 0,
 						visible: false,
 					},
+					{
+						target: 1,
+						render: function(data,type,row){
+                            let textColor = 'gray-800';
+							if (row.updatedateoriginal < new Date().toISOString().split('T')[0]) {
+								textColor = 'danger';
+							}
+                            return `
+                                <div class="text-${textColor} fw-bold">${row.ecpcode}</div>
+                            `;
+                        }
+					},
+					{
+						target: 2,
+						render: function(data,type,row){
+                            let textColor = 'gray-800';
+							if (row.updatedateoriginal < new Date().toISOString().split('T')[0]) {
+								textColor = 'danger';
+							}
+                            return `
+                                <div class="text-${textColor} fw-bold">${row.trackingId}</div>
+                            `;
+                        }
+					},
                     {   target: 3,
                         render: function(data,type,row){
+                            let textColor = 'gray-800';
+							if (row.updatedateoriginal < new Date().toISOString().split('T')[0]) {
+								textColor = 'danger';
+							}
                             return `
-                                <div class="text-primary fw-bold">${!row.createdate ? '' : row.createdate }</div>
+                                <div class="text-${textColor} fw-bold">${!row.createdate ? '' : row.createdate }</div>
                             `;
                         }
                     },
@@ -472,6 +500,30 @@
                             `;
                         }
                     },
+                    {
+						target: 5,
+						render: function(data,type,row){
+                            let textColor = 'gray-800';
+							if (row.updatedateoriginal < new Date().toISOString().split('T')[0]) {
+								textColor = 'danger';
+							}
+                            return `
+                                <div class="text-${textColor} fw-bold">${row.keyinUser}</div>
+                            `;
+                        }
+					},
+                    {
+						target: 6,
+						render: function(data,type,row){
+                            let textColor = 'gray-800';
+							if (row.updatedateoriginal < new Date().toISOString().split('T')[0]) {
+								textColor = 'danger';
+							}
+                            return `
+                                <div class="text-${textColor} fw-bold">${row.updatedate}</div>
+                            `;
+                        }
+					},
 					{
 						targets: 1,
 						render: function(data, type, row) {

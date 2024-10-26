@@ -75,47 +75,47 @@
 											<tbody>                                  
 												<tr>
 													<td class="text-center">
-														<div class="bg-light-primary text-primary fw-bold p-2">RX</div>
+														<div class="fs-2hx bg-light-primary text-primary fw-bold p-2">RX</div>
 													</td>
 													<td class="ps-0 text-center">
-														<span class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6 pe-0">V.I.P.</span>
+														<span class="text-gray-800 fw-bold text-hover-primary mb-1 fs-2hx pe-0">V.I.P.</span>
 													</td>
-													<td class="text-center text-danger fw-bold">10</td>
-													<td class="text-center text-success fw-bold">20</td>
-													<td class="text-center text-primary fw-bold">10</td>                                        
+													<td class="text-center text-danger fs-2hx fw-bold"><?=$dash['rx_keyin_vip']?></td>
+													<td class="text-center text-success fs-2hx fw-bold"><?=$dash['rx_keyin_vip_success']?></td>
+													<td class="text-center text-primary fs-2hx fw-bold"><?=$d_1['rx_keyin_vip_d1']?></td>                                        
 												</tr>                                     
 												<tr>
 													<td class="text-center">
-														<div class="bg-light-primary text-primary fw-bold p-2">RX</div>
+														<div class="bg-light-primary text-primary fs-2hx fw-bold p-2">RX</div>
 													</td>
 													<td class="ps-0 text-center">
-														<span class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6 pe-0">Partner</span>
+														<span class="text-gray-800 fw-bold text-hover-primary fs-2hx mb-1 pe-0">Partner</span>
 													</td>
-													<td class="text-center text-danger fw-bold">12</td>
-													<td class="text-center text-success fw-bold">17</td>
-													<td class="text-center text-primary fw-bold">10</td>                                        
+													<td class="text-center text-danger fs-2hx fw-bold"><?=$dash['rx_keyin_standard']?></td>
+													<td class="text-center text-success fs-2hx fw-bold"><?=$dash['rx_keyin_standard_success']?></td>
+													<td class="text-center text-primary fs-2hx fw-bold"><?=$d_1['rx_keyin_standard_d1']?></td>                                        
 												</tr>                                     
 												<tr>
 													<td class="text-center">
-														<div class="bg-light-danger text-danger fw-bold p-2">STOCK</div>
+														<div class="bg-light-danger text-danger fw-bold fs-2hx p-2">STOCK</div>
 													</td>
 													<td class="ps-0 text-center">
-														<span class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6 pe-0">V.I.P.</span>
+														<span class="text-gray-800 fw-bold text-hover-primary mb-1 fs-2hx pe-0">V.I.P.</span>
 													</td>
-													<td class="text-center text-danger fw-bold">08</td>
-													<td class="text-center text-success fw-bold">07</td>
-													<td class="text-center text-primary fw-bold">10</td>                                        
+													<td class="text-center text-danger fs-2hx fw-bold"><?=$dash['stock_keyin_vip']?></td>
+													<td class="text-center text-success fs-2hx fw-bold"><?=$dash['stock_keyin_vip_success']?></td>
+													<td class="text-center text-primary fs-2hx fw-bold"><?=$d_1['stock_keyin_vip_d1']?></td>                                        
 												</tr>                                     
 												<tr>
 													<td class="text-center">
-														<div class="bg-light-danger text-danger fw-bold p-2">STOCK</div>
+														<div class="bg-light-danger text-danger fs-2hx fw-bold p-2">STOCK</div>
 													</td>
 													<td class="ps-0 text-center">
-														<span class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6 pe-0">Partner</span>
+														<span class="text-gray-800 fw-bold text-hover-primary mb-1 fs-2hx pe-0">Partner</span>
 													</td>
-													<td class="text-center text-danger fw-bold">15</td>
-													<td class="text-center text-success fw-bold">13</td>
-													<td class="text-center text-primary fw-bold">15</td>                                        
+													<td class="text-center text-danger fs-2hx fw-bold"><?=$dash['stock_keyin_standard']?></td>
+													<td class="text-center text-success fs-2hx fw-bold"><?=$dash['stock_keyin_standard_success']?></td>
+													<td class="text-center text-primary fs-2hx fw-bold"><?=$d_1['stock_keyin_standard_d1']?></td>                                        
 												</tr>                                     
 											</tbody>
 											<!--end::Table body-->
@@ -148,13 +148,35 @@
 								<!--end::Header-->
 
 								<!--begin::Body-->
-								<div class="card-body pt-4">                 
+								<div class="card-body pt-4">
+									<div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 mb-5">
+										<!--begin::Icon-->
+										<i class="ki-duotone ki-shield-tick fs-2tx text-primary me-4"><span class="path1"></span><span class="path2"></span></i>
+										<!--end::Icon-->
+										
+										<!--begin::Wrapper-->
+										<div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+											<!--begin::Content-->
+											<div class="mb-3 mb-md-0 fw-semibold">
+												<h4 class="text-gray-900 fw-bold">Iframe</h4>
+												<div class="fs-6 text-gray-700 pe-7">Enable Iframe Link</div>
+											</div>
+											<!--end::Content-->
+											
+											<!--begin::Action-->
+											<a href="#" class="btn btn-primary px-6 align-self-center text-nowrap" data-bs-toggle="modal" data-bs-target="#kt_modal_two_factor_authentication">Enable</a>
+											<!--end::Action-->
+										</div>
+										<!--end::Wrapper-->
+										
+										<!--begin::Iframe-->
+										
+										<!--end::Iframe-->
+									</div>
 									<!--begin::Table container-->
-									<div class="table-responsive">
+									<div id="loadiframe">
 										<!--begin::Table-->
-										
-										
-										
+										<iframe src="<?=$config['value'];?>" width="100%" height="350" frameborder="0"></iframe>
 									</div>
 									<!--end::Table-->
 								</div>
@@ -189,25 +211,39 @@
 										<div class="border-start-dashed border-end-dashed border-start border-end border-gray-300 px-5 ps-md-10 pe-md-7 me-md-5">
 											<!--begin::Statistics-->
 											<div class="d-flex mb-2">
-												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">19</span>
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$countJobtasksByStatus['complete'];?></span>
 											</div>
 											<!--end::Statistics-->
 											<!--begin::Description-->
-											<span class="fs-6 fw-semibold text-gray-500">OK</span>
+											<span class="fs-6 fw-semibold text-success">OK</span>
 											<!--end::Description-->
 										</div>
 										<!--end::Item-->
 										<!--begin::Item-->
-										<div class="m-0">
+										<div class="m-0 ">
 											<!--begin::Statistics-->
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Value-->
-												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">202</span>
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$countJobtasksByStatus['inProgress'];?></span>
 												<!--end::Value-->
 											</div>
 											<!--end::Statistics-->
 											<!--begin::Description-->
-											<span class="fs-6 fw-semibold text-gray-500">PENDING</span>
+											<span class="fs-6 fw-semibold text-danger">Not Pass</span>
+											<!--end::Description-->
+										</div>
+										<!--end::Item-->
+										<!--begin::Item-->
+										<div class="m-0 border-start-dashed border-end-dashed border-start border-end border-gray-300 px-5 ps-md-10 pe-md-7 me-md-5">
+											<!--begin::Statistics-->
+											<div class="d-flex align-items-center mb-2">
+												<!--begin::Value-->
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$countJobtasksByStatus['pending'];?></span>
+												<!--end::Value-->
+											</div>
+											<!--end::Statistics-->
+											<!--begin::Description-->
+											<span class="fs-6 fw-semibold text-primary">PENDING</span>
 											<!--end::Description-->
 										</div>
 										<!--end::Item-->
@@ -224,7 +260,7 @@
 										<div class="border-start-dashed border-end-dashed border-start border-end border-gray-300 px-5 ps-md-10 pe-md-7 me-md-5">
 											<!--begin::Statistics-->
 											<div class="d-flex mb-2">
-												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">02</span>
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$pendingCount['One']?></span>
 											</div>
 											<!--end::Statistics-->
 											<!--begin::Description-->
@@ -237,7 +273,7 @@
 											<!--begin::Statistics-->
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Value-->
-												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">04</span>
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$pendingCount['Two']?></span>
 												<!--end::Value-->
 											</div>
 											<!--end::Statistics-->
@@ -250,7 +286,7 @@
 											<!--begin::Statistics-->
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Value-->
-												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">03</span>
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$pendingCount['Tree']?></span>
 												<!--end::Value-->
 											</div>
 											<!--end::Statistics-->
@@ -263,7 +299,7 @@
 											<!--begin::Statistics-->
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Value-->
-												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">05</span>
+												<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$pendingCount['TreePlus']?></span>
 												<!--end::Value-->
 											</div>
 											<!--end::Statistics-->
@@ -338,15 +374,15 @@
 													</div>
 												</td>
 												<td class="ps-0"><span class="fs-6 fw-bold m-5">Today</span></td>
-												<td class="text-center"><span class="fs-6 text-gray-800 m-5">10</span></td>
-												<td class="text-center"><span class="fs-6 text-gray-800 m-5">12</span></td>
-												<td class="text-center"><span class="fs-6 text-gray-800 m-5">10</span></td>
+												<td class="text-center"><span class="fs-2hx fw-bold text-gray-800 m-5"><?=$countJob['countpass'];?></span></td>
+												<td class="text-center"><span class="fs-2hx fw-bold text-gray-800 m-5"><?=$countJob['countreject'];?></span></td>
+												<td class="text-center"><span class="fs-2hx fw-bold text-gray-800 m-5"><?=$countJob['countwait'];?></span></td>
 											</tr>
 											<tr>
 												<td class="ps-0"><span class="fs-6 fw-bold m-5">Month</span></td>
-												<td class="text-center"><span class="fs-6 text-gray-800 m-5">12</span></td>
-												<td class="text-center"><span class="fs-6 text-gray-800 m-5">17</span></td>
-												<td class="text-center"><span class="fs-6 text-gray-800 m-5">10</span></td>
+												<td class="text-center"><span class="fs-2hx fw-bold text-gray-800 m-5"><?=$countJob['countpassmonth'];?></span></td>
+												<td class="text-center"><span class="fs-2hx fw-bold text-gray-800 m-5"><?=$countJob['countrejectmonth'];?></span></td>
+												<td class="text-center"><span class="fs-2hx fw-bold text-gray-800 m-5"><?=$countJob['countwaitmonth'];?></span></td>
 											</tr>
 										</tbody>
 									</table>
@@ -409,8 +445,77 @@
 			</div>
 	</div>
 </div>
+<!--begin::Modal - Two-factor authentication-->
+<div class="modal fade" id="kt_modal_two_factor_authentication" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+	<!--begin::Modal header-->
+	<div class="modal-dialog modal-dialog-centered mw-650px">
+		<!--begin::Modal content-->
+		<div class="modal-content">
+			<!--begin::Modal header-->
+			<div class="modal-header flex-stack">
+				<!--begin::Title-->
+				<h2>Choose iframe Method</h2>
+				<!--end::Title-->
+				<!--begin::Close-->
+				<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+					<i class="ki-duotone ki-cross fs-1">
+						<span class="path1"></span>
+						<span class="path2"></span>
+					</i>
+				</div>
+				<!--end::Close-->
+			</div>
+			<!--begin::Modal header-->
+			<!--begin::Modal body-->
+			<div class="modal-body scroll-y pt-10 pb-15 px-lg-17">
+				<form data-kt-element="apps-form" class="form" action="#">
+					<div class="mb-3 text-start">
+						<label class="fs-6 fw-semibold mb-2">iframe</label>
+						<textarea type="text" rows="5" class="form-control form-control-solid" placeholder="iframe" 
+							name="iframe" id="takeiframe"><?=$config['value'];?></textarea>
+					</div>
+					<!--begin::Actions-->
+					<div class="d-flex flex-center">
+						<button type="reset" data-bs-dismiss="modal" class="btn btn-light me-3">Cancel</button>
+						<button type="button" data-kt-element="apps-submit" id="enableiframe" class="btn btn-primary">
+							<span class="indicator-label">Submit</span>
+							<span class="indicator-progress">Please wait... 
+							<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+						</button>
+					</div>
+					<!--end::Actions-->
+				</form>
+				<!--end::Form-->
+			
+			</div>
+			<!--begin::Modal body-->
+		</div>
+		<!--end::Modal content-->
+	</div>
+	<!--end::Modal header-->
+</div>
+<!--end::Modal - Two-factor authentication-->
 <script>
      $("#tab_1").addClass('active');
 	 $("#kt_header_navs_tab_1").addClass('active show');
 	 $("#menu_overview").addClass('btn-light-primary');
+
+	 $("#enableiframe").on('click',function(){
+		var iframe = $('#takeiframe').val();
+		$.ajax({
+			url: '<?php echo base_url(); ?>enableIframe',
+			type: 'POST',
+			data: {
+				'iframe': iframe,
+			},
+			success: function(result) {
+				var json = result;
+				console.log(json);
+				$('#loadiframe').html("loading..");
+				$("#loadiframe").load('<?=base_url();?>loadiframe');
+				$('#kt_modal_two_factor_authentication').modal('hide');
+				toastr.success(json.status);
+			}
+		});
+	 });
 </script>

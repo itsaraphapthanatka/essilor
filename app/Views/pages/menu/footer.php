@@ -223,89 +223,115 @@
 				});
 			});
 
-		$("#exportExcel").on('click', function(){
-			Swal.fire({
-				text: "Are you sure you want to export the data to Excel?",
-				icon: "info",
-				backdrop: true,
-				allowOutsideClick: false,
-				allowEscapeKey: false,
-				showCancelButton: true,
-				confirmButtonText: "Yes, export it!",
-				cancelButtonText: "No, cancel",
-				customClass: {
-					confirmButton: "btn btn-primary",
-					cancelButton: "btn btn-secondary"
-				}
-			}).then(function(result) {
-				if (result.isConfirmed) {
-					$.ajax({
-						type: 'GET',
-						url: '<?=base_url();?>controlData/exportExcel',
-						xhrFields: {
-							responseType: 'blob'  // This is crucial for binary data (e.g., files)
-						},
-						success: function(response, status, xhr) {
-							var filename = ""; // Default filename
-							var disposition = xhr.getResponseHeader('Content-Disposition');
-							if (disposition && disposition.indexOf('attachment') !== -1) {
-								var matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(disposition);
-								if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+			$("#exportExcel").on('click', function(){
+				Swal.fire({
+					text: "Are you sure you want to export the data to Excel?",
+					icon: "info",
+					backdrop: true,
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					showCancelButton: true,
+					confirmButtonText: "Yes, export it!",
+					cancelButtonText: "No, cancel",
+					customClass: {
+						confirmButton: "btn btn-primary",
+						cancelButton: "btn btn-secondary"
+					}
+				}).then(function(result) {
+					if (result.isConfirmed) {
+						$.ajax({
+							type: 'GET',
+							url: '<?=base_url();?>controlData/exportExcel',
+							xhrFields: {
+								responseType: 'blob'  // This is crucial for binary data (e.g., files)
+							},
+							success: function(response, status, xhr) {
+								var filename = ""; // Default filename
+								var disposition = xhr.getResponseHeader('Content-Disposition');
+								if (disposition && disposition.indexOf('attachment') !== -1) {
+									var matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(disposition);
+									if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+								}
+								const path = '<?=base_url();?>uploads/bk/excel/';
+								// Create a new Blob object using the response data of the file
+								var blob = new Blob([response], { type: xhr.getResponseHeader('Content-Type') });
+								var link = document.createElement('a');
+								var url = window.URL.createObjectURL(blob);
+								link.href = url;
+								link.download = filename || 'export.xlsx'; // Fallback filename
+								document.body.appendChild(link);
+
+								// Auto-click the link to trigger download (optional)
+								// link.click();
+
+								// Display SweetAlert with a download link
+								Swal.fire({
+									text: "Export successfully created.",
+									html: `You can download the file <a href="${path}${filename}" download="${filename}" class="btn btn-primary">${filename}</a>`,
+									icon: "success",
+									backdrop: true,
+									allowOutsideClick: false,
+									allowEscapeKey: false,
+									confirmButtonText: "Close",
+									customClass: {
+										confirmButton: "btn btn-success"
+									}
+								}).then(function(result) {
+									if (result.isConfirmed) {
+										console.log('Export operation completed.');
+										location.reload();
+									}
+								});
+
+								// Cleanup
+								document.body.removeChild(link);
+								window.URL.revokeObjectURL(url);
+							},
+							error: function(xhr, status, error) {
+								// console.error('AJAX error:', status, error);
+								Swal.fire({
+									text: "An error occurred during the export process.",
+									icon: "error",
+									backdrop: true,
+									allowOutsideClick: false,
+									allowEscapeKey: false,
+									confirmButtonText: "Ok",
+									customClass: {
+										confirmButton: "btn btn-danger"
+									}
+								});
 							}
-							const path = '<?=base_url();?>uploads/bk/excel/';
-							// Create a new Blob object using the response data of the file
-							var blob = new Blob([response], { type: xhr.getResponseHeader('Content-Type') });
-							var link = document.createElement('a');
-							var url = window.URL.createObjectURL(blob);
-							link.href = url;
-							link.download = filename || 'export.xlsx'; // Fallback filename
-							document.body.appendChild(link);
-
-							// Auto-click the link to trigger download (optional)
-							// link.click();
-
-							// Display SweetAlert with a download link
-							Swal.fire({
-								text: "Export successfully created.",
-								html: `You can download the file <a href="${path}${filename}" download="${filename}" class="btn btn-primary">${filename}</a>`,
-								icon: "success",
-								backdrop: true,
-								allowOutsideClick: false,
-								allowEscapeKey: false,
-								confirmButtonText: "Close",
-								customClass: {
-									confirmButton: "btn btn-success"
-								}
-							}).then(function(result) {
-								if (result.isConfirmed) {
-									console.log('Export operation completed.');
-									location.reload();
-								}
-							});
-
-							// Cleanup
-							document.body.removeChild(link);
-							window.URL.revokeObjectURL(url);
-						},
-						error: function(xhr, status, error) {
-							// console.error('AJAX error:', status, error);
-							Swal.fire({
-								text: "An error occurred during the export process.",
-								icon: "error",
-								backdrop: true,
-								allowOutsideClick: false,
-								allowEscapeKey: false,
-								confirmButtonText: "Ok",
-								customClass: {
-									confirmButton: "btn btn-danger"
-								}
-							});
+						});
+					}
+				});
+			});
+			$(function() {
+				time=setInterval(function(){
+					$.ajax({
+						url: '<?php echo base_url(); ?>returnjobEvery30m',
+						type: 'get',
+						success: function(result) {
+							var json = result;
+							console.log(json);
+							// if (json.status == 'success') {
+							// 	Swal.fire({
+							// 		text: "return job "+json.message+" by System!.",
+							// 		icon: "error",
+							// 		buttonsStyling: false,
+							// 		allowOutsideClick: false,
+							// 		allowEscapeKey: false,
+							// 		confirmButtonText: "Ok, got it!",
+							// 		customClass: {
+							// 			confirmButton: "btn fw-bold btn-danger",
+							// 		}
+							// 	}).then(function () {
+							// 		// window.location="/logout";
+							// 	});
+							// }
 						}
 					});
-				}
+				},30000);
 			});
-		});
-
 
 		</script>
 		<!--end::Custom Javascript-->

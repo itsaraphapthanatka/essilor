@@ -25,7 +25,7 @@
                     <!--begin::Wrapper-->
                     <div class="d-flex flex-column flex-lg-row flex-lg-stack flex-wrap gap-2 px-4 px-lg-0">
                         <div class="d-flex flex-column flex-lg-row gap-2">
-                            <a href="<?php echo base_url();?>main" class="btn btn-sm btn-light fw-bold" id="vipview" >LIST TASK VIEW</a>
+                            <a href="<?php echo base_url();?>list_task_view" class="btn btn-sm btn-light fw-bold" id="vipview" >Keyin order List</a>
                             <!-- <a href="<?=base_url();?>fifoview" class="btn btn-sm btn-light fw-bold" id="fifoview">FIFO VIEW</a>
                             <a href="<?=base_url();?>stock_lens_fifo_view" class="btn btn-sm btn-light fw-bold" id="Stocklenfifo">STOCK LENS FIFO VIEW</a> -->
                         </div>
@@ -36,9 +36,9 @@
                     <!--begin::Wrapper-->
                     <div class="d-flex flex-column flex-lg-row flex-lg-stack flex-wrap gap-2 px-4 px-lg-0">
                         <div class="d-flex flex-column flex-lg-row gap-2">
-                            <a href="<?=base_url();?>myjobvip" class="btn btn-sm btn-light fw-bold" id="myjobvip">MY JOB VIP</a>
-                            <a href="<?=base_url();?>myjobfifo" class="btn btn-sm btn-light fw-bold" id="myjobfifo">MY JOB FIFO</a>
-                            <a href="<?=base_url();?>myjobstock" class="btn btn-sm btn-light fw-bold" id="myjobstock">MY JOB STOCK LENS</a>
+                            <a href="<?=base_url();?>myjobvip" class="btn btn-sm btn-light fw-bold" id="myjobvip">VIP</a>
+                            <a href="<?=base_url();?>myjobfifo" class="btn btn-sm btn-light fw-bold" id="myjobfifo">FIFO</a>
+                            <a href="<?=base_url();?>myjobstock" class="btn btn-sm btn-light fw-bold" id="myjobstock">STOCK</a>
                         </div>
                     </div>
                     <!--end::Wrapper-->

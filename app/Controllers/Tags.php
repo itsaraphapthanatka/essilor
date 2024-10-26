@@ -4,6 +4,7 @@ use CodeIgniter\Controller;
 use App\Models\TagsModel;
 use App\Models\TagsCategoryModel;
 use App\Models\JobtaskModel;
+use App\Models\JobtagsModel;
 
 class Tags extends BaseController{
     public function __construct()
@@ -198,7 +199,7 @@ class Tags extends BaseController{
         // Return JSON response
         return $this->response->setJSON($tagData);
     }
-    public function findTags() {
+    public function findTags_() {
         $selectedValue = $this->request->getPost('selectedValue');
         $tagsModel = new TagsModel();
         // Fetch tags based on the selected category
@@ -221,6 +222,61 @@ class Tags extends BaseController{
         ];
         return $this->response->setJSON($response);
     }
+    public function findTags() {
+        $db = db_connect();
+        $selectedValue = $this->request->getPost('selectedValue');
+        $jobID = $this->request->getPost('jobID');
+        $tagsModel = new TagsModel();
+        $jobTag = new JobtagsModel();
+
+      
+        // $tagjob = $jobTag->where(['jobid' => $jobID])->orderBy('id','ASC')->findAll();
+        $query = $db->query('select
+                tags.id,
+                tags.tag_name,
+                tags.tag_meaning,
+                tags.tag_category,
+                tags.text_color,
+                tags.background_color,
+                tags.CreatedDate,
+                tags.CreatedBy,
+                tags.UpdatedDate,
+                tags.UpdatedBy,
+                tags.DeletedDate,
+                tags.duedate,
+                tags.tag_status
+            FROM
+                tagsjob
+            INNER JOIN
+                tags
+                ON 
+                    tagsjob.tagsid = tags.id
+            WHERE 
+                tagsjob.jobid = "'.$jobID.'"
+        ');
+        $data = $query->getResultArray();
+
+        // Fetch tags based on the selected category
+        // $tags = $tagsModel->where(['tag_category' => $selectedValue])->orderBy('id', 'ASC')->findAll();
+        $tagsAll = $tagsModel->orderBy('id', 'ASC')->findAll();
+        // Extract tag names for the 'tt' array
+        $tagNames = array_map(function($tag) {
+            return $tag['tag_name'];
+        }, $data);
+
+        $tagNamesAll = array_map(function($tagsAll) {
+            return $tagsAll['tag_name'];
+        }, $tagsAll);
+        // Prepare response data
+        $response = [
+            'status' => 'success',
+            'tags' => $data,
+            'tagsAll' => $tagsAll,
+            'tt' => array_filter($tagNames),
+        ];
+        return $this->response->setJSON($response);
+    }
+
 
     public function getAllTags() {
         $tagsModel = new TagsModel();

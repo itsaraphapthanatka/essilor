@@ -13,7 +13,7 @@ use App\Models\JobtagsModel;
 use App\Models\JobbetaModel;
 use App\Models\JobtaskModel;
 use App\Models\TaskImageModel;
-
+use App\Models\SetupModel;
 
 class Data extends BaseController{
     protected $helpers = ['form'];
@@ -38,7 +38,7 @@ class Data extends BaseController{
         $search = $this->request->getGet('search');
         $ecp = new EcpModel();
         $data = $ecp->select('customer_cd','customer_name')
-                    ->like('customer_cd', $search)
+                    ->like('customer_cd', substr($search,0,6))
                     ->limit(10)
                     ->findAll();
         
@@ -512,5 +512,40 @@ class Data extends BaseController{
             ob_flush();
             flush();
         }
+    }
+
+    public function enableIframe(){
+        $add = $this->request->getPost('iframe');
+        if ($add) {
+            $config = new SetupModel();
+            $addData = [
+                'value' => $add
+            ];
+            $result = $config->update(['id' => '1'], $addData);
+
+            if ($result) {
+                $data = [
+                    'status' => 'success',
+                    'response' => $add
+                ];
+            } else {
+                $data = [
+                    'status' => 'error',
+                    'response' => 'Failed to update iframe configuration'
+                ];
+            }
+        } else {
+            $data = [
+                'status' => 'error',
+                'response' => 'No iframe data provided'
+            ];
+        }
+
+        return $this->response->setJSON($data);
+    }
+    public function loadiframe(){
+        $config = new SetupModel();
+        $data['config'] = $config->asArray()->where(['setup' => 'iframe'])->orderBy('id','ASC')->first();
+        echo view('pages/overview/loadiframe',$data);
     }
 }

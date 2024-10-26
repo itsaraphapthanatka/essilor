@@ -54,7 +54,8 @@
                         <!--begin::Col-->
                         <div class="col-md-3 fv-row">
                             <label class="required fs-6 fw-semibold mb-2">ECP Code From Beta</label>
-                            <select class="form-select form-select-solid" data-control="select2" data-hide-search="false" data-placeholder="Select a Code" id="ecpcode" name="ecpcode">
+                            <input type="text" placeholder="ECP Code" readonly="readonly" class="form-control form-control-solid" name="ecpcode" id="ecpcode" value="<?=$jobtask['ecpcode'];?>">
+                            <!-- <select class="form-select form-select-solid" data-control="select2" data-hide-search="false" data-placeholder="Select a Code" id="ecpcode" name="ecpcode">
                             <?php foreach ($ecp as $key => $value) {
                                 if ($jobtask['ecpid'] === $value['id']) {?>
                                      <option selected value="<?=$value['customer_cd'];?>"><?=$value['customer_cd'];?></option>
@@ -63,11 +64,11 @@
                                 <?php } ?>
                                    
                                 <?php } ?>
-                            </select>
+                            </select> -->
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
-                        <div class="col-md-9 fv-row">
+                        <div class="col-md-6 fv-row">
                             <label class="required fs-6 fw-semibold mb-2">ECP Name From Beta</label>
                             <!--begin::Input-->
                             <div class="position-relative d-flex align-items-center">
@@ -75,6 +76,16 @@
                                 <input type="hidden" class="form-control form-control-solid" readonly placeholder="ECP Name From Beta" id="cycleID" name="cycleID" value="<?=$jobtask['orderCycleId'];?>" />
                                 <input type="hidden" class="form-control form-control-solid" readonly placeholder="ECP Name From Beta" id="ecpid" name="ecpid" value="<?=$ecpname['id'];?>"/>
                                 <input type="hidden" name="jobid" id="jobid" value="<?=$jobtask['id'];?>"/>
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Col-->
+                        <div class="col-md-3 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">Ship-to</label>
+                            <!--begin::Input-->
+                            <div class="position-relative d-flex align-items-center">
+                                <input class="form-control form-control-solid" placeholder="Ship-to" id="shipto" name="shipto" value="<?=$jobtask['shipto'];?>"/>
                             </div>
                             <!--end::Input-->
                         </div>
@@ -100,18 +111,6 @@
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
-                       
-                        <div class="col-md-6 fv-row">
-                            <label class="required fs-6 fw-semibold mb-2">Tag From Beta</label>
-                            <!--begin::Input-->
-                           
-                            <div class="position-relative d-flex align-items-center">
-                                <input class="form-control form-control-solid" readonly placeholder="Tag From Beta" name="tagsbeta" id="tagsbeta" value="<?=$tagbetaArr;?>" />
-                            </div>
-                            <!--end::Input-->
-                        </div>
-                        <!--end::Col-->
-                        <!--begin::Col-->
                         <div class="col-md-3 fv-row">
                             <label class="required fs-6 fw-semibold mb-2">Order Cycle</label>
                             <!--begin::Input-->
@@ -131,13 +130,24 @@
                             <!--end::Input-->
                         </div>
                         <!--end::Col-->
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <label class="required fs-6 fw-semibold mb-2">Tag From Beta</label>
+                            <!--begin::Input-->
+                           
+                            <div class="position-relative d-flex align-items-center">
+                                <input class="form-control form-control-solid" readonly placeholder="Tag From Beta" name="tagsbeta" id="tagsbeta" value="<?=$tagbetaArr;?>" />
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Col-->
                     </div>
                     <!--end::Input group-->
                     <!--begin::Input group-->
                     <div class="row g-9 mb-8">
                         <!--begin::Col-->
                         <div class="col-md-3 fv-row">
-                            <label class="required fs-6 fw-semibold mb-2">Categorize</label>
+                            <label class="required fs-6 fw-semibold mb-2">Jobs Type​</label>
                             <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Select a Categorize" id="category" name="Categorize">
                                 <option value="">Select ...</option>
                                 <?php foreach ($category as $key => $value) {?>
@@ -657,6 +667,7 @@
             // tagBeta
             var jobid = document.getElementById('jobid').value;
             var ecpid = document.getElementById('ecpid').value;
+            console.log(ecpid);
             console.log(jobid);
             $.ajax({
                 type: 'POST',
@@ -716,7 +727,7 @@
             $.ajax({
                 type: 'POST',
                 url: '<?=base_url()?>findTags',
-                data: { selectedValue: category },
+                data: { selectedValue: category, jobID: jobid },
                 success: function(response) {
                     // console.log(response);
                     let tagsData = response.tagsAll; // Array of tag details

@@ -6,7 +6,7 @@ class SupportJobModel extends Model
 {
     protected $table = 'supportjob';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id','transactionCode','ticketcode','trackingNo','contactType','contactName','actionType','comment','createUser','createDate','updateUser','updateDate','deleteUser','deleteDate','rejectUser','rejectDate','rejectRemark','status'];
+    protected $allowedFields = ['id','transactionCode','ticketcode','trackingNo','ref_tracking','contactType','contactName','actionType','comment','createUser','createDate','updateUser','updateDate','deleteUser','deleteDate','rejectUser','rejectDate','rejectRemark','status'];
 
     public function getSupportJobs($ticketID = false)
 

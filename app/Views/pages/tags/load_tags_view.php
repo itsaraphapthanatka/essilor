@@ -136,6 +136,7 @@
                     {
                         targets: 2, //tag_category
                         className: 'text-center',
+						visible: false
                     },
                     {
                         targets: 3, //TAG DESIGN

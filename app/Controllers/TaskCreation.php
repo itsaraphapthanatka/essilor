@@ -23,9 +23,9 @@ class TaskCreation extends BaseController{
         $categorize = new CategorizeModel();
         $orderCy = new OrderCycleModel();
         $data['ecp'] = $ecp->orderBy('id','ASC')->findAll();
-        $data['tagCate'] = $tagsCate->orderBy('id','ASC')->findAll();
-        $data['category'] = $categorize->orderBy('id','ASC')->findAll();
-        $data['tag'] = $tag->orderBy('id','ASC')->findAll();
+        $data['tagCate'] = $tagsCate->where(['category_status' => 'active'])->orderBy('id','ASC')->findAll();
+        $data['category'] = $categorize->where(['categoriesStatus' => 'active'])->orderBy('id','ASC')->findAll();
+        $data['tag'] = $tag->where(['tag_status' => 'active'])->orderBy('id','ASC')->findAll();
         $data['orderCycle'] = $orderCy->where(['cycle_status' => 'active'])->orderBy('id','ASC')->findAll();
         echo view('pages/menu/header',$data);
         echo view('pages/menu/mainmenu');
@@ -49,7 +49,7 @@ class TaskCreation extends BaseController{
         $data['ecp'] = $ecp->orderBy('id','ASC')->findAll();
         $data['ecpname'] = $ecp->asArray()->where(['id' => $data['jobtask']['ecpid']])->orderBy('id','ASC')->first();
         $data['gettagbeta'] = $tagbetaModel->tagsBeta($seg1);
-        $data['tags'] = $tag->orderBy('id', 'ASC')->findAll();
+        $data['tags'] = $tag->where(['tag_status' => 'active'])->orderBy('id', 'ASC')->findAll();
         $tagbetaArr = '';
         foreach ($data['gettagbeta'] as $key => $value) {
             $tagbetaArr .= $value['tag_name'] . ', ';
@@ -57,9 +57,9 @@ class TaskCreation extends BaseController{
         }
         $data['tagbetaArr'] = rtrim($tagbetaArr, ', '); // Remove the trailing comma
 
-        $data['tagCate'] = $tagsCate->orderBy('id','ASC')->findAll();
-        $data['category'] = $categorize->orderBy('id','ASC')->findAll();
-        $data['tag'] = $tag->orderBy('id','ASC')->findAll();
+        $data['tagCate'] = $tagsCate->where(['category_status' => 'active'])->orderBy('id','ASC')->findAll();
+        $data['category'] = $categorize->where(['categoriesStatus' => 'active'])->orderBy('id','ASC')->findAll();
+        $data['tag'] = $tag->where(['tag_status' => 'active'])->orderBy('id','ASC')->findAll();
         echo view('pages/menu/header',$data);
         echo view('pages/menu/mainmenu');
         echo view('pages/menu/detail');
@@ -79,6 +79,8 @@ class TaskCreation extends BaseController{
             'ecpid' => $add['ecpid'],
             'ecpcode' => $add['ecpcode'],
             'orderCycleId' => $add['cycle'],
+            'shipto' => $add['shipto'],
+            'totalOrder' => $add['multiorder'],
             'tagsCategoryId' => $add['tagCategory'],
             'categoryId' => $add['Categorize'],
             'capture' => $add['kt_docs_tinymce_basic'],
@@ -146,6 +148,7 @@ class TaskCreation extends BaseController{
             'ecpid' => $add['ecpid'],
             'trackingId' => $add['trackingID'],
             'ecpcode' => $add['ecpcode'],
+            'shipto' => $add['shipto'],
             'orderCycleId' => $add['cycle'],
             'tagsCategoryId' => $add['tagCategory'],
             'categoryId' => $add['Categorize'],

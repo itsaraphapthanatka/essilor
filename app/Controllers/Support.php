@@ -75,6 +75,7 @@ class Support extends BaseController{
             'transactionCode' => $transactionCode,
             'ticketcode' => $add['ticketid'],
             'trackingNo' => $add['trackingid'],
+            'ref_tracking' => $add['reftrackingno'],
             'contactType' => $add['contactType'],
             'contactName' => $add['contactName'],
             'actionType' => $add['actionType'],

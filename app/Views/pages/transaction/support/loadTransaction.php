@@ -7,7 +7,7 @@
                 <th class="min-w-125px">Contact Type</th>
                 <th class="min-w-125px">Action Type</th>
                 <th class="min-w-100px">Result</th>
-                <th class="min-w-125px">Comment</th>
+                <th class="min-w-125px">Ref. Tracking No.</th>
                 <th class="min-w-100px">Follow Up</th>
                 <th class="min-w-100px">Issue Type</th>
             </tr>
@@ -28,7 +28,7 @@
                         <td><?= $transaction['contactName'] ?></td>
                         <td><?= $transaction['actionName'] ?></td>
                         <td>follow Up</td>
-                        <td></td>
+                        <td><?= $transaction['ref_tracking'] ?></td>
                         <td><?= date('d/m/Y', $transaction['createDate']) ?></td>
                         <td><?= $transaction['commentName'] ?></td>
                     </tr>

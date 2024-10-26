@@ -7,7 +7,7 @@ class JobtaskModel extends Model {
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'id', 'trackingId', 'ecpid', 'ecpcode', 'orderCycleId', 'tagsCategoryId', 'tagsBeta', 
-        'tags', 'categoryId', 'capture', 'createdate', 'createuser', 'updatedate',
+        'tags', 'categoryId', 'capture', 'createdate', 'createuser', 'updatedate', 'shipto', 'totalOrder', 'callJabdate',
         'updateuser', 'deldate', 'deluser','jobStatus','calljob','calluser', 'comment','QCStatus','callQC','callQCuser','commentQC','commentNote','updateqcdate','ticketCode'
     ];
     public function getJobtask($sag1) {
@@ -62,7 +62,10 @@ class JobtaskModel extends Model {
             jt.qcstatus,
             jt.createuser,
             oc.cyclename,
-            jt.orderCycleId as ocid
+            jt.orderCycleId as ocid,
+            jt.shipto,
+            jt.totalOrder,
+            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat
         ');
 
         $builder->join('ecp e', 'jt.ecpid = e.id');
@@ -221,7 +224,10 @@ class JobtaskModel extends Model {
             jt.calljob,
             jt.jobStatus,
             oc.cyclename,
-            jt.orderCycleId as ocid
+            jt.orderCycleId as ocid,
+            jt.shipto,
+            jt.totalOrder,
+            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat
         ');
 
         $builder->join('ecp e', 'jt.ecpid = e.id');
@@ -233,7 +239,7 @@ class JobtaskModel extends Model {
         $builder->join('jobstatus js', 'jt.jobStatus = js.id', 'left');
         $builder->join('ordercycle oc', 'jt.orderCycleId = oc.id', 'left');
         // $builder->where(['e.customer_type' => 'VIP']);
-        $builder->where('jt.trackingId', NULL, false);
+        $builder->where('jt.trackingId IS NULL OR jt.trackingId = ""');
         $builder->groupBy([
             'jt.id',
         ]);
@@ -290,7 +296,10 @@ class JobtaskModel extends Model {
             e.customer_alert_1,
             jt.jobStatus,
             oc.cyclename,
-            jt.orderCycleId as ocid
+            jt.orderCycleId as ocid,
+            jt.shipto,
+            jt.totalOrder,
+            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat
         ');
 
         $builder->join('ecp e', 'jt.ecpid = e.id');
@@ -368,7 +377,10 @@ class JobtaskModel extends Model {
             e.customer_alert_1,
             jt.jobStatus,
             oc.cyclename,
-            jt.orderCycleId as ocid
+            jt.orderCycleId as ocid,
+            jt.shipto,
+            jt.totalOrder,
+            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat
         ');
 
         $builder->join('ecp e', 'jt.ecpid = e.id');
@@ -446,7 +458,10 @@ class JobtaskModel extends Model {
             e.customer_alert_1,
             jt.jobStatus,
             oc.cyclename,
-            jt.orderCycleId as ocid
+            jt.orderCycleId as ocid,
+            jt.shipto,
+            jt.totalOrder,
+            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat
         ');
 
         $builder->join('ecp e', 'jt.ecpid = e.id');
@@ -550,7 +565,10 @@ class JobtaskModel extends Model {
         $builder->join('tagscategory tc', 'jt.tagsCategoryId = tc.id', 'left');
         $builder->join('categories ct', 'jt.categoryId = ct.id', 'left');
         $builder->join('jobstatus js', 'jt.jobStatus = js.id', 'left');
-        if($sag1 == 2){
+        if($sag1 == 1){
+            $builder->where('UPPER(e.customer_type)', 'standard');
+            $builder->where('tc.isStock IS NULL');
+        }elseif($sag1 == 2){
             $builder->where('UPPER(e.customer_type)', 'VIP');
         }elseif($sag1 == 3){
             $builder->where(['tc.isStock' => 'Y']);
@@ -568,6 +586,7 @@ class JobtaskModel extends Model {
         $updData = [
             'jobStatus' => 2,
             'calljob' => 'Y',
+            'callJabdate' => date('Y-m-d H:i:s'),
             'calluser' => session()->get('userid')
         ];
 
@@ -618,6 +637,7 @@ class JobtaskModel extends Model {
             jss.statusname as qcstatusname,
             jt.createuser,
             DATE_FORMAT(jt.updatedate, "%d/%m/%Y") AS updatedate,
+            DATE_FORMAT(jt.updatedate, "%Y-%m-%d") as updatedateoriginal,
             cm.commentName as commentQCName,
             jt.commentNote,
             us.user_name as keyinUser
@@ -661,6 +681,7 @@ class JobtaskModel extends Model {
     public function CountJobtask() {
         $db = db_connect();
         $today = date('Y-m-d');
+        $month = date('Y-m');
 
         // Count tasks that are waiting for QC (QCStatus is NULL, trackingId is not NULL, jobStatus = 3, and calljob = 'Y')
         $builder = $db->table('jobtask jt');
@@ -694,10 +715,45 @@ class JobtaskModel extends Model {
         $builder->where('DATE(jt.`updateqcdate`)', $today);
         $countreject = $builder->countAllResults();
 
+        // Count tasks that are waiting for QC (QCStatus is NULL, trackingId is not NULL, jobStatus = 3, and calljob = 'Y')
+         $builder = $db->table('jobtask jt');
+         $builder->select('id');
+         $builder->where('jt.QCStatus', NULL, TRUE);
+         $builder->where('jt.trackingId IS NOT NULL', NULL, FALSE);
+         $builder->where('jt.jobStatus', 3);
+         $builder->where('jt.calljob', 'Y');
+         $builder->where('jt.comment is NULL', null, false);
+         $builder->where('DATE_FORMAT(jt.updatedate, "%Y-%m")', $month);
+         $countwaitmonth = $builder->countAllResults();
+
+           // Count tasks that have passed QC (QCStatus is not NULL)
+        $builder = $db->table('jobtask jt');
+        $builder->select('id');
+        $builder->where('jt.comment IS NOT NULL', null, false);
+        $builder->where('jt.trackingId IS NOT NULL', NULL, FALSE);
+        $builder->where('jt.QCStatus',4);
+        $builder->where('DATE_FORMAT(jt.updatedate, "%Y-%m")', $month);
+        $countpassmonth = $builder->countAllResults();
+
+         // Count tasks that have Not passed QC (QCStatus reject )
+        $builder = $db->table('jobtask jt');
+        $builder->select('id');
+        $builder->where('jt.comment IS NOT NULL', null, false);
+        $builder->where('jt.trackingId IS NOT NULL', NULL, FALSE);
+        $builder->where('jt.jobStatus', 3);
+        $builder->where('jt.QCStatus', 5);
+        $builder->where('jt.calljob', 'Y');
+        $builder->where('jt.callQC','Y');
+        $builder->where('DATE_FORMAT(jt.updatedate, "%Y-%m")', $month);
+        $countrejectmonth = $builder->countAllResults();
+
         return [
             "countwait" => $countwait,
             "countpass" => $countpass,
-            "countreject" => $countreject
+            "countreject" => $countreject,
+            "countwaitmonth" => $countwaitmonth,
+            "countpassmonth" => $countpassmonth,
+            "countrejectmonth" => $countrejectmonth
         ];
     }
     public function getJobtaskMyQC() { // 1: wait , 2: process
@@ -903,6 +959,133 @@ class JobtaskModel extends Model {
         }
 
         return true; // Return true after updating all records
+    }
+    public function dashboard(){
+        $db = db_connect();
+        $query = "
+             SELECT
+                COUNT(*) AS wait,
+                COUNT(CASE WHEN jobtask.jobStatus = '3' THEN 1 END) AS success,
+                CASE 
+                    WHEN ecp.customer_type = 'vip' and  tagscategory.category_name = 'RX' THEN 'rx_keyin_vip'
+                    WHEN ecp.customer_type = 'standard' and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard'
+                    WHEN ecp.customer_type = 'vip' and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_vip'
+                    WHEN ecp.customer_type = 'standard' and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard'
+                END AS customer_type
+            FROM
+                jobtask
+                INNER JOIN
+                tagscategory
+                ON 
+                    jobtask.tagsCategoryId = tagscategory.id
+                INNER JOIN
+                ecp
+                ON 
+                    jobtask.ecpid = ecp.id
+            where
+            jobtask.jobStatus IN ('1','2','3') and
+          	tagscategory.category_name IN ('RX', 'Stock')
+            GROUP BY
+                CASE 
+                    WHEN ecp.customer_type = 'vip' and  tagscategory.category_name = 'RX' THEN 'rx_keyin_vip'
+                    WHEN ecp.customer_type = 'standard' and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard'
+                    WHEN ecp.customer_type = 'vip' and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_vip'
+                    WHEN ecp.customer_type = 'standard' and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard'
+                END
+        ";
+        $result = $db->query($query)->getResultArray();
+
+        $data = [
+            'rx_keyin_vip' => 0,
+            'rx_keyin_vip_success' => 0,
+            'rx_keyin_standard' => 0,
+            'rx_keyin_standard_success' => 0,
+            'stock_keyin_vip' => 0,
+            'stock_keyin_vip_success' => 0,
+            'stock_keyin_standard' => 0,
+            'stock_keyin_standard_success' => 0,
+        ];
+
+        foreach ($result as $row) {
+            if ($row['customer_type'] == 'rx_keyin_vip') {
+                $data['rx_keyin_vip'] = $row['wait'];
+                $data['rx_keyin_vip_success'] = $row['success'];
+            } elseif ($row['customer_type'] == 'rx_keyin_standard') {
+                $data['rx_keyin_standard'] = $row['wait'];
+                $data['rx_keyin_standard_success'] = $row['success'];
+            } elseif ($row['customer_type'] == 'stock_keyin_vip') {
+                $data['stock_keyin_vip'] = $row['wait'];
+                $data['stock_keyin_vip_success'] = $row['success'];
+            } elseif ($row['customer_type'] == 'stock_keyin_standard') {
+                $data['stock_keyin_standard'] = $row['wait'];
+                $data['stock_keyin_standard_success'] = $row['success'];
+            }
+        }
+
+        return $data;
+    }
+    public function keyin_d1(){
+        $db = db_connect();
+        $query = "
+            SELECT
+                COUNT(*) AS d_1,
+                CASE 
+                    WHEN ecp.customer_type = 'vip' and  tagscategory.category_name = 'RX' THEN 'rx_keyin_vip_d1'
+                    WHEN ecp.customer_type = 'standard' and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard_d1'
+                    WHEN ecp.customer_type = 'vip' and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_vip_d1'
+                    WHEN ecp.customer_type = 'standard' and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard_d1'
+                END AS customer_type
+            FROM
+                jobtask
+                INNER JOIN
+                tagscategory
+                ON 
+                    jobtask.tagsCategoryId = tagscategory.id
+                INNER JOIN
+                ecp
+                ON 
+                    jobtask.ecpid = ecp.id
+            where
+            jobtask.jobStatus = '3' and
+            jobtask.comment is not null and
+          	tagscategory.category_name IN ('RX', 'Stock')
+            GROUP BY
+                CASE 
+                    WHEN ecp.customer_type = 'vip' and  tagscategory.category_name = 'RX' THEN 'rx_keyin_vip_d1'
+                    WHEN ecp.customer_type = 'standard' and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard_d1'
+                    WHEN ecp.customer_type = 'vip' and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_vip_d1'
+                    WHEN ecp.customer_type = 'standard' and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard_d1'
+                END
+        ";
+        $result = $db->query($query)->getResultArray();
+
+        $data = [
+            'rx_keyin_vip_d1' => 0,
+            'rx_keyin_standard_d1' => 0,
+            'stock_keyin_vip_d1' => 0,
+            'stock_keyin_standard_d1' => 0,
+        ];
+
+        foreach ($result as $row) {
+            if ($row['customer_type'] == 'rx_keyin_vip_d1') {
+                $data['rx_keyin_vip_d1'] = $row['d_1'];
+            } elseif ($row['customer_type'] == 'rx_keyin_standard_d1') {
+                $data['rx_keyin_standard_d1'] = $row['d_1'];
+            } elseif ($row['customer_type'] == 'stock_keyin_vip_d1') {
+                $data['stock_keyin_vip_d1'] = $row['d_1'];
+            } elseif ($row['customer_type'] == 'stock_keyin_standard_d1') {
+                $data['stock_keyin_standard_d1'] = $row['d_1'];
+            }
+        }
+
+        return $data;
+    }
+    public function support_month_ok(){
+         $db = db_connect();
+        $query = "
+            
+        ";
+        $result = $db->query($query)->getResultArray();
     }
 
 

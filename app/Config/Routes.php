@@ -103,6 +103,7 @@ $routes->post('EditJobTask', 'TaskCreation::Update');
 $routes->get('deletefile/(:num)/(:num)','TaskCreation::deletefile/$1/$2');
 
 // KeyIn
+$routes->get('list_task_view', 'Keyin::list_task_view');
 $routes->get('fifoview', 'Keyin::fifoview');
 $routes->get('stock_lens_fifo_view', 'Keyin::stock_lens_fifo_view');
 $routes->get('myjobvip', 'Keyin::myjobvip');
@@ -128,6 +129,11 @@ $routes->get('loadbadgeCountPending/(:num)/(:num)/(:num)', 'Support::loadbadgeCo
 $routes->get('loadbadgeCountInprogress/(:num)/(:num)/(:num)', 'Support::loadbadgeCountInprogress/$1/$2/$3');
 $routes->get('loadCountView', 'Support::loadCountView');
 
+$routes->get('returnjobEvery30m', 'Keyin::returnjobEvery30m');
+
+$routes->post('enableIframe', 'Data::enableIframe');
+$routes->get('loadiframe', 'Data::loadiframe');
+
 
 
     $routes->group('import',static function ($routes)
@@ -150,6 +156,7 @@ $routes->get('loadCountView', 'Support::loadCountView');
         $routes->get('getAllTags', 'Tags::getAllTags');
         $routes->get('getJobtaskSupport/(:num)/(:any)/(:num)/(:num)', 'Support::getJobtaskSupport/$1/$2/$3/$4');
         $routes->get('getEcpCodes', 'Data::getEcpCodes');
+        
     });
     $routes->group('controlData',static function ($routes)
     {

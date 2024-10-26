@@ -53,19 +53,30 @@
                         <!--begin::Col-->
                         <div class="col-md-3 fv-row">
                             <label class="required fs-6 fw-semibold mb-2">ECP Code From Beta</label>
-                            <select class="form-select form-select-solid" data-control="select2" data-hide-search="false" data-placeholder="เลือกรหัส" id="ecpcode" name="ecpcode">
+                            <input type="text" placeholder="ECP Code " class="form-control form-control-solid" name="ecpcode" id="ecpcode">
+                            <!-- <select class="form-select form-select-solid" data-control="select2" data-hide-search="false" data-placeholder="เลือกรหัส" id="ecpcode" name="ecpcode">
                                 <option value="" selected></option>
-                            </select>
+                            </select> -->
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
-                        <div class="col-md-9 fv-row">
+                        <div class="col-md-6 fv-row">
                             <label class="required fs-6 fw-semibold mb-2">ECP Name From Beta</label>
                             <!--begin::Input-->
                             <div class="position-relative d-flex align-items-center">
                                 <input class="form-control form-control-solid" readonly placeholder="ECP Name From Beta" id="ecpname" name="ecpname" />
                                 <input type="hidden" class="form-control form-control-solid" readonly placeholder="ECP Name From Beta" id="cycleID" name="cycleID" />
                                 <input type="hidden" class="form-control form-control-solid" readonly placeholder="ECP Name From Beta" id="ecpid" name="ecpid" />
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Col-->
+                         <div class="col-md-3 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">Ship-to</label>
+                            <!--begin::Input-->
+                            <div class="position-relative d-flex align-items-center">
+                                <input class="form-control form-control-solid" placeholder="Ship-to" id="shipto" name="shipto" />
                             </div>
                             <!--end::Input-->
                         </div>
@@ -86,6 +97,22 @@
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
+                        <div class="col-md-3 fv-row">
+                            <label class="required fs-6 fw-semibold mb-2">Order Cycle</label>
+                            <!--begin::Input-->
+                            <div class="position-relative d-flex align-items-center">
+                                <!-- <input class="form-control form-control-solid" readonly placeholder="Tag From Beta" id="cycle" name="cycle" /> -->
+                                <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Select a Order Cycle" name="cycle">
+                                    <option value="">Select ...</option>
+                                    <?php foreach ($orderCycle as $key => $value) {?>
+                                        <option value="<?=$value['id'];?>"><?=$value['cyclename'];?></option>
+                                    <?php } ?>
+                            </select>
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Col-->
                         <div class="col-md-6 fv-row">
                             <label class="required fs-6 fw-semibold mb-2">Tag From Beta</label>
                             <!--begin::Input-->
@@ -103,29 +130,13 @@
                             <!--end::Input-->
                         </div>
                         <!--end::Col-->
-                        <!--begin::Col-->
-                        <div class="col-md-3 fv-row">
-                            <label class="required fs-6 fw-semibold mb-2">Order Cycle</label>
-                            <!--begin::Input-->
-                            <div class="position-relative d-flex align-items-center">
-                                <!-- <input class="form-control form-control-solid" readonly placeholder="Tag From Beta" id="cycle" name="cycle" /> -->
-                                <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Select a Order Cycle" name="cycle">
-                                    <option value="">Select ...</option>
-                                    <?php foreach ($orderCycle as $key => $value) {?>
-                                        <option value="<?=$value['id'];?>"><?=$value['cyclename'];?></option>
-                                    <?php } ?>
-                            </select>
-                            </div>
-                            <!--end::Input-->
-                        </div>
-                        <!--end::Col-->
                     </div>
                     <!--end::Input group-->
                     <!--begin::Input group-->
                     <div class="row g-9 mb-8">
                         <!--begin::Col-->
                         <div class="col-md-3 fv-row">
-                            <label class="required fs-6 fw-semibold mb-2">Categorize</label>
+                            <label class="required fs-6 fw-semibold mb-2">Jobs Type​</label>
                             <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Select a Categorize" name="Categorize">
                                 <option value="">Select ...</option>
                                 <?php foreach ($category as $key => $value) {?>
@@ -192,7 +203,7 @@
                 <div class="card-footer d-flex justify-content-end py-6 px-9">
                     <a href="<?php echo base_url();?>main" class="btn btn-light btn-active-light-primary me-2">Discard</a>
                     <!-- <button type="button" id="add_submit" class="btn btn-primary px-6">Save Changes</button> -->
-                    <button type="button" id="add_submit" class="btn btn-primary me-2">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#savesubmit_model" class="btn btn-primary me-2">
                         <span class="indicator-label">Save Changes</span>
                         <span class="indicator-progress">Please wait...
                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -205,12 +216,52 @@
                 </div>
             </div>
             <!--end::Card-->
+            <div class="modal fade" tabindex="-1" id="savesubmit_model" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title"></h3>
+            
+                            <!--begin::Close-->
+                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                            </div>
+                            <!--end::Close-->
+                        </div>
+            
+                        <div class="modal-body">
+                            <p>Please input muti order</p>
+                            <!-- <input type="text" class="form-control " id="multiorder" name="multiorder"> -->
+                            <select class="form-control" name="multiorder" id="multiorder">
+                                <option selected value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+            
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="add_submit" class="btn btn-primary me-2">
+                                    <span class="indicator-label">Save Changes</span>
+                                    <span class="indicator-progress">Please wait...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
     <!--end::Post-->
 </div>
 <!--end::Container-->
-
 
 <script>
      $("#kt_header_navs_taskCreation").addClass('active show');
@@ -279,8 +330,10 @@
                 e.preventDefault(); // ป้องกันการส่งฟอร์มแบบธรรมดา
                 if (validator) {
                     validator.validate().then(function (status) {
-                        console.log('validated!');
-                        if (status == 'Valid') {
+                        console.log(status);
+                        if (status == 'Invalid') {
+                            $('#savesubmit_model').modal('hide');
+                        }else{
                             Swal.fire({
                                 text: "Are you sure you want to Save?",
                                 icon: "warning",
@@ -419,9 +472,12 @@
                                         if (result.isConfirmed) {
                                             // ล้างข้อมูลฟอร์ม
                                             // form.reset();
+                                            submitDuolicateButton.removeAttribute('data-kt-indicator');
+                                            submitDuolicateButton.disabled = false;
                                             tinymce.get('kt_docs_tinymce_basic').setContent('');
                                             const myDropzone = Dropzone.forElement("#kt_dropzonejs_example_1");
                                             myDropzone.removeAllFiles(true);
+                                           
                                         }
                                     });
                                 },
@@ -466,6 +522,7 @@
                     plugins: 'save',
                     menubar: false,
                     toolbar: false,
+                    api_key: 'kvt1wtyzzda8fcimr7yqiawpw3rawf5uod4hm8h6cyvoep9a',
                 };
             if ( KTThemeMode.getMode() === "dark" ) {
                 options["skin"] = "oxide-dark";
@@ -491,13 +548,16 @@
             });
         }
         const handleEcpSelect =() => {
-            $('#ecpcode').on('select2:select', function (e) {
-                var selectedValue = e.params.data.id;
+            $('#ecpcode').on('blur', function (e) {
+                var selectedValue = document.getElementById('ecpcode').value;
+                // var selectedValue = 'AA0001-AA0003_AAOPTIC';
+                var ecpcode = selectedValue.substring(0, 6);
+                console.log(ecpcode);
 
                 $.ajax({
                     type: 'POST',
                     url: '<?=base_url()?>getecp',
-                    data: { selectedValue: selectedValue },
+                    data: { selectedValue: ecpcode },
                     success: function(response) {
                         console.log(response);
                         $("#ecpname").val(response.data.customer_name);
@@ -721,32 +781,32 @@
 		 KTAppEcommerceSaveProduct.init();
 	 });
 
-     $(document).ready(function() {
-    $('#ecpcode').select2({
-        ajax: {
-            url: '<?= base_url('jsondata/getEcpCodes') ?>',
-            dataType: 'json',
-            delay: 250,
-            data: function(params) {
-                return {
-                    search: params.term
-                };
-            },
-            processResults: function(data) {
-                return {
-                    results: $.map(data, function(item) {
-                        return {
-                            text: item.customer_cd,
-                            id: item.customer_cd
-                        }
-                    })
-                };
-            },
-            cache: true
-        },
-        minimumInputLength: 2
-    });
-});
+    // $(document).ready(function() {
+    //     $('#ecpcode').select2({
+    //         ajax: {
+    //             url: '<?= base_url('jsondata/getEcpCodes') ?>',
+    //             dataType: 'json',
+    //             delay: 250,
+    //             data: function(params) {
+    //                 return {
+    //                     search: params.term
+    //                 };
+    //             },
+    //             processResults: function(data) {
+    //                 return {
+    //                     results: $.map(data, function(item) {
+    //                         return {
+    //                             text: item.customer_cd,
+    //                             id: item.customer_cd
+    //                         }
+    //                     })
+    //                 };
+    //             },
+    //             cache: true
+    //         },
+    //         minimumInputLength: 2
+    //     });
+    // });
 
 </script>
 

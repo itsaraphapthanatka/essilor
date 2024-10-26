@@ -135,7 +135,8 @@ class Auth extends BaseController{
                 echo view('pages/transaction/task_creation/task_creation_list');
                 break;
             case 'keyin' :
-                echo view('pages/transaction/keyin/list_keyin_view');
+                // echo view('pages/transaction/keyin/list_keyin_view');
+                return redirect()->to('/myjobfifo');
                 break;
             case 'support' :
                 $commentType = new commentTypeModel();

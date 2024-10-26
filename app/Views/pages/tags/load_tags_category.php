@@ -66,7 +66,7 @@
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                             <th class="min-w-20px">No.</th>
                             <th class="min-w-100px">TAG Category NAME</th>
-                            <th class="min-w-100px">isStock</th>
+                            <th class="min-w-20px">isStock</th>
                             <th class="min-w-125px">STATUS</th>
                             <th class="text-end min-w-100px" data-priority="2">DETAILS</th>
                         </tr>
@@ -132,6 +132,7 @@
                     {
                         targets: 2, //isstock
                         className: 'text-center',
+						// visible: false,
 						render: function (data, type, row) {
 							if (row.isStock == "Y") {
 								return `

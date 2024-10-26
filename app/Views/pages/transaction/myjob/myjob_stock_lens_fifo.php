@@ -71,7 +71,7 @@
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                 <th class="min-w-200px">Tracking ID</th>
                                 <th class="min-w-200px">ECPCode</th>
-                                <th class="min-w-125px">Tracking no.</th>
+                                <th class="min-w-125px">Order</th>
                                 <th class="text-center min-w-200px">TAG FROM BETA</th>
                                 <th class="text-center min-w-125px">ORDER CYCLE</th>
                                 <th class="text-center min-w-200px">TAG</th>
@@ -186,7 +186,7 @@
 				columns: [
 					{ data: 'id' },
 					{ data: 'ecpcode' },
-					{ data: 'trackingId' },
+					{ data: 'totalOrder' },
 					{ data: 'tagsBeta' },
 					{ data: 'cyclename' },
 					{ data: 'tagsJob' },
@@ -212,7 +212,12 @@
 						}
 					},
 					{
+						target: 3,
+						visible: false,
+					},
+					{
 						targets: 4,
+						visible: false,
 						className: 'text-center',
 						render: function(data, type, row) {
 							if(row.ocid === '1'){
@@ -225,6 +230,10 @@
 								return `<span class="badge badge-light-danger fs-6">${row.cyclename}</span>`;
 							}
 						}
+					},
+					{
+						target: 5,
+						visible: false,
 					},
 					{
 						targets: -2,
@@ -295,6 +304,14 @@
 																		<label class="form-label fs-4 fw-bold text-gray-700 mb-3">Categorize</label>
 																		<div class="mb-5">
 																			<span>${row.categoriesName}</span>
+																		</div>
+																	</div>
+																</div>
+																<div class="row gx-10 mb-5">
+																	<div class="col-lg-12">
+																		<label class="form-label fs-4 fw-bold text-gray-700 mb-3">Ship to</label>
+																		<div class="mb-5">
+																			${row.shipto}
 																		</div>
 																	</div>
 																</div>
@@ -402,6 +419,7 @@
 											</div>
 
 											<div class="modal-body">
+												<h3 class="mb-3">${row.totalOrder} Order</h3>
 												<span>
 													Please Select Your Customer Issue and Click Send to Support Teams.
 												</span>
@@ -432,7 +450,7 @@
 
 											<div class="modal-footer">
 												<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-												<button type="button" class="btn btn-primary me-10" id="saveComment${row.id}" onclick="showSelectedComment('${row.id}')">
+												<button type="button" class="btn btn-primary me-10" id="saveComment${row.id}" onclick="showSelectedComment('${row.id}','${row.totalOrder}')">
 													<span class="indicator-label">
 														Complete
 													</span>
@@ -460,6 +478,7 @@
 											</div>
 
 											<div class="modal-body">
+												<h3 class="mb-3">${row.totalOrder} Order</h3>
 												<span>
 													Please Select Your Customer Issue and Click Send to Support Teams.
 												</span>
@@ -491,7 +510,7 @@
 											<div class="modal-footer">
 												<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
 												
-												<button type="button" class="btn btn-primary me-10" id="saveCommentno${row.id}" onclick="showSelectedCommentNoTracking('${row.id}')">
+												<button type="button" class="btn btn-primary me-10" id="saveCommentno${row.id}" onclick="showSelectedCommentNoTracking('${row.id}','${row.totalOrder}')">
 													<span class="indicator-label">
 														Complete
 													</span>
@@ -551,11 +570,10 @@
 										}
 									}
 
-									function showSelectedComment(rowid) {
+									function showSelectedComment(rowid,orderTotal) {
 										var button = document.querySelector("#saveComment${row.id}");
 										button.setAttribute("data-kt-indicator", "on");
 										const selectedComment = $('#selectedComment' + rowid).val();
-										
 										
 										console.log("RowID :" + rowid);
 										const trackingID = $('#trackingID' + rowid).val();
@@ -564,76 +582,96 @@
 										// Regular expression to match RX or BL followed by 10 digits
 										const trackingPattern = /^(RX|BL)/;
 										const trimmedID = $.trim(trackingID); // jQuery trim method
-										if (trackingPattern.test(trimmedID)) {
-											if(trimmedID.length === 12){
-												$.ajax({
-													type: 'POST',
-													url: '<?= base_url("SaveCommentByTrackingID") ?>', // Ensure the URL is correct
-													data: { 
-														trackingID: trimmedID, 
-														comment: selectedComment, 
-														taskID: taskID 
-													},
-													success: function(response) {
-														console.log(response);
-														window.location.href = "<?= base_url('myjobstock') ?>"; // Ensure the URL is correct
-													},
-													error: function(xhr, status, error) {
-														console.error('AJAX error:', status, error);
-														toastr.error("AJAX error:', status, error");
-													}
-												});
+										const trackingIDs = trimmedID.split(','); // แยก trackingID เป็น array
+										const isValidTrackingID = trackingIDs.every(id => trackingPattern.test(id) && id.length == 12); // เช็คว่าแต่ละ ID ถูกต้องและไม่เกิน 12 ตัว
 
+										if (isValidTrackingID) {
+											// Check if the trackingID is in the orderTotal and the orderTotal has 4 items
+											if(orderTotal >= 1){
+												// เช็คจำนวน orderTotal กับ trackingID
+												if(trimmedID.split(',').length == orderTotal){ // เปลี่ยน aa เป็น orderTotal
+													$.ajax({
+														type: 'POST',
+														url: '<?= base_url("SaveCommentByTrackingID") ?>', // Ensure the URL is correct
+														data: { 
+															trackingID: trimmedID, 
+															comment: selectedComment, 
+															taskID: taskID 
+														},
+														success: function(response) {
+															console.log(response);
+															window.location.href = "<?= base_url('myjobstock') ?>"; // Ensure the URL is correct
+														},
+														error: function(xhr, status, error) {
+															console.error('AJAX error:', status, error);
+															toastr.error("AJAX error:', status, error");
+														}
+													});
+												}else{
+													button.removeAttribute("data-kt-indicator");
+													toastr.warning("กรุณาตรวจสอบ trackingID.");
+												}
 											}else{
 												button.removeAttribute("data-kt-indicator");
-												toastr.warning("Please enter a valid trackingID,length of 12 characters.");
-											}
-											
-										} else {
-											button.removeAttribute("data-kt-indicator");
-											toastr.warning("Please input a valid trackingID in the format of 'RX' or 'BL' followed by 10 digits.");
-										}
-									}
-
-
-									function showSelectedCommentNoTracking(rowid) {
-										var button = document.querySelector("#saveCommentno${row.id}");
-										button.setAttribute("data-kt-indicator", "on");
-										const selectedComment = document.getElementById('selectedCommentcomplete' + rowid).value;
-										const trackingID = document.getElementById('trackingIDcomplete' + rowid).value;
-										console.log(trackingID);
-
-										const trackingPattern = /^(RX|BL)/;
-										const trimmedID = $.trim(trackingID); // jQuery trim method
-
-										if (trackingPattern.test(trimmedID)) {
-											if(trimmedID.length === 12){
-												const taskID = document.getElementById('taskID' + rowid).value;
-
-												// Ensure the URL is correctly parsed by PHP
-												$.ajax({
-													type: 'POST',
-													url: '<?= base_url("SaveCommentByTrackingID") ?>',  // This will correctly generate the base URL
-													data: { 
-														trackingID: trackingID, 
-														comment: selectedComment, 
-														taskID: taskID 
-													},
-													success: function(response) {
-														console.log(response);
-														window.location.href = "<?= base_url('myjobstock') ?>";  // Use PHP to dynamically generate the URL
-													},
-													error: function(xhr, status, error) {
-														console.error('AJAX error:', status, error);
-													}
-												});
-											}else{
-												button.removeAttribute("data-kt-indicator");
-												toastr.warning("Please enter a valid trackingID,length of 12 characters.");
+												toastr.warning("กรุณาตรวจสอบจำนวน trackingID ");
 											}
 										} else {
 										 	button.removeAttribute("data-kt-indicator");
-											toastr.warning("Please input a valid trackingID in the format of 'RX' or 'BL' followed by 10 digits.");
+											toastr.warning("กรุณาตรวจสอบ trackingID , ต้องเป็นรูปแบบ 'RX' หรือ 'BL' และไม่เกิน 12 ตัวอักษร.");
+										}
+									}
+									
+									function showSelectedCommentNoTracking(rowid,orderTotal) {
+										console.log("notack");
+										var button = document.querySelector("#saveCommentno${row.id}");
+										button.setAttribute("data-kt-indicator", "on");
+										const selectedComment = $('#selectedComment' + rowid).val();
+										
+										console.log("RowID :" + rowid);
+										const trackingID = $('#trackingIDcomplete' + rowid).val();
+										const taskID = $('#taskID' + rowid).val();
+										
+										// Regular expression to match RX or BL followed by 10 digits
+										const trackingPattern = /^(RX|BL)/;
+										const trimmedID = $.trim(trackingID); // jQuery trim method
+										const trackingIDs = trimmedID.split(','); // แยก trackingID เป็น array
+										console.log(trackingIDs);
+										console.log(trimmedID.split(',').length);
+										const isValidTrackingID = trackingIDs.every(id => trackingPattern.test(id) && id.length == 12); // เช็คว่าแต่ละ ID ถูกต้องและไม่เกิน 12 ตัว
+
+										if (isValidTrackingID) {
+											// Check if the trackingID is in the orderTotal and the orderTotal has 4 items
+											if(orderTotal >= 1){
+												// เช็คจำนวน orderTotal กับ trackingID
+												if(trimmedID.split(',').length == orderTotal){ // เปลี่ยน aa เป็น orderTotal
+													$.ajax({
+														type: 'POST',
+														url: '<?= base_url("SaveCommentByTrackingID") ?>', // Ensure the URL is correct
+														data: { 
+															trackingID: trimmedID, 
+															comment: selectedComment, 
+															taskID: taskID 
+														},
+														success: function(response) {
+															console.log(response);
+															window.location.href = "<?= base_url('myjobstock') ?>"; // Ensure the URL is correct
+														},
+														error: function(xhr, status, error) {
+															console.error('AJAX error:', status, error);
+															toastr.error("AJAX error:', status, error");
+														}
+													});
+												}else{
+													button.removeAttribute("data-kt-indicator");
+													toastr.warning("กรุณาตรวจสอบ trackingID.");
+												}
+											}else{
+												button.removeAttribute("data-kt-indicator");
+												toastr.warning("กรุณาตรวจสอบจำนวน trackingID ");
+											}
+										} else {
+										 	button.removeAttribute("data-kt-indicator");
+											toastr.warning("กรุณาตรวจสอบ trackingID , ต้องเป็นรูปแบบ 'RX' หรือ 'BL' และไม่เกิน 12 ตัวอักษร.");
 										}
 									}
 								<\/script>

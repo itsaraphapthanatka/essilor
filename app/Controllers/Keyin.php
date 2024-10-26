@@ -15,6 +15,13 @@ class Keyin extends BaseController{
     {
         $db = db_connect();
     }
+    public function list_task_view(){
+        echo view('pages/menu/header');
+        echo view('pages/menu/mainmenu');
+        echo view('pages/menu/detail');
+        echo view('pages/transaction/keyin/list_keyin_view');
+        echo view('pages/menu/footer');
+    }
     public function fifoview(){
         $ecp = new EcpModel();
         $tag = new TagsModel();
@@ -125,5 +132,35 @@ class Keyin extends BaseController{
         } else {
             return false;
         }
+    }
+
+    public function returnjobEvery30m(){
+        $jobtask = new JobtaskModel();
+        $thirtyMinutesAgo = date('Y-m-d H:i', strtotime('-30 minutes')); // แก้ไขเป็น 30 นาที
+
+        // ค้นหางานที่มี callJabdate เก่ากว่า 30 นาที
+        $tasks = $jobtask->where('DATE_FORMAT(callJabdate, "%Y-%m-%d %H:%i") <=', $thirtyMinutesAgo) // แก้ไขรูปแบบวันที่
+                         ->where('jobStatus', 2) // เปลี่ยนตามสถานะที่ต้องการ
+                         ->findAll();
+
+        foreach ($tasks as $task) {
+            // ทำการคืนงานหรืออัปเดตสถานะที่ต้องการ
+            $jobtask->update($task['id'], [
+                'jobStatus' => 1, // เปลี่ยนสถานะตามที่ต้องการ
+                'calljob' => null,
+                'calluser' => null
+            ]);
+            // บันทึกการคืนงานลงใน log
+            log_message('info', 'Returned job ID: ' . $task['id']); // เพิ่มบันทึก log
+        }
+        
+        $response = [
+            'status' => 'success',
+            'message' => 'สำเร็จในการคืนงานที่เก่ากว่า 30 นาที',
+            'data' => $tasks, // เปลี่ยนจาก var_dump เป็น $tasks เพื่อให้ข้อมูลถูกส่งกลับ
+            'datetime' => $thirtyMinutesAgo
+        ];
+
+        return $this->response->setJSON($response);
     }
 }
