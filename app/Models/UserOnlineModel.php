@@ -31,7 +31,7 @@ class UserOnlineModel extends Model{
 
 		$builder = $db->table('user_online');
 		$builder->select('*');
-		$builder->join('users', 'usersid = user_online.uid');
+		$builder->join('users', 'users.id = user_online.uid');
 		$count = $builder->countAllResults();
 
 		return $arr = [

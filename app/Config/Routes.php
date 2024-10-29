@@ -156,6 +156,8 @@ $routes->get('loadiframe', 'Data::loadiframe');
         $routes->get('getAllTags', 'Tags::getAllTags');
         $routes->get('getJobtaskSupport/(:num)/(:any)/(:num)/(:num)', 'Support::getJobtaskSupport/$1/$2/$3/$4');
         $routes->get('getEcpCodes', 'Data::getEcpCodes');
+        $routes->get('checkonline','Data::checkonline');
+        $routes->get('getUserOnline', 'Data::getUserOnline');
         
     });
     $routes->group('controlData',static function ($routes)

@@ -205,9 +205,12 @@
 											<div class="d-flex flex-column flex-lg-row flex-lg-stack flex-wrap gap-2 px-4 px-lg-0">
 												<div class="d-flex flex-column flex-lg-row gap-2">
 													<a class="btn btn-sm btn-light fw-bold" id="usersManage" href="<?php echo base_url();?>usersManage">User Management</a>
+													<?php if(session()->get('m_name') == 'ghost'){?>
+													<a class="btn btn-sm btn-light fw-bold" id="usersOnline" href="<?php echo base_url();?>checkusersonline">User Online</a>
+													<?php } ?>
 												</div>
 												<!-- <div class="d-flex flex-column flex-lg-row gap-2">
-													<a class="btn btn-sm btn-light-info fw-bold" href="apps/subscriptions/view.html">More Apps</a>
+													<a class="btn btn-sm btn-light-info fw-bold" id="usersOnline"  href="<?php echo base_url();?>checkusersonline">User Online</a>
 												</div> -->
 											</div>
 											<!--end::Wrapper-->

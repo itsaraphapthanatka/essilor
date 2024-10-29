@@ -548,4 +548,10 @@ class Data extends BaseController{
         $data['config'] = $config->asArray()->where(['setup' => 'iframe'])->orderBy('id','ASC')->first();
         echo view('pages/overview/loadiframe',$data);
     }
+
+    public function checkonline(){
+        $online = new UserOnlineModel();
+        $query = $online->asArray()->where(['uid' => session()->get('userid')])->orderBy('id','asc')->first();
+        return $this->response->setJSON($query);
+    }
 }

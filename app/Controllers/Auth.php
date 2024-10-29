@@ -102,6 +102,7 @@ class Auth extends BaseController{
                 "user" => $username
             ];
         }
+        $this->useronline('online');
         return $this->response->setJSON($arr);
     }
     public function loginLevel(){
@@ -162,7 +163,7 @@ class Auth extends BaseController{
     public function logout(){
         $session = session();
         $session->destroy();
-        // $this->useronline('offline');
+        $this->useronline('offline');
         return redirect()->to('/');
     }
 
@@ -181,29 +182,32 @@ class Auth extends BaseController{
 
     private function useronline($seg1 = false){
         $online = new UserOnlineModel();
-        $user = $online->asArray()->where(['uid' => session()->get('m_id')])->first();
-        if (!$user) {
-            $data = [
-                'uid' => session()->get('m_id'),
-                'status' => '1',
-                'last_login' => date('Y-m-d H:i:s'),
-                'ip_address' => $this->request->getIPAddress(),
-            ];
-            $online->insert($data);
-        }else{
-            if ($seg1 == "online") {
+        if (session()->get('userid') != 0) {
+            $user = $online->asArray()->where(['uid' => session()->get('userid')])->first();
+            if (!$user) {
                 $data = [
+                    'uid' => session()->get('userid'),
                     'status' => '1',
+                    'last_login' => date('Y-m-d H:i:s'),
+                    'ip_address' => $this->request->getIPAddress(),
                 ];
-                $online->update(['uid'=> session()->get('m_id')],$data);
-            }elseif ($seg1 == "offline") {
-                $data = [
-                    'status' => '0',
-                ];
-                $online->update(['uid'=> session()->get('m_id')],$data);
+                $online->insert($data);
+            }else{
+                if ($seg1 == "online") {
+                    $data = [
+                        'status' => '1',
+                    ];
+                    $online->update(['uid'=> session()->get('userid')],$data);
+                }elseif ($seg1 == "offline") {
+                    $data = [
+                        'status' => '0',
+                    ];
+                    $online->update(['uid'=> session()->get('userid')],$data);
+                }
+                
             }
-            
         }
+        
     }
 
     public function login_success(){
@@ -213,6 +217,7 @@ class Auth extends BaseController{
 
     public function checkusersonline(){
         echo view('pages/menu/header');
+        echo view('pages/menu/menuManagement');
         echo view('pages/userOnline');
         echo view('pages/menu//footer');
     }
