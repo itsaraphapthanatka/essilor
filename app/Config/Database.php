@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'      => '',
-        'hostname' => 'localhost',
+        'hostname' => '203.154.41.68',
         'username' => 'root',
-        'password' => '',
-        'database' => 'essilor',
+        'password' => 'Icon@2020',
+        'database' => 'cm_prdt1',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,
