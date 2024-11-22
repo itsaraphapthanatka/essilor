@@ -55,9 +55,9 @@ class Keyin extends BaseController{
     }
     public function myjobvip(){
         $jobtask = new JobtaskModel();
-        $commentType = new CommentTypeModel();
+        // $commentType = new CommentTypeModel();
         $data['res'] = $jobtask->getJobtaskCalljob(2);
-        $data['comment'] = $commentType->where(['commentType'=>'keyin'])->orderBy('id','ASC')->findAll();
+        // $data['comment'] = $commentType->where(['commentType'=>'keyin'])->orderBy('id','ASC')->findAll();
         echo view('pages/menu/header',$data);
         echo view('pages/menu/mainmenu');
         echo view('pages/menu/detail');
@@ -66,9 +66,9 @@ class Keyin extends BaseController{
     }
     public function myjobfifo(){
         $jobtask = new JobtaskModel();
-        $commentType = new CommentTypeModel();
+        // $commentType = new CommentTypeModel();
         $data['res'] = $jobtask->getJobtaskListFifo(1);
-        $data['comment'] = $commentType->where(['commentType'=>'keyin'])->orderBy('id','ASC')->findAll();
+        // $data['comment'] = $commentType->where(['commentType'=>'keyin'])->orderBy('id','ASC')->findAll();
         echo view('pages/menu/header',$data);
         echo view('pages/menu/mainmenu');
         echo view('pages/menu/detail');
@@ -78,9 +78,9 @@ class Keyin extends BaseController{
     }
     public function myjobstock(){
         $jobtask = new JobtaskModel();
-        $commentType = new CommentTypeModel();
+        // $commentType = new CommentTypeModel();
         $data['res'] = $jobtask->getJobtaskStockTags(2);
-        $data['comment'] = $commentType->where(['commentType'=>'keyin'])->orderBy('id','ASC')->findAll();
+        // $data['comment'] = $commentType->where(['commentType'=>'keyin'])->orderBy('id','ASC')->findAll();
         echo view('pages/menu/header',$data);
         echo view('pages/menu/mainmenu');
         echo view('pages/menu/detail');
