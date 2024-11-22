@@ -120,26 +120,22 @@
                             if (row.user_img == null) {
                                 return `
                                     <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                        <a href="#">
-                                            <div class="symbol-label">
-                                                <img src="${HOST_URL}theme/dist/assets/media/avatars/300-27.jpg" alt="${row.user_img}" class="w-100" />
-                                            </div>
-                                        </a>
+										<div class="symbol-label">
+											<img src="${HOST_URL}theme/dist/assets/media/avatars/300-27.jpg" alt="${row.user_img}" class="w-100" />
+										</div>
                                     </div>
                                     <div class="d-flex flex-column">
-                                        <a href="#" class="text-gray-800 text-hover-primary mb-1">${row.fullname}</a>
+                                        <div class="text-gray-800 mb-1">${row.fullname}</div>
                                     </div>`;
                             }else{
                                 return `
                                     <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                        <a href="#">
-                                            <div class="symbol-label">
-                                                <img src="${HOST_URL}profile/${row.user_img}" alt="${row.user_img}" class="w-100" />
-                                            </div>
-                                        </a>
+										<div class="symbol-label">
+											<img src="${HOST_URL}profile/${row.user_img}" alt="${row.user_img}" class="w-100" />
+										</div>
                                     </div>
                                     <div class="d-flex flex-column">
-                                        <a href="#" class="text-gray-800 text-hover-primary mb-1">${row.fullname}</a>
+                                        <div class="text-gray-800 mb-1">${row.fullname}</div>
                                     </div>`;
                             }
                         }

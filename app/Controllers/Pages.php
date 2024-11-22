@@ -24,6 +24,8 @@ class Pages extends BaseController{
         $data['pendingCount'] = $commentType->countPendingSupport();
 		$data['config'] = $config->asArray()->where(['setup' => 'iframe'])->orderBy('id','ASC')->first();
 		$data['countJob'] = $JobtaskModel->CountJobtask();
+		$data['top5RejectQCByUser'] = $JobtaskModel->top5RejectQCByUser();
+		$data['maxDuration'] = $JobtaskModel->countMaxDurationByMonth(date('Y-m'));
 		echo view('pages/menu/header',$data);
 		echo view('pages/menu/menuManagement');
 		echo view('pages/overview/main');
@@ -42,7 +44,14 @@ class Pages extends BaseController{
 	}
 
 	public function create_ecp(){
-		echo view('pages/menu/header');
+		$EcpModel = new EcpModel();
+		$data['payment'] = $EcpModel->groupBy('payment_term_cd')->get()->getResult();
+		$data['logis'] = $EcpModel->groupBy('logis_note')->get()->getResult();
+		$data['c_customer_parent_group'] = $EcpModel->groupBy('c_customer_parent_group')->orderBy('c_customer_parent_group','asc')->get()->getResult();
+		$data['c_experts'] = $EcpModel->groupBy('c_experts')->orderBy('c_experts','asc')->get()->getResult();
+		$data['c_partner'] = $EcpModel->groupBy('c_partner')->orderBy('c_partner','asc')->get()->getResult();
+		$data['nikon_lenswear_partner'] = $EcpModel->groupBy('nikon_lenswear_partner')->orderBy('nikon_lenswear_partner','asc')->get()->getResult();
+		echo view('pages/menu/header',$data);
 		echo view('pages/menu/menuManagement');
 		echo view('pages/ecp/load_create_ecp');
 		echo view('pages/menu/footer');
@@ -50,6 +59,12 @@ class Pages extends BaseController{
 	public function edit_ecp($seg1 = false){
 		$EcpModel = new EcpModel();
 		$data['ecp'] = $EcpModel->where(['id' => $seg1])->first();
+		$data['payment'] = $EcpModel->groupBy('payment_term_cd')->get()->getResult();
+		$data['logis'] = $EcpModel->groupBy('logis_note')->get()->getResult();
+		$data['c_customer_parent_group'] = $EcpModel->groupBy('c_customer_parent_group')->orderBy('c_customer_parent_group','asc')->get()->getResult();
+		$data['c_experts'] = $EcpModel->groupBy('c_experts')->orderBy('c_experts','asc')->get()->getResult();
+		$data['c_partner'] = $EcpModel->groupBy('c_partner')->orderBy('c_partner','asc')->get()->getResult();
+		$data['nikon_lenswear_partner'] = $EcpModel->groupBy('nikon_lenswear_partner')->orderBy('nikon_lenswear_partner','asc')->get()->getResult();
 		echo view('pages/menu/header',$data);
 		echo view('pages/menu/menuManagement');
 		echo view('pages/ecp/load_edit_ecp');

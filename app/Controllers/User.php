@@ -8,7 +8,6 @@ use CodeIgniter\Files\File;
 class User extends BaseController{
     public function __construct(){
         $db = db_connect();
-        $this->UsersModel = new UsersModel();
     }
 
     public function index(){
@@ -42,6 +41,7 @@ class User extends BaseController{
     }
 
     public function saveAddUser(){
+        $UsersModel = new UsersModel();
         // return $this->response->setJSON($add);
         $add = $this->request->getPost();
         $img = $this->request->getFile('userfile');
@@ -71,7 +71,7 @@ class User extends BaseController{
                 'user_created_at' => date('Y-m-d H:i:s'),
                 'user_status' => 'active',
             ];
-            $this->UsersModel->insert($data);
+            $UsersModel->insert($data);
             return redirect()->to('/usersManage');
         }
 
@@ -97,13 +97,14 @@ class User extends BaseController{
                 'user_created_at' => date('Y-m-d H:i:s'),
                 'user_img' => $img->getName(),
             ];
-            $result =  $this->UsersModel->insert($data);
+            $result =  $UsersModel->insert($data);
             return redirect()->to('/usersManage');
         }
         $data = ['errors' => 'The file has already been moved.'];
     }
 
     public function saveEditUser(){
+        $UsersModel = new UsersModel();
         $add = $this->request->getPost();
         $img = $this->request->getFile('userfile');
         // return $this->response->setJSON($img);
@@ -132,7 +133,7 @@ class User extends BaseController{
                 'mobile' => $add['phone'],
                 // 'compcode' => session()->get('compcode'),
             ];
-            $this->UsersModel->update_profile($add['cid'],$data);
+            $UsersModel->update_profile($add['cid'],$data);
             return redirect()->to('/usersManage');
         }
 
@@ -156,15 +157,16 @@ class User extends BaseController{
                 // 'compcode' => session()->get('compcode'),
                 'user_img' => $img->getName(),
             ];
-            $result =  $this->UsersModel->update_profile($add['cid'],$data);
+            $result =  $UsersModel->update_profile($add['cid'],$data);
             return redirect()->to('/usersManage');
         }
         $data = ['errors' => 'The file has already been moved.'];
     }
 
     public function deleteuser(){
+        $UsersModel = new UsersModel();
         $id = $this->request->getPost('id');
-        $result = $this->UsersModel->where(['id'=> $id])->delete();
+        $result = $UsersModel->where(['id'=> $id])->delete();
         if ($result) {
             $message = "User Date are DELETE successfully.";
             $arr = [

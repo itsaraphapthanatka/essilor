@@ -132,11 +132,11 @@
 
 			
 			$("#backup").on('click', function(){
-				if(navigator.appVersion.indexOf("Linux") != -1){
+				// if(navigator.appVersion.indexOf("Linux") != -1){
 					var LinkOS = '<?=base_url();?>controlData/backup';
-				}else{
-					var LinkOS = '<?=base_url();?>controlData/backup_xampp';
-				}
+				// }else{
+				// 	var LinkOS = '<?=base_url();?>controlData/backup_xampp';
+				// }
 				Swal.fire({
 					text: "Are you sure you want to backup the data? This action cannot be undone.",
 					icon: "info",

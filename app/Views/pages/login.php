@@ -120,7 +120,7 @@
 												<!--end::Title-->
 												<!--begin::Notice-->
 												<div class="text-muted fw-semibold fs-6">If you need more info, please check out
-												<a href="#" class="link-primary fw-bold">FAQ Page</a>.</div>
+												<a href="https://www.essilor.com/th-th/" target="_blank" class="link-primary fw-bold">FAQ Page</a>.</div>
 												<!--end::Notice-->
 											</div>
 											<!--end::Heading-->

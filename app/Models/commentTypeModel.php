@@ -204,7 +204,7 @@ class commentTypeModel extends Model{
                 LEFT JOIN 
                     jobtask j ON ct.id = j.comment
                 WHERE 
-                    ct.commentType IN ('keyin', 'support', 'urgent', 'qc')
+                    ct.commentType IN ('keyin', 'support', 'urgent')
                     AND j.updatedate LIKE '$year-$month%'
                 GROUP BY 
                     ct.id
@@ -246,7 +246,7 @@ class commentTypeModel extends Model{
                     LEFT JOIN 
                         jobtask j ON ct.id = j.comment
                     WHERE 
-                        ct.commentType IN ('keyin', 'support', 'urgent', 'qc')
+                        ct.commentType IN ('keyin', 'support', 'urgent')
                         AND j.updatedate LIKE '$year-$month%'
                     GROUP BY 
                         ct.id

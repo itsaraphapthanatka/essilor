@@ -437,21 +437,18 @@
 													<select class="form-select form-select-solid" data-control="select2" data-hide-search="true" 
 														data-placeholder="Select a Comment" name="addcomment" id="selectedComment${row.id}" 
 														title="Select a comment type" onchange="handleCommentChange('${row.id}')">
-														<option value="">Select ...</option>
-														<option value="1">Claim</option>
-														<option value="2">COD</option>
-														<option value="3">Credit Limit</option>
-														<option value="4">ECP</option>
-														<option value="5">Reject in Provider</option>
-														<option value="6">VC/CP</option>
-														<option value="7">Price Setup</option>
-														<option value="8">Missing Detail</option>
+														<?php foreach($comment as $row): ?>
+															<option value="<?=$row['id'];?>"><?=$row['commentName'];?></option>
+														<?php endforeach; ?>
 													</select>
 												</div>
 												<div class="mb-3 text-start" id="tracking${row.id}" hidden>
 													<label class="fs-6 fw-semibold mb-2">TrackingID</label>
 													<input type="text" class="form-control form-control-solid" placeholder="TrackingID" 
 														name="trackingID" id="trackingID${row.id}"/>
+												</div>
+												<div class="mb-3">
+													<textarea class="form-control form-control-solid" id="commentKeyinDesc${row.id}" name="commentKeyinDesc" rows="4" placeholder="Enter your comment here"></textarea>
 												</div>
 											</div>
 
@@ -496,15 +493,9 @@
 													<select hidden class="form-select form-select-solid" data-control="select2" data-hide-search="true" 
 															data-placeholder="Select a Comment" name="addcomment" id="selectedCommentcomplete${row.id}" 
 															title="Select a comment type" onchange="handleCommentChange('${row.id}')">
-														<option value="">Select ...</option>
-														<option value="1">Claim</option>
-														<option value="2">COD</option>
-														<option value="3">Credit Limit</option>
-														<option value="4">ECP</option>
-														<option value="5">Reject in Provider</option>
-														<option value="6">VC/CP</option>
-														<option value="7">Price Setup</option>
-														<option value="8">Missing Detail</option>
+														<?php foreach($comment as $row): ?>
+															<option value="<?=$row['id'];?>"><?=$row['commentName'];?></option>
+														<?php endforeach; ?>
 													</select>
 												</div>
 												<div class="mb-3 text-start" id="tracking${row.id}">
@@ -578,7 +569,7 @@
 										var button = document.querySelector("#saveComment${row.id}");
 										button.setAttribute("data-kt-indicator", "on");
 										const selectedComment = $('#selectedComment' + rowid).val();
-										
+										const commentDesc = $('#commentKeyinDesc' + rowid).val();
 										console.log("RowID :" + rowid);
 										const trackingID = $('#trackingID' + rowid).val();
 										const taskID = $('#taskID' + rowid).val();
@@ -600,6 +591,7 @@
 														data: { 
 															trackingID: trimmedID, 
 															comment: selectedComment, 
+															commentDesc: commentDesc,
 															taskID: taskID 
 														},
 														success: function(response) {
@@ -630,7 +622,7 @@
 										var button = document.querySelector("#saveCommentno${row.id}");
 										button.setAttribute("data-kt-indicator", "on");
 										const selectedComment = $('#selectedComment' + rowid).val();
-										
+										const commentDesc = $('#commentKeyinDesc' + rowid).val();
 										console.log("RowID :" + rowid);
 										const trackingID = $('#trackingIDcomplete' + rowid).val();
 										const taskID = $('#taskID' + rowid).val();
@@ -654,6 +646,7 @@
 														data: { 
 															trackingID: trimmedID, 
 															comment: selectedComment, 
+															commentDesc: commentDesc,
 															taskID: taskID 
 														},
 														success: function(response) {
@@ -734,6 +727,11 @@
 					success: function(result) {
 						var json = result;
 						console.log(json);
+						if(json.recordsTotal == 0){
+							$("#calljob").prop('disabled',false);
+						}else{
+							$("#calljob").prop('disabled',true);
+						}
 
 						// toastr.success(json.recordsTotal);
 					}

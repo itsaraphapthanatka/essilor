@@ -162,7 +162,7 @@
                         <!--end::Col-->
                         <!--begin::Col-->
                         <div class="col-md-9 fv-row">
-                            <label class="required fs-6 fw-semibold mb-2">Tag (s)</label>
+                            <label class="fs-6 fw-semibold mb-2">Tag (s)</label>
                             <!--begin::Input-->
                             <div class="position-relative d-flex align-items-center">
                                 <!-- <input class="form-control form-control-solid" value="" placeholder="Tags" name="tags" id="tags" /> -->
@@ -317,7 +317,7 @@
                     <a href="<?php echo base_url();?>main" class="btn btn-light btn-active-light-primary me-2">Discard</a>
                     <!-- <button type="button" id="add_submit" class="btn btn-primary px-6">Save Changes</button> -->
                     <button type="button" id="add_submit" class="btn btn-primary me-2">
-                        <span class="indicator-label">Save Changes</span>
+                        <span class="indicator-label">Save</span>
                         <span class="indicator-progress">Please wait...
                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                     </button>
@@ -380,13 +380,13 @@
                                 }
                             }
                         },
-                        'tags': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Tag (s) is required'
-                                }
-                            }
-                        },
+                        // 'tags': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'Tag (s) is required'
+                        //         }
+                        //     }
+                        // },
 
                     },
                     plugins: {
@@ -696,7 +696,7 @@
                             templates: {
                                 tag: function(tagData) {
                                     return `
-                                        <tag title="${tagData.value}" contenteditable='false' spellcheck="false" tabIndex="-1" class="tagify__tag" style="color: ${tagData.textColor}; background-color: ${tagData.backgroundColor};">
+                                        <tag title="${tagData.value}" contenteditable='false' spellcheck="false" tabIndex="-1" class="tagify__tag" style="--tag-text-color: ${tagData.textColor}; background-color: ${tagData.backgroundColor};">
                                             <x title="remove tag" class="tagify__tag__removeBtn"></x>
                                             <div>
                                                 <span class="tagify__tag-text">${tagData.value}</span>

@@ -5,11 +5,13 @@ use App\Models\UsersModel;
 use App\Models\UserOnlineModel;
 use App\Models\JobtaskModel;
 use App\Models\commentTypeModel;
+use App\Models\SetupModel;
 class Auth extends BaseController{
     public function __construct()
     {
         $db = db_connect();
         $UserOnlineModel = new UserOnlineModel($db);
+        $SetupModel = new SetupModel($db);
     }
 
     public function index($page = 'login'){
@@ -50,9 +52,11 @@ class Auth extends BaseController{
 
         $session = session();
         $model = new UsersModel();
+        $SetupModel = new SetupModel();
         $username = $this->request->getVar('account_name');
         $password = $this->request->getVar('password');
         $data = $model->chkLogin($username);
+        $url_api = $SetupModel->asArray()->where(['setup' => 'url_api'])->orderBy('id','ASC')->first(); 
         if ($data) {
             $pass = $data['user_password'];
             $verify_password = password_verify($password,$pass);
@@ -61,6 +65,7 @@ class Auth extends BaseController{
                     'mtype' => $data['user_role'],
                     'userid' => $data['id'],
                     'm_name' => $username,
+                    'url_api' => $url_api['value'],
                     'logged_in' => TRUE
                 ];
                 $session->set($sess_data);
@@ -75,6 +80,7 @@ class Auth extends BaseController{
                 'mtype' => 'member',
                 'userid' => 0,
                 'm_name' => 'ghost',
+                'url_api' => $url_api['value'],
                 'logged_in' => TRUE
             ];
             $session->set($sess_data);
@@ -88,6 +94,7 @@ class Auth extends BaseController{
                 'mtype' => 'guest',
                 'userid' => 0,
                 'm_name' => 'ghost',
+                'url_api' => $url_api['value'],
                 'logged_in' => TRUE
             ];
             $session->set($sess_data);
@@ -196,11 +203,13 @@ class Auth extends BaseController{
                 if ($seg1 == "online") {
                     $data = [
                         'status' => '1',
+                        'last_login' => date('Y-m-d H:i:s'),
                     ];
                     $online->update(['uid'=> session()->get('userid')],$data);
                 }elseif ($seg1 == "offline") {
                     $data = [
                         'status' => '0',
+                        'last_login' => date('Y-m-d H:i:s'),
                     ];
                     $online->update(['uid'=> session()->get('userid')],$data);
                 }

@@ -64,10 +64,10 @@
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                             <th class="min-w-100px">ECPCODE</th>
                             <th class="min-w-125px">ECPNAME</th>
-                            <th class="text-center min-w-200px">LOYALTY PROGRAM</th>
-                            <th class="text-center min-w-200px">LOYALTY PROGRAM 2</th>
+                            <th class="text-center min-w-200px">ESSILOR</th>
+                            <th class="text-center min-w-200px">NiKON</th>
                             <th class="text-center min-w-125px">PAYMENT TYPE</th>
-                            <th class="text-center min-w-125px">LG-BKK</th>
+                            <th class="text-center min-w-125px">LG</th>
                             <th class="text-end min-w-100px" data-priority="2">DETAILS</th>
                         </tr>
                         </thead>
@@ -150,8 +150,10 @@
 	 $("#view_ecp").addClass('btn-light-primary');
 </script>
 <script>var HOST_URL = "<?php echo base_url();?>";</script>
+<script>var HOST_URL_fastapi = "<?php echo session()->get('url_api');?>";</script> 
 
 <script>
+    console.log(HOST_URL_fastapi);
 	"use strict";
 
 	// Class definition
@@ -161,73 +163,107 @@
 		var dt;
 		var filterPayment;
 		var channalid = '10';
-		var userlist = "getECP";
+		var userlist = HOST_URL+ "getECP";
+        const filterSearch = document.querySelector('[data-kt-docs-table-filter="search"]');
+        var ajax = function(){
+            return {
+                url: HOST_URL_fastapi + "ecp",
+                type: 'GET',
+                data: function(d) {
+                    d.per_page = d.length;
+                    d.page = Math.floor(d.start / d.length) + 1;
+                },
+                dataSrc: function(json) {
+                    if (json.data) {
+                        return json.data;
+                    } else {
+                        console.error('Invalid JSON response:', json);
+                        return [];
+                    }
+                }
+            }
+        }
+        var ajaxKeyup = function (searchValue) {
+            console.log(searchValue);
+            return {
+                url: HOST_URL_fastapi + "searchEcp?search=" + searchValue,
+                type: 'GET',
+                data: {
+                    search: searchValue, // ใช้ค่าค้นหาจากฟิลด์
+                },
+                dataSrc: function (json) {
+                    if (json.data) {
+                        return json.data;
+                    } else {
+                        console.error('Invalid JSON response:', json);
+                        return [];
+                    }
+                }
+            };
+        };
+
+        var getAjax = ajax(); // กำหนดค่าเริ่มต้นให้เป็น `ajax`
+        if (filterSearch) {
+            filterSearch.addEventListener('input', function (e) {
+                const searchValue = e.target.value;
+                if (searchValue.length >= 1) {
+                    dt.ajax.url(ajaxKeyup(searchValue).url).load();
+                } else {
+                    dt.ajax.url(ajax().url).load();
+                }
+            });
+        }
+
+
 		// Private functions
 		var initDatatable = function () {
 			dt = $("#kt_datatable_horizontal_scroll").DataTable({
 				searchDelay: 500,
-				processing: false,
-				serverSide: false,
+				processing: true,
+				serverSide: true,
 				order: [[0, 'asc']],
-				stateSave: false,  
-				responsive: false,
-				ajax: {
-					url: HOST_URL + userlist,
-					// url: "https://preview.keenthemes.com/api/datatables.php",
-				},
+				paging: true,
+				pageLength: 100,
+				ajax: getAjax,
+                scrollY: 500,
+				deferRender: true,
+				scroller: true,
 				columns: [
 					{ data: 'customer_cd' },
 					{ data: 'customer_name' },
 					{ data: 'c_partner' },
 					{ data: 'c_experts' },
 					{ data: 'payment_term_cd' },
-					{ data: 'routecode' },
+					{ data: 'logis_note' },
 					{ data: null },
 				],
 				columnDefs: [
                     {
-                        targets: 2, //c_partner
+                        targets: 2,
                         className: 'text-center',
                         render: function(data, type, row) {
-                            var index = row.pstatus;
-                            if (!row.c_partner) {
-                                return 'NA';
-                            } else {
-                                return row.c_partner;
-                            }
+                            return row.c_partner;
                         }
                     },
                     {
-                        targets: 3, //c_experts
+                        targets: 3,
                         className: 'text-center',
                         render: function(data, type, row) {
-                            if (!row.c_experts) {
-                                return 'NA';
-                            } else {
-                                return row.c_experts;
-                            }
+                            return row.c_experts;
                         }
                     },
                     {
-                        targets: 4, //payment_term_cd
+                        targets: 4,
                         className: 'text-center',
                         render: function(data, type, row) {
-                            if (!row.payment_term_cd) {
-                                return 'NA';
-                            } else {
-                                return row.payment_term_cd;
-                            }
+                            return row.payment_term_cd;
                         }
                     },
                     {
-                        targets: 5, //routecode
+                        targets: 5,
                         className: 'text-center',
                         render: function(data, type, row) {
-                            if (!row.routecode) {
-                                return 'NA';
-                            } else {
-                                return row.routecode;
-                            }
+                            return row.logis_note;
                         }
                     },
 					{
@@ -244,7 +280,6 @@
 						},
 					},
 				],
-				// Add data-filter attribute
 				createdRow: function (row, data, dataIndex) {
 					$(row).find('td:eq(4)').attr('data-filter', data.CreditCardType);
 				}
@@ -252,22 +287,11 @@
 
 			table = dt.$;
 
-			// Re-init functions on every table re-draw -- more info: https://datatables.net/reference/event/draw
 			dt.on('draw', function () {
 				handleDeleteRows();
 				KTMenu.createInstances();
 			});
 		}
-
-		// Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
-		var handleSearchDatatable = function () {
-			const filterSearch = document.querySelector('[data-kt-docs-table-filter="search"]');
-			filterSearch.addEventListener('keyup', function (e) {
-				dt.search(e.target.value).draw();
-			});
-		}
-
-		
 
 		// Delete customer
 		var handleDeleteRows = () => {
@@ -311,7 +335,10 @@
 									var json = result;
 									console.log(json);
 									toastr.success(json.message);
-								}
+								},
+                                error: function(xhr, status, error) {
+                                    console.error('Error in AJAX request:', error);
+                                }
 							});
 							
 							Swal.fire({
@@ -359,13 +386,10 @@
 		
 		}
 
-
-
 		// Public methods
 		return {
 			init: function () {
 				initDatatable();
-				handleSearchDatatable();
 				handleDeleteRows();
 				handleResetForm();
 			}
@@ -390,21 +414,66 @@
 </script>
 <script>
     var myDropzone = new Dropzone("#kt_dropzonejs_example_1", {
-    url: "<?php echo base_url();?>import/ecpdata", // Set the url for your upload script location
-    paramName: "userfile", // The name that will be used to transfer the file
+    url: "<?php echo session()->get('url_api');?>import-ecp-from-excel/",
+    paramName: "file",
     acceptedFiles: ".xlsx",
     maxFiles: 1,
     maxFilesize: 10, // MB
     addRemoveLinks: true,
+    headers: {
+        'accept': 'application/json'
+    },
+    init: function() {
+        this.on("success", function(file, response) {
+            console.log("Server response:", response);
+
+            // แสดงข้อความตอบกลับ
+            if (response.status === "success") {
+                Swal.fire({
+                    title: 'Success',
+                    text: response.message,
+                    icon: 'success',
+                    confirmButtonText: 'Reload'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: response.message,
+                    icon: 'error',
+                    confirmButtonText: 'Reload'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+
+        this.on("error", function(file, errorMessage) {
+            console.error("Error occurred:", errorMessage);
+            Swal.fire({
+                title: 'Error',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Reload'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+        });
+    },
     accept: function(file, done) {
         if (file.name == "wow.jpg") {
-            done("Naha, you don't.");
+            done("This file is not allowed.");
         } else {
-            done();
-            setTimeout(() => {
-                window.location.href = "<?=base_url();?>home/member";
-            }, 2000);
+            done(); // อนุญาตให้อัปโหลด
         }
     }
 });
+
 </script>

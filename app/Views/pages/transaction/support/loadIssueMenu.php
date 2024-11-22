@@ -4,12 +4,12 @@
     <?php if($type == 'pending'):?>
     <div class="d-flex flex-stack">
         <a style="cursor: pointer;" onclick="handleIssue('<?=$row->id;?>','<?=$type;?>')" id="issuepending<?=$row->id;?>" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
-        <div id="badgeCountPending<?=$row->id;?>" class="badge badge-light-primary"><?= $row->comment_count; ?></div>
+        <div id="badgeCountPending<?=$row->id;?>" class="badge badge-light-primary fs-5"><?= $row->comment_count; ?></div>
     </div>
     <?php else:?>
     <div class="d-flex flex-stack">
         <a style="cursor: pointer;" onclick="handleIssue('<?=$row->id;?>','<?=$type;?>')" id="issueinprogress<?=$row->id;?>" class="fs-6 fw-bold text-gray-800 text-hover-primary text-active-primary"><?= $row->commentName; ?></a>
-        <div id="badgeCountInprogress<?=$row->id;?>" class="badge badge-light-primary"><?= $row->comment_count; ?></div>
+        <div id="badgeCountInprogress<?=$row->id;?>" class="badge badge-light-primary fs-5"><?= $row->comment_count; ?></div>
     </div>
     <?php endif;?>  
     <?php endforeach;?>

@@ -261,7 +261,7 @@
 							}
 							if(data.jobStatus === '2'){
 								return `
-									<span class="badge badge-light-success fs-6">${data.statusname}</span>
+									<span class="badge badge-light-success fs-6">${data.calluser} : ${data.statusname}</span>
 								`;
 							}
 							if(data.jobStatus === '3'){

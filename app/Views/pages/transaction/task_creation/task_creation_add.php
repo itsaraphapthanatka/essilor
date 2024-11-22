@@ -147,7 +147,7 @@
                         <!--end::Col-->
                         <!--begin::Col-->
                         <div class="col-md-9 fv-row">
-                            <label class="required fs-6 fw-semibold mb-2">Tag (s)</label>
+                            <label class="fs-6 fw-semibold mb-2">Tag (s)</label>
                             <!--begin::Input-->
                             <div class="position-relative d-flex align-items-center">
                                 <!-- <input class="form-control form-control-solid" value="" placeholder="Tags" name="tags" id="tags" /> -->
@@ -204,7 +204,7 @@
                     <a href="<?php echo base_url();?>main" class="btn btn-light btn-active-light-primary me-2">Discard</a>
                     <!-- <button type="button" id="add_submit" class="btn btn-primary px-6">Save Changes</button> -->
                     <button type="button" data-bs-toggle="modal" data-bs-target="#savesubmit_model" class="btn btn-primary me-2">
-                        <span class="indicator-label">Save Changes</span>
+                        <span class="indicator-label">Save</span>
                         <span class="indicator-progress">Please wait...
                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                     </button>
@@ -274,121 +274,6 @@
             let validator;
             const form = document.getElementById('add_form');
             const submitButton = document.getElementById('add_submit');
-
-            validator = FormValidation.formValidation(
-                form,
-                {
-                    fields: {
-                        'ecpcode': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'ecpcode is required'
-                                }
-                            }
-                        },
-                        'tagCategory': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Tag Categorize is required'
-                                }
-                            }
-                        },
-                        'tagbeta': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Tag From Beta is required'
-                                }
-                            }
-                        },
-                        'Categorize': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Categorize is required'
-                                }
-                            }
-                        },
-                        'tags': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Tag (s) is required'
-                                }
-                            }
-                        },
-                    },
-                    plugins: {
-                        trigger: new FormValidation.plugins.Trigger(),
-                        bootstrap: new FormValidation.plugins.Bootstrap5({
-                            rowSelector: '.fv-row',
-                            eleInvalidClass: '',
-                            eleValidClass: ''
-                        })
-                    }
-                }
-            );
-
-            submitButton.addEventListener('click', e => {
-                e.preventDefault(); // ป้องกันการส่งฟอร์มแบบธรรมดา
-                if (validator) {
-                    validator.validate().then(function (status) {
-                        console.log(status);
-                        if (status == 'Invalid') {
-                            $('#savesubmit_model').modal('hide');
-                        }else{
-                            Swal.fire({
-                                text: "Are you sure you want to Save?",
-                                icon: "warning",
-                                showCancelButton: true,
-                                buttonsStyling: false,
-                                confirmButtonText: "Yes, Sure!",
-                                cancelButtonText: "No, cancel",
-                                customClass: {
-                                    confirmButton: "btn fw-bold btn-primary",
-                                    cancelButton: "btn fw-bold btn-active-light-info"
-                                }
-                            }).then(function (result) {
-                                if (result.isConfirmed) {
-                                    submitButton.setAttribute('data-kt-indicator', 'on');
-                                    submitButton.disabled = true;
-
-                                    tinymce.triggerSave(); // บันทึกข้อมูลจาก TinyMCE ก่อนส่ง
-
-                                    $.ajax({
-                                        type: form.method,
-                                        url: form.action,
-                                        data: $(form).serialize(),
-                                        success: function (data) {
-                                            console.log(data);
-                                            submitButton.removeAttribute('data-kt-indicator');
-                                            Swal.fire({
-                                                text: data.message,
-                                                icon: data.status,
-                                                buttonsStyling: false,
-                                                confirmButtonText: "Ok, got it!",
-                                                customClass: {
-                                                    confirmButton: "btn btn-success"
-                                                }
-                                            }).then(function (result) {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = "<?php echo base_url();?>main";
-                                                }
-                                            });
-                                        },
-                                        error: function (xhr, status, error) {
-                                            console.error("Error occurred:", error);
-                                            submitButton.removeAttribute('data-kt-indicator');
-                                            submitButton.disabled = false;
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
-		const handleDuplicate = () => {
-            let validator;
-            const form = document.getElementById('add_form');
             const submitDuolicateButton = document.getElementById('add_dulicate');
 
             validator = FormValidation.formValidation(
@@ -423,13 +308,20 @@
                                 }
                             }
                         },
-                        'tags': {
+                        'cycle': {
                             validators: {
                                 notEmpty: {
-                                    message: 'Tag (s) is required'
+                                    message: 'Order Cycle is required'
                                 }
                             }
                         },
+                        // 'tags': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'Tag (s) is required'
+                        //         }
+                        //     }
+                        // },
                     },
                     plugins: {
                         trigger: new FormValidation.plugins.Trigger(),
@@ -441,57 +333,226 @@
                     }
                 }
             );
+            if(submitButton){
+                submitButton.addEventListener('click', e => {
+                    e.preventDefault(); // ป้องกันการส่งฟอร์มแบบธรรมดา
+                    if (validator) {
+                        validator.validate().then(function (status) {
+                            console.log(status);
+                            if (status == 'Invalid') {
+                                $('#savesubmit_model').modal('hide');
+                                console.log(validator.form.elements['ecpcode'].value);
+                            }else{
+                                Swal.fire({
+                                    text: "Are you sure you want to Save?",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Yes, Sure!",
+                                    cancelButtonText: "No, cancel",
+                                    customClass: {
+                                        confirmButton: "btn fw-bold btn-primary",
+                                        cancelButton: "btn fw-bold btn-active-light-info"
+                                    }
+                                }).then(function (result) {
+                                    if (result.isConfirmed) {
+                                        submitButton.setAttribute('data-kt-indicator', 'on');
+                                        submitButton.disabled = true;
 
-            submitDuolicateButton.addEventListener('click', e => {
-                e.preventDefault(); // ป้องกันการส่งฟอร์มแบบธรรมดา
-                if (validator) {
-                    validator.validate().then(function (status) {
-                        console.log('validated!');
-                        if (status == 'Valid') {
-                            submitDuolicateButton.setAttribute('data-kt-indicator', 'on');
-                            submitDuolicateButton.disabled = true;
+                                        tinymce.triggerSave(); // บันทึกข้อมูลจาก TinyMCE ก่อนส่ง
 
-                            tinymce.triggerSave(); // บันทึกข้อมูลจาก TinyMCE ก่อนส่ง
+                                        $.ajax({
+                                            type: form.method,
+                                            url: form.action,
+                                            data: $(form).serialize(),
+                                            success: function (data) {
+                                                console.log(data);
+                                                submitButton.removeAttribute('data-kt-indicator');
+                                                Swal.fire({
+                                                    text: data.message,
+                                                    icon: data.status,
+                                                    buttonsStyling: false,
+                                                    confirmButtonText: "Ok, got it!",
+                                                    customClass: {
+                                                        confirmButton: "btn btn-success"
+                                                    }
+                                                }).then(function (result) {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = "<?php echo base_url();?>main";
+                                                    }
+                                                });
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error("Error occurred:", error);
+                                                submitButton.removeAttribute('data-kt-indicator');
+                                                submitButton.disabled = false;
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            if(submitDuolicateButton){
+                submitDuolicateButton.addEventListener('click', e => {
+                    e.preventDefault(); // ป้องกันการส่งฟอร์มแบบธรรมดา
+                    if (validator) {
+                        validator.validate().then(function (status) {
+                            console.log('validated!');
+                            if (status == 'Valid') {
+                                submitDuolicateButton.setAttribute('data-kt-indicator', 'on');
+                                submitDuolicateButton.disabled = true;
 
-                            $.ajax({
-                                type: form.method,
-                                url: form.action,
-                                data: $(form).serialize(),
-                                success: function (data) {
-                                    console.log(data);
-                                    submitDuolicateButton.removeAttribute('data-kt-indicator');
-                                    Swal.fire({
-                                        text: data.message,
-                                        icon: data.status,
-                                        buttonsStyling: false,
-                                        confirmButtonText: "Ok, got it!",
-                                        customClass: {
-                                            confirmButton: "btn btn-success"
-                                        }
-                                    }).then(function (result) {
-                                        if (result.isConfirmed) {
-                                            // ล้างข้อมูลฟอร์ม
-                                            // form.reset();
-                                            submitDuolicateButton.removeAttribute('data-kt-indicator');
-                                            submitDuolicateButton.disabled = false;
-                                            tinymce.get('kt_docs_tinymce_basic').setContent('');
-                                            const myDropzone = Dropzone.forElement("#kt_dropzonejs_example_1");
-                                            myDropzone.removeAllFiles(true);
-                                           
-                                        }
-                                    });
-                                },
-                                error: function (xhr, status, error) {
-                                    console.error("Error occurred:", error);
-                                    submitDuolicateButton.removeAttribute('data-kt-indicator');
-                                    submitDuolicateButton.disabled = false;
-                                }
-                            });
-                        }
-                    });
-                }
-            });
+                                tinymce.triggerSave(); // บันทึกข้อมูลจาก TinyMCE ก่อนส่ง
+
+                                $.ajax({
+                                    type: form.method,
+                                    url: form.action,
+                                    data: $(form).serialize(),
+                                    success: function (data) {
+                                        console.log(data);
+                                        submitDuolicateButton.removeAttribute('data-kt-indicator');
+                                        Swal.fire({
+                                            text: data.message,
+                                            icon: data.status,
+                                            buttonsStyling: false,
+                                            confirmButtonText: "Ok, got it!",
+                                            customClass: {
+                                                confirmButton: "btn btn-success"
+                                            }
+                                        }).then(function (result) {
+                                            if (result.isConfirmed) {
+                                                // ล้างข้อมูลฟอร์ม
+                                                // form.reset();
+                                                submitDuolicateButton.removeAttribute('data-kt-indicator');
+                                                submitDuolicateButton.disabled = false;
+                                                tinymce.get('kt_docs_tinymce_basic').setContent('');
+                                                const myDropzone = Dropzone.forElement("#kt_dropzonejs_example_1");
+                                                myDropzone.removeAllFiles(true);
+                                            
+                                            }
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("Error occurred:", error);
+                                        submitDuolicateButton.removeAttribute('data-kt-indicator');
+                                        submitDuolicateButton.disabled = false;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
         }
+		// const handleDuplicate = () => {
+        //     let validatorDuplicate;
+        //     const form = document.getElementById('add_form');
+        //     const submitDuolicateButton = document.getElementById('add_dulicate');
+
+        //     validatorDuplicate = FormValidation.formValidation(
+        //         form,
+        //         {
+        //             fields: {
+        //                 'ecpcode': {
+        //                     validators: {
+        //                         notEmpty: {
+        //                             message: 'ecpcode is required'
+        //                         }
+        //                     }
+        //                 },
+        //                 'tagCategory': {
+        //                     validators: {
+        //                         notEmpty: {
+        //                             message: 'Tag Categorize is required'
+        //                         }
+        //                     }
+        //                 },
+        //                 'tagbeta': {
+        //                     validators: {
+        //                         notEmpty: {
+        //                             message: 'Tag From Beta is required'
+        //                         }
+        //                     }
+        //                 },
+        //                 'Categorize': {
+        //                     validators: {
+        //                         notEmpty: {
+        //                             message: 'Categorize is required'
+        //                         }
+        //                     }
+        //                 },
+        //                 // 'tags': {
+        //                 //     validators: {
+        //                 //         notEmpty: {
+        //                 //             message: 'Tag (s) is required'
+        //                 //         }
+        //                 //     }
+        //                 // },
+        //             },
+        //             plugins: {
+        //                 trigger: new FormValidation.plugins.Trigger(),
+        //                 bootstrap: new FormValidation.plugins.Bootstrap5({
+        //                     rowSelector: '.fv-row',
+        //                     eleInvalidClass: '',
+        //                     eleValidClass: ''
+        //                 })
+        //             }
+        //         }
+        //     );
+
+        //     submitDuolicateButton.addEventListener('click', e => {
+        //         e.preventDefault(); // ป้องกันการส่งฟอร์มแบบธรรมดา
+        //         if (validatorDuplicate) {
+        //             validatorDuplicate.validate().then(function (status) {
+        //                 console.log('validated!');
+        //                 if (status == 'Valid') {
+        //                     submitDuolicateButton.setAttribute('data-kt-indicator', 'on');
+        //                     submitDuolicateButton.disabled = true;
+
+        //                     tinymce.triggerSave(); // บันทึกข้อมูลจาก TinyMCE ก่อนส่ง
+
+        //                     $.ajax({
+        //                         type: form.method,
+        //                         url: form.action,
+        //                         data: $(form).serialize(),
+        //                         success: function (data) {
+        //                             console.log(data);
+        //                             submitDuolicateButton.removeAttribute('data-kt-indicator');
+        //                             Swal.fire({
+        //                                 text: data.message,
+        //                                 icon: data.status,
+        //                                 buttonsStyling: false,
+        //                                 confirmButtonText: "Ok, got it!",
+        //                                 customClass: {
+        //                                     confirmButton: "btn btn-success"
+        //                                 }
+        //                             }).then(function (result) {
+        //                                 if (result.isConfirmed) {
+        //                                     // ล้างข้อมูลฟอร์ม
+        //                                     // form.reset();
+        //                                     submitDuolicateButton.removeAttribute('data-kt-indicator');
+        //                                     submitDuolicateButton.disabled = false;
+        //                                     tinymce.get('kt_docs_tinymce_basic').setContent('');
+        //                                     const myDropzone = Dropzone.forElement("#kt_dropzonejs_example_1");
+        //                                     myDropzone.removeAllFiles(true);
+                                           
+        //                                 }
+        //                             });
+        //                         },
+        //                         error: function (xhr, status, error) {
+        //                             console.error("Error occurred:", error);
+        //                             submitDuolicateButton.removeAttribute('data-kt-indicator');
+        //                             submitDuolicateButton.disabled = false;
+        //                         }
+        //                     });
+        //                 }
+        //             });
+        //         }
+        //     });
+        // }
         const handleMydropZone = () => {
             var myDropzone = new Dropzone("#kt_dropzonejs_example_1", {
                 url: "<?=base_url();?>import/uploadFileTaskcreation", // Set the url for your upload script location
@@ -548,129 +609,134 @@
             });
         }
         const handleEcpSelect =() => {
-            $('#ecpcode').on('blur', function (e) {
-                var selectedValue = document.getElementById('ecpcode').value;
-                // var selectedValue = 'AA0001-AA0003_AAOPTIC';
-                var ecpcode = selectedValue.substring(0, 6);
-                console.log(ecpcode);
+            $('#ecpcode').on('change', function (e) {
+                if(document.getElementById('ecpcode').value != ""){
+                    var selectedValue = document.getElementById('ecpcode').value;
+                    // var selectedValue = 'AA0001-AA0003_AAOPTIC';
+                    var ecpcode = selectedValue.substring(0, 6);
+                    console.log(ecpcode);
 
-                $.ajax({
-                    type: 'POST',
-                    url: '<?=base_url()?>getecp',
-                    data: { selectedValue: ecpcode },
-                    success: function(response) {
-                        console.log(response);
-                        $("#ecpname").val(response.data.customer_name);
-                        $("#cycleID").val(response.data.logis_cycle);
-                        $("#ecpid").val(response.data.id);
-                        
-                        let tagsData = response.tags; // Array of tag details
-                        let tagsUse = [];
-
-                        if (Array.isArray(response.tt)) {
-                            tagsUse = response.tt.map(tag => tag.toLowerCase());
-                        } else {
-                            console.error("response.tt is not an array");
-                        }
-                        // let tagsUse = response.tt.map(tag => tag.toLowerCase()); // Normalize tagsUse to lowercase for case-insensitive matching
-                        let cycle = response.cycle;
-                        // console.log(cycle);
-                        if (tagsData && tagsData.length) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?=base_url()?>getecp',
+                        data: { selectedValue: ecpcode },
+                        success: function(response) {
+                            console.log(response);
+                            $("#ecpname").val(response.data.customer_name);
+                            $("#cycleID").val(response.data.logis_cycle);
+                            $("#ecpid").val(response.data.id);
                             
-                            var inputElement = document.getElementById("tagsbeta");
-                            // Prepare the tag data for Tagify (convert Select2 data to Tagify-friendly format)
-                            var tagItems = tagsData.map(tag => ({
-                                value: tag.tag_name,
-                                id: tag.id,
-                                textColor: hexToHsl(tag.text_color),
-                                backgroundColor: hexToHsl(tag.background_color)
-                            }));
-                            console.log(tagItems);
-                            // Initialize Tagify with custom styling for each tag
-                            var tagify = new Tagify(inputElement, {
-                                enforceWhitelist: true,  // Only allow tags from the list
-                                whitelist: tagItems,  // Set the whitelist to the tagItems array
-                                templates: {
-                                    tag: function(tagData) {
-                                        return `
-                                            <tag title="${tagData.value}" contenteditable='false' spellcheck="false" tabIndex="-1" class="tagify__tag" style="color: ${tagData.textColor}; background-color: ${tagData.backgroundColor};">
-                                                <x title="remove tag" class="tagify__tag__removeBtn"></x>
-                                                <div>
-                                                    <span class="tagify__tag-text">${tagData.value}</span>
-                                                </div>
-                                            </tag>`;
-                                    }
-                                }
-                            });
+                            let tagsData = response.tags; // Array of tag details
+                            let tagsUse = [];
 
-                            // Preselect tags based on tagsUse array
-                            var selectedTags = tagsData
-                                .filter(tag => tagsUse.includes(tag.tag_name.toLowerCase()))  // Filter tags that exist in tagsUse
-                                .map(tag => tag.tag_name);  // Map the filtered tags to just their names
-                                tagify.removeAllTags();
-                                // console.log(selectedTags);
-                                tagify.addTags(selectedTags);  // Add these tags to the Tagify instance
+                            if (Array.isArray(response.tt)) {
+                                tagsUse = response.tt !== 'NA' ? response.tt.map(tag => tag.toLowerCase()) : [];
+                            } else {
+                                console.error("response.tt is not an array");
+                            }
+                            // let tagsUse = response.tt.map(tag => tag.toLowerCase()); // Normalize tagsUse to lowercase for case-insensitive matching
+                            let cycle = response.cycle;
+                            // console.log(cycle);
+                            if (tagsData && tagsData.length) {
                                 
+                                var inputElement = document.getElementById("tagsbeta");
+                                // Prepare the tag data for Tagify (convert Select2 data to Tagify-friendly format)
+                                var tagItems = tagsData.map(tag => ({
+                                    value: tag.tag_name,
+                                    id: tag.id,
+                                    textColor: hexToHsl(tag.text_color),
+                                    backgroundColor: hexToHsl(tag.background_color)
+                                }));
+                                console.log(tagItems);
+                                
+                                // Initialize Tagify with custom styling for each tag
+                                var tagify = new Tagify(inputElement, {
+                                    enforceWhitelist: true,  // Only allow tags from the list
+                                    whitelist: tagItems,  // Set the whitelist to the tagItems array
+                                    templates: {
+                                        tag: function(tagData) {
+                                            return `
+                                                <tag title="${tagData.value}" contenteditable='false' spellcheck="false" tabIndex="-1" class="tagify__tag" style="--tag-text-color: ${tagData.textColor}; background-color: ${tagData.backgroundColor};">
+                                                    <x title="remove tag" class="tagify__tag__removeBtn"></x>
+                                                    <div>
+                                                        <span class="tagify__tag-text">${tagData.value}</span>
+                                                    </div>
+                                                </tag>`;
+                                        }
+                                    }
+                                });
+
+                                // Preselect tags based on tagsUse array
+                                var selectedTags = tagsData
+                                    .filter(tag => tagsUse.includes(tag.tag_name.toLowerCase()))  // Filter tags that exist in tagsUse
+                                    .map(tag => tag.tag_name);  // Map the filtered tags to just their names
+                                    tagify.removeAllTags();
+                                    // console.log(selectedTags);
+                                    tagify.addTags(selectedTags);  // Add these tags to the Tagify instance
+                                    
+                            }
+                        
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX error:', status, error);
                         }
-                      
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX error:', status, error);
-                    }
-                });
+                    });
 
-                function formatState(state) {
-                    if (!state.id) {
-                        return state.text; // Return the original text if there's no data
-                    }
-
-                    var textColor = $(state.element).data('text-color');
-                    var backgroundColor = $(state.element).data('background-color');
-
-                    var $state = $(
-                        '<span class="badge" style="color:' + textColor + '; background-color:' + backgroundColor + ';">' + state.text + '</span>'
-                    );
-
-                    return $state;
-                }
-                function hexToHsl(hex) {
-                    // Convert HEX to RGB
-                    let r = parseInt(hex.slice(1, 3), 16);
-                    let g = parseInt(hex.slice(3, 5), 16);
-                    let b = parseInt(hex.slice(5, 7), 16);
-
-                    // Convert RGB to HSL
-                    r /= 255;
-                    g /= 255;
-                    b /= 255;
-                    let max = Math.max(r, g, b);
-                    let min = Math.min(r, g, b);
-                    let h, s, l = (max + min) / 2;
-
-                    if (max == min) {
-                        h = s = 0; // achromatic
-                    } else {
-                        let d = max - min;
-                        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-                        switch (max) {
-                            case r:
-                                h = (g - b) / d + (g < b ? 6 : 0);
-                                break;
-                            case g:
-                                h = (b - r) / d + 2;
-                                break;
-                            case b:
-                                h = (r - g) / d + 4;
-                                break;
+                    function formatState(state) {
+                        if (!state.id) {
+                            return state.text; // Return the original text if there's no data
                         }
-                        h /= 6;
+
+                        var textColor = $(state.element).data('text-color');
+                        var backgroundColor = $(state.element).data('background-color');
+
+                        var $state = $(
+                            '<span class="badge" style="color:' + textColor + '; background-color:' + backgroundColor + ';">' + state.text + '</span>'
+                        );
+
+                        return $state;
                     }
+                    function hexToHsl(hex) {
+                        // Convert HEX to RGB
+                        let r = parseInt(hex.slice(1, 3), 16);
+                        let g = parseInt(hex.slice(3, 5), 16);
+                        let b = parseInt(hex.slice(5, 7), 16);
 
-                    h = Math.round(h * 360);
-                    s = Math.round(s * 100);
-                    l = Math.round(l * 100);
+                        // Convert RGB to HSL
+                        r /= 255;
+                        g /= 255;
+                        b /= 255;
+                        let max = Math.max(r, g, b);
+                        let min = Math.min(r, g, b);
+                        let h, s, l = (max + min) / 2;
 
-                    return `hsl(${h}, ${s}%, ${l}%)`;
+                        if (max == min) {
+                            h = s = 0; // achromatic
+                        } else {
+                            let d = max - min;
+                            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                            switch (max) {
+                                case r:
+                                    h = (g - b) / d + (g < b ? 6 : 0);
+                                    break;
+                                case g:
+                                    h = (b - r) / d + 2;
+                                    break;
+                                case b:
+                                    h = (r - g) / d + 4;
+                                    break;
+                            }
+                            h /= 6;
+                        }
+
+                        h = Math.round(h * 360);
+                        s = Math.round(s * 100);
+                        l = Math.round(l * 100);
+
+                        return `hsl(${h}, ${s}%, ${l}%)`;
+                    }
+                }else{
+                    console.log("no data");
                 }
             });
 
@@ -761,17 +827,17 @@
                 return $state;
             }
         }
+        
 	 	// Public methods
 	 	return {
 	 		init: function () {
                 initReady();
 				handleSubmit();
-                handleDuplicate();
+                // handleDuplicate();
                 handleMydropZone();
                 handletinymce();
                 handleEcpSelect();
                 handleTagCategorySelect();
-                
                 // handletags();
 	 		}
 	 	};

@@ -35,6 +35,10 @@
                             <label  class="fs-6 fw-semibold mb-2">TrackingID</label>
                             <input type="text" class="form-control form-control-solid" placeholder="TrackingID" name="trackingID" id="trackingID<?=$sag1;?>"/>
                     </div>
+                    <div class="mb-3">
+                        <label for="comment<?=$sag1;?>" class="fs-6 fw-semibold mb-2">Comment</label>
+                        <textarea class="form-control form-control-solid" id="comment<?=$sag1;?>" name="comment" rows="4" placeholder="Enter your comment here"></textarea>
+                    </div>
             </div>
 
             <div class="modal-footer">
@@ -82,11 +86,13 @@ $(document).ready(function() {
         $('#addcomment<?=$sag1;?>').on('change', function() {
             const selectedValue = $('#addcomment<?=$sag1;?>').val();
                 const trackingElement = document.getElementById('tracking<?=$sag1;?>');
-
+                const commentElement = document.getElementById('comment<?=$sag1;?>');
                 if (selectedValue !== '8' && trackingElement) {
                     trackingElement.removeAttribute('hidden');
+                    commentElement.setAttribute('hidden', true);
                 } else if (selectedValue === '8' && trackingElement) {
                     trackingElement.setAttribute('hidden', true);
+                    commentElement.removeAttribute('hidden');
                 }
 
 

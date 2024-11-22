@@ -9,6 +9,7 @@ use App\Models\JobtaskModel;
 use App\Models\JobtagsModel;
 use App\Models\JobbetaModel;
 use App\Models\TaskImageModel;
+use App\Models\CommentTypeModel;
 
 class Keyin extends BaseController{
     public function __construct()
@@ -54,7 +55,9 @@ class Keyin extends BaseController{
     }
     public function myjobvip(){
         $jobtask = new JobtaskModel();
+        $commentType = new CommentTypeModel();
         $data['res'] = $jobtask->getJobtaskCalljob(2);
+        $data['comment'] = $commentType->where('commentType','keyin')->orderBy('id','ASC')->findAll();
         echo view('pages/menu/header',$data);
         echo view('pages/menu/mainmenu');
         echo view('pages/menu/detail');
@@ -63,7 +66,9 @@ class Keyin extends BaseController{
     }
     public function myjobfifo(){
         $jobtask = new JobtaskModel();
+        $commentType = new CommentTypeModel();
         $data['res'] = $jobtask->getJobtaskListFifo(1);
+        $data['comment'] = $commentType->where('commentType','keyin')->orderBy('id','ASC')->findAll();
         echo view('pages/menu/header',$data);
         echo view('pages/menu/mainmenu');
         echo view('pages/menu/detail');
@@ -72,7 +77,9 @@ class Keyin extends BaseController{
     }
     public function myjobstock(){
         $jobtask = new JobtaskModel();
+        $commentType = new CommentTypeModel();
         $data['res'] = $jobtask->getJobtaskStockTags(2);
+        $data['comment'] = $commentType->where('commentType','keyin')->orderBy('id','ASC')->findAll();
         echo view('pages/menu/header',$data);
         echo view('pages/menu/mainmenu');
         echo view('pages/menu/detail');
@@ -92,10 +99,13 @@ class Keyin extends BaseController{
     public function SaveCommentByTrackingID(){
         $taskJob = new JobtaskModel();
         $add = $this->request->getPost();
-    
+        if(!$add['commentDesc']){
+            $add['commentDesc'] = null;
+        }
         $data = [
             'trackingId' => !$add['trackingID'] ? null : $add['trackingID'],
             'comment' => !$add['comment'] ? null : $add['comment'],
+            'commentNote' => !$add['commentDesc'] ? null : $add['commentDesc'],
             'jobStatus' => 3,
             'updateuser' => session()->get('m_name'),
             'updatedate' => date('Y-m-d H:i:s')
@@ -104,6 +114,7 @@ class Keyin extends BaseController{
             $data = [
                 'trackingID' => $add['trackingID'],
                 'comment' => intval($add['comment']),
+                'commentNote' => $add['commentDesc'],
                 'message' => 'Successful',
                 'status' => 'success'
             ];
@@ -111,6 +122,7 @@ class Keyin extends BaseController{
             $data = [
                 'trackingID' => $add['trackingID'],
                 'comment' => intval($add['comment']),
+                'commentNote' => $add['commentDesc'],
                 'message' => 'Fail Save Comment!!',
                 'status' => 'error'
             ];

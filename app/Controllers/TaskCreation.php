@@ -94,13 +94,14 @@ class TaskCreation extends BaseController{
 
         $jobtags->adelete($jobtaskID);
         $jobbeta->adelete($jobtaskID);
-        
-        foreach ($add['tags'] as $tag) {
-            $datatags = [
+        if(isset($add['tags'])){
+            foreach ($add['tags'] as $tag) {
+                $datatags = [
                 'jobid' => $jobtaskID,
                 'tagsid' => $tag, // Access the id field from each result
             ];
-            $jobtags->upserta($datatags,'tagsid');
+                $jobtags->upserta($datatags,'tagsid');
+            }
         }
         $ass = json_decode($add['tagsbeta']);
         // var_dump($ass);
@@ -126,7 +127,7 @@ class TaskCreation extends BaseController{
         $data = [
             'ecpcode' => $add['ecpcode'],
             // 'tagsbeta' => $add['tagbeta'],
-            'tags' => $add['tags'],
+            'tags' => $add['tags'] ?? NULL,
             'cupture' => htmlspecialchars($add['kt_docs_tinymce_basic'],),
             'message' => 'Successful',
             'status' => 'success'
@@ -166,13 +167,14 @@ class TaskCreation extends BaseController{
 
         $jobtags->adelete($jobtaskID);
         $jobbeta->adelete($jobtaskID);
-
-        foreach ($add['tags'] as $tag) {
-            $datatags = [
+        if(isset($add['tags'])){
+            foreach ($add['tags'] as $tag) {
+                $datatags = [
                 'jobid' => $jobtaskID,
                 'tagsid' => $tag, // Access the id field from each result
             ];
-            $jobtags->upserta($datatags,'tagsid');
+                $jobtags->upserta($datatags,'tagsid');
+            }
         }
         $ass = json_decode($add['tagsbeta']);
         // var_dump($ass);
@@ -187,7 +189,8 @@ class TaskCreation extends BaseController{
             }
         } else {
             // Optional: Log or handle the case where 'tagbeta' is missing
-            var_dump("The 'tagbeta' key is missing or not an array.");
+            // var_dump("The 'tagbeta' key is missing or not an array.");
+            $add['tagbeta'] = NULL;
         }
 
         $dataImage = [
@@ -198,7 +201,7 @@ class TaskCreation extends BaseController{
         $data = [
             'ecpcode' => $add['ecpcode'],
             // 'tagsbeta' => $add['tagbeta'],
-            'tags' => $add['tags'],
+            'tags' => $add['tags'] ?? NULL,
             'cupture' => htmlspecialchars($add['kt_docs_tinymce_basic'],),
             'message' => 'Successful',
             'status' => 'success'

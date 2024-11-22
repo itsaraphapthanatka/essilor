@@ -151,7 +151,6 @@ $routes->get('loadiframe', 'Data::loadiframe');
         $routes->get('getJobtaskCalljob/(:num)', 'Transaction::getJobtaskCalljob/$1');
         $routes->get('getJobtaskUpdateCalljob/(:num)', 'Transaction::getJobtaskUpdateCalljob/$1');
         $routes->get('getJobtaskStockTags/(:num)', 'Transaction::getJobtaskStockTags/$1');
-        $routes->get('getJobtaskStockTags/(:num)', 'Transaction::getJobtaskStockTags/$1');
         $routes->get('getJobtaskQCProcess/(:num)', 'Transaction::getJobtaskQCProcess/$1');
         $routes->get('getAllTags', 'Tags::getAllTags');
         $routes->get('getJobtaskSupport/(:num)/(:any)/(:num)/(:num)', 'Support::getJobtaskSupport/$1/$2/$3/$4');

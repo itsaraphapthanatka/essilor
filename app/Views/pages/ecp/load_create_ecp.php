@@ -75,15 +75,16 @@
                             <div class="col-lg-8">
                                 <div class="row">
                                     <div class="col-lg-12 fv-row">
-                                        <select name="payment" data-control="select2" data-placeholder="Select a format" data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                            <option value="credit" selected>Credit</option>
-                                            <option value="cash">Cash</option>
+                                        <select name="payment" data-control="select2" data-placeholder="Select a format" data-hide-search="false" class="form-select form-select-solid fw-bold">
+                                            <?php foreach($payment as $pay): ?>
+                                                <option value="<?= $pay->payment_term_cd ?>"><?= $pay->payment_term_cd ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Customer Alert 1</label>
                         <div class="col-lg-8">
                             <div class="col-lg-12 fv-row">
@@ -94,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-6">
+                    <div class="row mb-6" hidden>
                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Customer Alert 2</label>
                         <div class="col-lg-8">
                             <div class="col-lg-12 fv-row">
@@ -105,7 +106,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-6">
+                    <div class="row mb-6" hidden>
                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Customer Alert 3</label>
                         <div class="col-lg-8">
                             <div class="col-lg-12 fv-row">
@@ -135,7 +136,7 @@
                     <!--end::Card header-->
                     <!--begin::Card body-->
                     <div class="card-body border-top p-9">
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">ชื่อเรื่อง</label>
                             <div class="col-lg-8">
                                 <div class="row">
@@ -145,7 +146,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">BU</label>
                             <div class="col-lg-8">
                             <div class="col-lg-12 fv-row">
@@ -153,7 +154,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Type</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -161,7 +162,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Promotion</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -169,7 +170,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Start and End Date</label>
                             <div class="col-lg-8">
                                 <!--begin::Row-->
@@ -219,7 +220,7 @@
                     <!--end::Card header-->
                     <!--begin::Card body-->
                     <div class="card-body border-top p-9">
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Region</label>
                             <div class="col-lg-8">
                                 <div class="row">
@@ -232,7 +233,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">สาย</label>
                             <div class="col-lg-8">
                             <div class="col-lg-12 fv-row">
@@ -243,7 +244,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Code(2)</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -254,7 +255,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">ไม่โชว์ราคา</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -265,7 +266,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">ทิ้งบิล</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -276,7 +277,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label fw-semibold fs-6">ร้านที่ Comment เปลี่ยนที่ส่ง</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -286,7 +287,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label fw-semibold fs-6">Remark</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -296,7 +297,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label fw-semibold fs-6">วิ่งเช้ารอบเดียว</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -306,7 +307,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label fw-semibold fs-6">วิ่งเย็นรอบเดียว</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -316,7 +317,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label fw-semibold fs-6">วิ่งแค่ จ-ศ</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -330,14 +331,15 @@
                             <label class="col-lg-4 col-form-label fw-semibold fs-6">Note</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
-                                    <select name="logis_note" data-control="select2" data-placeholder="Select a format" data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                        <option value=""></option>    
-                                        <option value="1" selected>ทิ้งบิล-สนญ.</option>    
+                                    <select name="logis_note" data-control="select2" data-placeholder="Select a format" data-hide-search="false" class="form-select form-select-solid fw-bold">
+                                    <?php foreach($logis as $logi): ?>
+                                        <option value="<?=$logi->logis_note;?>"><?=$logi->logis_note;?></option>
+                                    <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label fw-semibold fs-6">ส่งที่</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -347,7 +349,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">คอลัมน์1</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -357,7 +359,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Note by พี่ดา พี่ตุ่น</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -368,7 +370,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label fw-semibold fs-6">comment</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -402,7 +404,11 @@
                             <div class="col-lg-8">
                                 <div class="row">
                                     <div class="col-lg-12 fv-row">
-                                        <input type="text" name="c_customer_parent_group" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="c_customer_parent_group" value="" />
+                                        <select name="c_customer_parent_group" data-control="select2" data-placeholder="Select a format" data-hide-search="false" class="form-select form-select-solid fw-bold">
+                                            <?php foreach($c_customer_parent_group as $c_customer_parent_group): ?>
+                                                <option value="<?=$c_customer_parent_group->c_customer_parent_group;?>"><?=$c_customer_parent_group->c_customer_parent_group;?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -410,8 +416,12 @@
                         <div class="row mb-6">
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Essilor Experts</label>
                             <div class="col-lg-8">
-                            <div class="col-lg-12 fv-row">
-                                    <input type="text" name="essilor_experts" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Essilor Experts" value=""/>
+                                <div class="col-lg-12 fv-row">
+                                    <select name="essilor_experts" data-control="select2" data-placeholder="Select a format" data-hide-search="false" class="form-select form-select-solid fw-bold">
+                                        <?php foreach($c_experts as $c_experts): ?>
+                                            <option value="<?=$c_experts->c_experts;?>"><?=$c_experts->c_experts;?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -419,7 +429,11 @@
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Essilor Partner</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
-                                    <input type="text" name="essilor_partner" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Essilor Partner" value=""/>
+                                    <select name="essilor_partner" data-control="select2" data-placeholder="Select a format" data-hide-search="false" class="form-select form-select-solid fw-bold">
+                                        <?php foreach($c_partner as $c_partner): ?>
+                                            <option value="<?=$c_partner->c_partner;?>"><?=$c_partner->c_partner;?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -427,11 +441,15 @@
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">Nikon Lenswear Partner</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
-                                    <input type="text" name="nikon_lenwear_partner" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Nikon Lenswear Partner" value=""/>
+                                    <select name="nikon_lenwear_partner" data-control="select2" data-placeholder="Select a format" data-hide-search="false" class="form-select form-select-solid fw-bold">
+                                        <?php foreach($nikon_lenswear_partner as $nikon_lenswear_partner): ?>
+                                            <option value="<?=$nikon_lenswear_partner->nikon_lenswear_partner;?>"><?=$nikon_lenswear_partner->nikon_lenswear_partner;?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">อัพเกรด Coating</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -442,7 +460,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">อัพเกรด Azio</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -453,7 +471,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-6">
+                        <div class="row mb-6" hidden>
                             <label class="col-lg-4 col-form-label required fw-semibold fs-6">อัพเกรด F360</label>
                             <div class="col-lg-8">
                                 <div class="col-lg-12 fv-row">
@@ -515,48 +533,48 @@
                                 }
                             }
                         },
-                        'title': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Title is required'
-                                }
-                            }
-                        },
-                        'bu': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'BU is required'
-                                }
-                            }
-                        },
-                        'type': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Type is required'
-                                }
-                            }
-                        },
-                        'promotion': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Promotion is required'
-                                }
-                            }
-                        },
-                        'calendar_event_start_date': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Start Date is required'
-                                }
-                            }
-                        },
-                        'calendar_event_end_date': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'End Date is required'
-                                }
-                            }
-                        },
+                        // 'title': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'Title is required'
+                        //         }
+                        //     }
+                        // },
+                        // 'bu': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'BU is required'
+                        //         }
+                        //     }
+                        // },
+                        // 'type': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'Type is required'
+                        //         }
+                        //     }
+                        // },
+                        // 'promotion': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'Promotion is required'
+                        //         }
+                        //     }
+                        // },
+                        // 'calendar_event_start_date': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'Start Date is required'
+                        //         }
+                        //     }
+                        // },
+                        // 'calendar_event_end_date': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'End Date is required'
+                        //         }
+                        //     }
+                        // },
                         'detail': {
                             validators: {
                                 notEmpty: {
@@ -577,7 +595,7 @@
             );
 			// Handle submit button
 			submitButton.addEventListener('click', e => {
-				// e.preventDefault();
+				e.preventDefault();
 				// Validate form before submit
 				if (validator) {
 					validator.validate().then(function (status) {
@@ -585,40 +603,34 @@
 							submitButton.setAttribute('data-kt-indicator', 'on');
 							// Disable submit button whilst loading
 							submitButton.disabled = true;
-							var frm = $('#add_form');
-							frm.submit(function (ev) {
-								$.ajax({
-									type: frm.attr('method'),
-									url: frm.attr('action'),
-									data: frm.serialize(),
-										success: function (data) {
-											console.log(data);
+							$.ajax({
+                                type: form.method,
+                                url: form.action,
+                                data: $(form).serialize(),
+                                    success: function (data) {
+                                        console.log(data);
 
-                                        // setTimeout(function () {
-											submitButton.removeAttribute('data-kt-indicator');
-											Swal.fire({
-												text: data.message,
-												icon: data.status,
-												buttonsStyling: false,
-												confirmButtonText: "Ok, got it!",
-												customClass: {
-													confirmButton: "btn btn-primary"
-												}
-											}).then(function (result) {
-												if (result.isConfirmed) {
-													// Enable submit button after loading
-													submitButton.disabled = false;
-													// Redirect to customers list page
-													window.location.href = "<?php echo base_url();?>view_ecp";
-												}
-											});
-										// }, 2000);
-									}
-								});
-								ev.preventDefault();
-
-							});
-							$("#add_form").submit();
+                                    // setTimeout(function () {
+                                        submitButton.removeAttribute('data-kt-indicator');
+                                        Swal.fire({
+                                            text: data.message,
+                                            icon: data.status,
+                                            buttonsStyling: false,
+                                            confirmButtonText: "Ok, got it!",
+                                            customClass: {
+                                                confirmButton: "btn btn-primary"
+                                            }
+                                        }).then(function (result) {
+                                            if (result.isConfirmed) {
+                                                // Enable submit button after loading
+                                                submitButton.disabled = false;
+                                                // Redirect to customers list page
+                                                window.location.href = "<?php echo base_url();?>view_ecp";
+                                            }
+                                        });
+                                    // }, 2000);
+                                }
+                            });
 						}
 					});
 				}

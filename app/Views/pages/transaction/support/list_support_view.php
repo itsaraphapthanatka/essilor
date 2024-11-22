@@ -214,9 +214,9 @@
         
         // อัปเดตเนื้อหาสำหรับ Pending Ticket
 
-        $('#loadtable').load('<?= base_url(); ?>loadtable/' + activeIssueId + '/pending/' + selectedMonth + '/' + selectedYear);
+        $('#loadtasble').load('<?= base_url(); ?>loadtable/' + activeIssueId + '/pending/' + selectedMonth + '/' + selectedYear);
         
-        // อัปเดตเนื้อหาสำหรับ In progress
+        // // อัปเดตเนื้อหาสำหรับ In progress
 
         $('#loadtableInprogress').load('<?= base_url(); ?>loadtable/' + activeIssueIdInprogress + '/inprogress/' + selectedMonth + '/' + selectedYear);
         

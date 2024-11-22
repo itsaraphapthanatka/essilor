@@ -14,6 +14,7 @@ use App\Models\JobbetaModel;
 use App\Models\JobtaskModel;
 use App\Models\TaskImageModel;
 use App\Models\SetupModel;
+use App\Models\SupportJobModel;
 
 class Data extends BaseController{
     protected $helpers = ['form'];
@@ -87,10 +88,6 @@ class Data extends BaseController{
         }
 
         $filename = $this->request->getFile('userfile');
-        // if (! $filename->hasMoved()) {
-        //     $filepath = WRITEPATH . 'uploads/' . $filename->store();
-
-        //     $data = ['uploaded_fileinfo' => new File($filepath)];
             $name = $filename->getName();
             $tempName = $filename->getTempName();
             $arr_file = explode(".",$name);
@@ -177,18 +174,27 @@ class Data extends BaseController{
                         'upgrade_azio' => $upgrade_azio,
                         'upgrade_f360' => $upgrade_f360,
                     ];
-                    $empmodel->insertValue($data);
+                    
+                    if($empmodel->insertValue($data)){
+                        $arr = [
+                            "status" => "success",
+                            'data' => $data,
+                            "message" => "Data imported successfully."
+                        ];
+                    }else{
+                        $arr = [
+                            "status" => "error",
+                            'data' => $data,
+                            "message" => "Data imported failed."
+                        ];
+                    }
                 }
             }else{
                 print_r($sheetData);
             }
-
-            print_r($sheetData);
-        // }
-
-        // $data = ['errors' => 'The file has already been moved.'];
-
-        // print_r($data);
+            
+            print_r($arr);
+            return $this->response->setJSON($arr);
     }
     public function getUserOnline(){
         $useronline = new UserOnlineModel();
@@ -213,12 +219,44 @@ class Data extends BaseController{
         $JobtagsModel = new JobtagsModel();
         $JobbetaModel = new JobbetaModel();
         $TaskImageModel = new TaskImageModel();
+        $supportModel = new SupportJobModel();
     
         $jobtaskModel->truncate();
         $JobtagsModel->truncate();
         $JobbetaModel->truncate();
         $TaskImageModel->truncate();
-    
+        $supportModel->truncate();
+        // Create a log file to record the truncate operation
+        // Create the logs directory if it doesn't exist
+        $logsDir = WRITEPATH . 'logs';
+        if (!is_dir($logsDir)) {
+            if (!mkdir($logsDir, 0755, true) && !is_dir($logsDir)) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Failed to create logs directory.'
+                ]);
+            }
+        }
+        $logFile = $logsDir . '/truncate_log_' . date('Y-m-d') . '.log';
+        $logMessage = '[' . date('Y-m-d H:i:s') . '] User ' . session()->get('m_name') . ' performed truncate operation on jobtask, jobtags, jobbeta, and taskimage tables.' . PHP_EOL;
+
+        // Check if the log file is writable or create it if it doesn't exist
+        if (!file_exists($logFile) && !touch($logFile)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Failed to create log file.'
+            ]);
+        }
+
+        if (is_writable($logFile)) {
+            file_put_contents($logFile, $logMessage, FILE_APPEND);
+        } else {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Log file is not writable.'
+            ]);
+        }
+
         $db->query('SET FOREIGN_KEY_CHECKS = 1;');
     
         return $this->response->setJSON([

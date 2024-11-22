@@ -133,7 +133,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                 <button type="button" class="btn btn-light-danger" data-bs-stacked-modal="#kt_modal_stacked_task<?=$value->id;?>">Reject</button>
-                                                <button type="button" class="btn btn-primary" id="closejob<?=$value->id;?>" onclick="closejobevent('<?=$value->id;?>')">Close Job</button>
+                                                <button type="button" class="btn btn-primary" id="closejob<?=$value->id;?>" onclick="closejobevent('<?=$value->id;?>')">Pass</button>
                                             </div>
                                                     </div>
                                                 </div>

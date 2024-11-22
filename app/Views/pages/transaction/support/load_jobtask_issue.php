@@ -7,7 +7,7 @@
                 <th class="min-w-100px">transaction</th>
                 <th class="min-w-175px">Last Action</th>
                 <th class="min-w-70px">Customer ID</th>
-                <th class="min-w-100px">Tracking ID</th>
+                <th class="min-w-100px">Comment</th>
                 <th class="min-w-100px">Order Status</th>
                 <th class="min-w-100px">Ticket ID</th>
                 <th class="min-w-100px">Action</th>
@@ -20,7 +20,8 @@
     <!--end::Table-->
 </div>
 
-<script>var HOST_URL = "<?php echo base_url();?>";</script>
+<script>var HOST_URL = "<?php echo base_url();?>jsondata/";</script>
+<script>var HOST_URL_fastapi = "<?php echo session()->get('url_api');?>";</script> 
 
 <script>
 	"use strict";
@@ -32,7 +33,7 @@
 		var dt;
 		var filterPayment;
 		var channalid = '10';
-		var list = "jsondata/getJobtaskSupport/<?=$issueid;?>/<?=$status;?>/<?=$month;?>/<?=$year;?>";
+		var list = "getJobtaskSupport/<?=$issueid;?>/<?=$status;?>/<?=$month;?>/<?=$year;?>";
 		// Private functions
 		var initDatatable = function () {
 			dt = $("#kt_datatable_horizontal_scroll<?=$status;?>").DataTable({
@@ -55,7 +56,7 @@
 					{ data: 'id' },
 					{ data: 'commentName' },
 					{ data: 'ecpcode' },
-					{ data: 'trackingId' },
+					{ data: 'commentNote' },
 					{ data: 'jobStatus' },
 					{ data: 'ticketCode' },
 					{ data: null },
@@ -112,11 +113,16 @@
 								if (row.ticketCodeCount >= 3) {
 									textColor = 'danger';
 								}
-							return `<div class="d-flex align-items-center">
-										<div class="d-flex justify-content-start flex-column">
-											<div class="text-${textColor} mb-1">${row.trackingId.split(',').join(',<br>')}</div>
-										</div>			
-									</div>`;
+							// return `<div class="d-flex align-items-center">
+							// 			<div class="d-flex justify-content-start flex-column">
+							// 				<div class="text-${textColor} mb-1">${row.trackingId.split(',').join(',<br>')}</div>
+							// 			</div>			
+							// 		</div>`;
+							if(row.commentNote){
+								return `<div class="text-${textColor} mb-1">${row.commentNote}</div>`;
+							}else{
+								return ``;
+							}
 						}
 					},
                     {   target: 4,

@@ -134,45 +134,58 @@
 								<div class="card-header pt-7">
 									<!--begin::Title-->
 									<h3 class="card-title align-items-start flex-column">
-										<span class="card-label fw-bold text-gray-800">Top Selling Products</span>
-										<span class="text-gray-500 mt-1 fw-semibold fs-6">8k social visitors</span>
+										<span class="card-label fw-bold text-gray-800">Call Center</span>
 									</h3>
 									<!--end::Title-->
 
 									<!--begin::Toolbar-->
-									<div class="card-toolbar">   
+									<!-- <div class="card-toolbar">   
 										<a href="<?=base_url()?>theme/dist/apps/ecommerce/catalog/categories.html" class="btn btn-sm btn-light">View All</a>        
-									</div>
+									</div> -->
 									<!--end::Toolbar-->
 								</div>
 								<!--end::Header-->
 
 								<!--begin::Body-->
 								<div class="card-body pt-4">
-									<div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 mb-5">
-										<!--begin::Icon-->
-										<i class="ki-duotone ki-shield-tick fs-2tx text-primary me-4"><span class="path1"></span><span class="path2"></span></i>
-										<!--end::Icon-->
-										
-										<!--begin::Wrapper-->
-										<div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
-											<!--begin::Content-->
-											<div class="mb-3 mb-md-0 fw-semibold">
-												<h4 class="text-gray-900 fw-bold">Iframe</h4>
-												<div class="fs-6 text-gray-700 pe-7">Enable Iframe Link</div>
+									<div class="accordion mb-5" id="kt_accordion_1">
+										<div class="accordion-item">
+											<h2 class="accordion-header" id="kt_accordion_1_header_1">
+												<button class="accordion-button fs-4 fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_1" aria-expanded="true" aria-controls="kt_accordion_1_body_1">
+													Setup Iframe
+												</button>
+											</h2>
+											<div id="kt_accordion_1_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_1" data-bs-parent="#kt_accordion_1">
+												<div class="accordion-body">
+													<div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 mb-5">
+														<!--begin::Icon-->
+														<i class="ki-duotone ki-shield-tick fs-2tx text-primary me-4"><span class="path1"></span><span class="path2"></span></i>
+														<!--end::Icon-->
+														
+														<!--begin::Wrapper-->
+														<div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+															<!--begin::Content-->
+															<div class="mb-3 mb-md-0 fw-semibold">
+																<h4 class="text-gray-900 fw-bold">Iframe</h4>
+																<div class="fs-6 text-gray-700 pe-7">Enable Iframe Link</div>
+															</div>
+															<!--end::Content-->
+															
+															<!--begin::Action-->
+															<a href="#" class="btn btn-primary px-6 align-self-center text-nowrap" data-bs-toggle="modal" data-bs-target="#kt_modal_two_factor_authentication">Enable</a>
+															<!--end::Action-->
+														</div>
+														<!--end::Wrapper-->
+														
+														<!--begin::Iframe-->
+														
+														<!--end::Iframe-->
+													</div>
+												</div>
 											</div>
-											<!--end::Content-->
-											
-											<!--begin::Action-->
-											<a href="#" class="btn btn-primary px-6 align-self-center text-nowrap" data-bs-toggle="modal" data-bs-target="#kt_modal_two_factor_authentication">Enable</a>
-											<!--end::Action-->
 										</div>
-										<!--end::Wrapper-->
-										
-										<!--begin::Iframe-->
-										
-										<!--end::Iframe-->
 									</div>
+									
 									<!--begin::Table container-->
 									<div id="loadiframe">
 										<!--begin::Table-->
@@ -322,7 +335,7 @@
 											<div class="badge badge-light-success">
 												<!--begin::Statistics-->
 												<div class="d-flex mb-2">
-													<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">05</span>
+													<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?= $maxDuration ? $maxDuration : 0;?></span>
 												</div>
 												<!--end::Statistics-->
 												<!--begin::Description-->
@@ -398,6 +411,7 @@
 												<th class="text-center"><span class="fs-6 fw-bold text-gray-800 m-5">No.2</span></th>
 												<th class="text-center"><span class="fs-6 fw-bold text-gray-800 m-5">No.3</span></th>
 												<th class="text-center"><span class="fs-6 fw-bold text-gray-800 m-5">No.4</span></th>
+												<th class="text-center"><span class="fs-6 fw-bold text-gray-800 m-5">No.5</span></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -406,31 +420,60 @@
 												<div class="me-md-2  badge badge-dark fs-base">
 													<span class="fs-2 fw-bold m-5">TOP 5 <br/> REJECT </span>
 												</div>
-												<td class="text-center">
-													<div class="mb-2">
-														<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">15</span>
-													</div>
-													<span class="badge badge-light-danger fs-base fs-6 fw-semibold">User1</span>
-												</td>
-												<td class="text-center">
-													<div class="mb-2">
-														<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">09</span>
-													</div>
-													<span class="badge badge-light-warning fs-base fs-6 fw-semibold">User4</span>
-												</td>
-												<td class="text-center">
-													<div class="mb-2">
-														<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">06</span>
-													</div>
-													<span class="badge badge-light-primary fs-base fs-6 fw-semibold">User3</span>
-												</td>
-												<td class="text-center">
-													<div class="mb-2">
-														<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">03</span>
-													</div>
-													<span class="badge badge-light-success fs-base fs-6 fw-semibold">User7</span>
-												</td>
-												
+												<?php if (empty($top5RejectQCByUser)): ?>
+													<?php for ($i = 0; $i < 5; $i++): ?>
+														<td class="text-center">
+															<div class="mb-2">
+																<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">0</span>
+															</div>
+															<?php
+																$badgeClass = 'badge-light-danger';
+																for ($j = 0; $j < $i; $j++) {
+																	if ($j+1 == 1) {
+																		$badgeClass = 'badge-light-warning';
+																	} elseif ($j+1 == 2) {
+																		$badgeClass = 'badge-light-primary';
+																	} elseif ($j+1 == 3) {
+																		$badgeClass = 'badge-light-secondary';
+																	} elseif ($j+1 >= 4) {
+																		$badgeClass = 'badge-light-success';
+																	}
+																}
+															?>
+															<span class="badge <?=$badgeClass;?> fs-base fs-6 fw-semibold">User <?=$i+1;?></span>
+															
+														</td>
+													<?php endfor; ?>
+												<?php else: ?>
+													<?php foreach($top5RejectQCByUser as $index => $rows): ?>
+														<td class="text-center">
+															<div class="mb-2">
+																<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$rows->reject_count;?></span>
+															</div>
+															<?php
+																$badgeClass = 'badge-light-danger';
+																switch ($index) {
+																	case 0:
+																		$badgeClass = 'badge-light-danger';
+																		break;
+																	case 1:
+																		$badgeClass = 'badge-light-warning';
+																		break;
+																	case 2:
+																		$badgeClass = 'badge-light-primary';
+																		break;
+																	case 3:
+																		$badgeClass = 'badge-light-secondary';
+																		break;
+																	default:
+																		$badgeClass = 'badge-light-success';
+																		break;
+																}
+															?>
+															<span class="badge <?=$badgeClass;?> fs-base fs-6 fw-semibold"><?=$rows->callQCuser;?></span>
+														</td>
+													<?php endforeach; ?>
+												<?php endif; ?>												
 											</tr>
 										</tbody>
 									</table>

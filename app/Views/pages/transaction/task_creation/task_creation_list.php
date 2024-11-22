@@ -148,6 +148,9 @@
 
 <script>var HOST_URL = "<?php echo base_url();?>";</script>
 
+<script>var HOST_URL_fastapi_local = "http://localhost:8000/job-task/0";</script>
+<script>var HOST_URL_fastapi = "<?php echo session()->get('url_api');?>job-task/0";</script>
+
 <script>
 	"use strict";
 
@@ -166,17 +169,29 @@
 				processing: false,
 				serverSide: false,
 				order: [[0, 'asc']],
-				stateSave: false,  
+				stateSave: false,
 				responsive: false,
 				scrollY: "500px",
-    			scrollCollapse: true,
-    			paging: false,
-				// deferRender:    true,
-				// scroller:       true
-    			dom: "<'table-responsive'tr>",
+				scrollCollapse: false,
+				paging: true,
+				pageLength: 50,
+				deferRender: false,
+				// scroller: {
+				// 	loadingIndicator: true,
+				// 	displayBuffer: 10,
+				// 	serverWait: 100
+				// },
+				dom: "<'table-responsive'tr>",
 				ajax: {
-					url: HOST_URL + userlist,
-					// url: "https://preview.keenthemes.com/api/datatables.php",
+					url: HOST_URL_fastapi,
+					// url: HOST_URL + "jsondata/getJobtask/0",
+					type: "GET", 
+					data: function(d) {
+						d.sag1 = 0;
+					},
+					dataSrc: function(json) {
+						return json.data;
+					}
 				},
 				columns: [
 					{ data: 'id' },
@@ -210,14 +225,16 @@
 						targets: 4,
 						className: 'text-center',
 						render: function(data, type, row) {
-							if(row.ocid === '1'){
+							if(row.ocid === 1){
 								return `<span class="badge badge-light-primary fs-6">${row.cyclename}</span>`;
 							}
-							if(row.ocid === '2'){
+							if(row.ocid === 2){
 								return `<span class="badge badge-light-warning fs-6">${row.cyclename}</span>`;
 							}
-							if(row.ocid === '3'){
+							if(row.ocid === 3){
 								return `<span class="badge badge-light-danger fs-6">${row.cyclename}</span>`;
+							}else{
+								return ``;
 							}
 						}
 					},

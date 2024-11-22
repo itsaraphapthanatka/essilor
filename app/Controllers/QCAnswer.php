@@ -59,8 +59,9 @@ class QCAnswer extends BaseController{
         $task = new JobtaskModel();
         $data = [
             'jobStatus' => '7',
-            'QCStatus' => '5',
+            'QCStatus' => '6',
             'callQCuser' => session()->get('m_name'),
+            'comment' => $add['commentQC'],
             'commentQC' => $add['commentQC'],
             'commentNote' =>  $add['note'],
             'updatedate' => date('Y-m-d H:i:s'),
