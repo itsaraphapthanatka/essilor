@@ -19,7 +19,7 @@ class Auth extends BaseController{
         if (session()->get('logged_in')) {
 
             if(session()->get('mtype') == 'member'){
-                return redirect()->to('/view_ecp');
+                return redirect()->to('/home/'.session()->get('mtype'));
             }else{
                 return redirect()->to('/main');
             }

@@ -187,7 +187,7 @@
 				// console.log(type);
 				// window.location.href = "/keyin/level2/"+type[0]+"/"+type[1];
 			} else {
-				window.location.href = "<?php echo base_url();?>home/member";
+				window.location.href = "<?php echo base_url();?>view_ecp";
 			}
 			
 		},1000);
