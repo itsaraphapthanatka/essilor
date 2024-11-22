@@ -65,16 +65,16 @@ class Keyin extends BaseController{
         echo view('pages/menu/footer');
     }
     public function myjobfifo(){
-        // $jobtask = new JobtaskModel();
-        // $commentType = new CommentTypeModel();
-        // $data['res'] = $jobtask->getJobtaskListFifo(1);
-        // $data['comment'] = $commentType->where('commentType','keyin')->orderBy('id','ASC')->findAll();
-        // echo view('pages/menu/header',$data);
-        // echo view('pages/menu/mainmenu');
-        // echo view('pages/menu/detail');
-        // echo view('pages/transaction/myjob/myjob_fifo');
-        // echo view('pages/menu/footer');
-        echo "hello fifo";
+        $jobtask = new JobtaskModel();
+        $commentType = new CommentTypeModel();
+        $data['res'] = $jobtask->getJobtaskListFifo(1);
+        $data['comment'] = $commentType->where('commentType','keyin')->orderBy('id','ASC')->findAll();
+        echo view('pages/menu/header',$data);
+        echo view('pages/menu/mainmenu');
+        echo view('pages/menu/detail');
+        echo view('pages/transaction/myjob/myjob_fifo');
+        echo view('pages/menu/footer');
+        // echo "hello fifo";
     }
     public function myjobstock(){
         $jobtask = new JobtaskModel();

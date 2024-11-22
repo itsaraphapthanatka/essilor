@@ -492,9 +492,7 @@
 													<select hidden class="form-select form-select-solid" data-control="select2" data-hide-search="true" 
 															data-placeholder="Select a Comment" name="addcomment" id="selectedCommentcomplete${row.id}" 
 															title="Select a comment type" onchange="handleCommentChange('${row.id}')">
-														<?php foreach($comment as $row): ?>
-															<option value="<?=$row['id'];?>"><?=$row['commentName'];?></option>
-														<?php endforeach; ?>
+													
 													</select>
 												</div>
 												<div class="mb-3 text-start" id="tracking${row.id}">
