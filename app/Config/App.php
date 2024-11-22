@@ -17,7 +17,7 @@ class App extends BaseConfig
      *
      *    http://example.com/
      */
-    public string $baseURL = 'https://essilor-352c706b5445.herokuapp.com/';
+    public string $baseURL = 'http://localhost/essilor/';
 
     // public string $baseURL_fastapi = 'https://apiessilor.lumpsum.cloud/ecp';
 

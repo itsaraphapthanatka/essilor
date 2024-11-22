@@ -430,18 +430,9 @@
 													<select class="form-select form-select-solid" data-control="select2" data-hide-search="true" 
 															data-placeholder="Select a Comment" name="addcomment" id="selectedComment${row.id}" 
 															title="Select a comment type" onchange="handleCommentChange('${row.id}')">
-														<option value="1">Claim</option>
-														<option value="2">COD</option>
-														<option value="3">Credit Limit</option>
-														<option value="4">ECPs</option>
-														<option value="5">Reject in Provider</option>
-														<option value="6">"VC/CP"</option>
-														<option value="7">Price Setup</option>
-														<option value="8">Missing Detail</option>
-														<option value="13">Urgent</option>
-														<option value="15">System Issue</option>
-														<option value="16">STK Over range</option>
-														<option value="17">Shortage</option>
+														<?php foreach($comment as $row): ?>
+															<option value="<?=$row['id'];?>"><?=$row['commentName'];?></option>
+														<?php endforeach; ?>
 													</select>
 												</div>
 												<div class="mb-3 text-start" id="tracking${row.id}" hidden>
@@ -495,18 +486,9 @@
 													<select hidden class="form-select form-select-solid" data-control="select2" data-hide-search="true" 
 															data-placeholder="Select a Comment" name="addcomment" id="selectedCommentcomplete${row.id}" 
 															title="Select a comment type" onchange="handleCommentChange('${row.id}')">
-														<option value="1">Claim</option>
-														<option value="2">COD</option>
-														<option value="3">Credit Limit</option>
-														<option value="4">ECPs</option>
-														<option value="5">Reject in Provider</option>
-														<option value="6">"VC/CP"</option>
-														<option value="7">Price Setup</option>
-														<option value="8">Missing Detail</option>
-														<option value="13">Urgent</option>
-														<option value="15">System Issue</option>
-														<option value="16">STK Over range</option>
-														<option value="17">Shortage</option>
+														<?php foreach($comment as $row): ?>
+															<option value="<?=$row['id'];?>"><?=$row['commentName'];?></option>
+														<?php endforeach; ?>
 													</select>
 												</div>
 												<div class="mb-3 text-start" id="tracking${row.id}">
