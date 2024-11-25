@@ -1017,13 +1017,13 @@ class JobtaskModel extends Model {
         $db = db_connect();
         $query = "
              SELECT
-                COUNT(*) AS wait,
+                COUNT(case when jobtask.jobStatus = '2' THEN 1 end) as wait,
                 COUNT(CASE WHEN jobtask.jobStatus = '3' THEN 1 END) AS success,
                 CASE 
                     WHEN (ecp.customer_type = 'vip' or ecp.customer_type = 'VIP') and  tagscategory.category_name = 'RX' THEN 'rx_keyin_vip'
-                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = '') and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard'
+                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = ''  OR ecp.customer_type IS NULL) and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard'
                     WHEN (ecp.customer_type = 'vip' or ecp.customer_type = 'VIP') and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_vip'
-                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = '') and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard'
+                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = ''  OR ecp.customer_type IS NULL) and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard'
                 END AS customer_type
             FROM
                 jobtask
@@ -1041,9 +1041,9 @@ class JobtaskModel extends Model {
             GROUP BY
                 CASE 
                     WHEN (ecp.customer_type = 'vip' or ecp.customer_type = 'VIP') and  tagscategory.category_name = 'RX' THEN 'rx_keyin_vip'
-                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = '') and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard'
+                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = ''  OR ecp.customer_type IS NULL) and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard'
                     WHEN (ecp.customer_type = 'vip' or ecp.customer_type = 'VIP') and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_vip'
-                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = '') and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard'
+                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = ''  OR ecp.customer_type IS NULL) and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard'
                 END
         ";
         $result = $db->query($query)->getResultArray();
@@ -1084,9 +1084,9 @@ class JobtaskModel extends Model {
                 COUNT(*) AS d_1,
                 CASE 
                     WHEN (ecp.customer_type = 'vip' or ecp.customer_type = 'VIP') and  tagscategory.category_name = 'RX' THEN 'rx_keyin_vip_d1'
-                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = '') and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard_d1'
+                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = ''  OR ecp.customer_type IS NULL) and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard_d1'
                     WHEN (ecp.customer_type = 'vip' or ecp.customer_type = 'VIP') and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_vip_d1'
-                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = '') and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard_d1'
+                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = ''  OR ecp.customer_type IS NULL) and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard_d1'
                 END AS customer_type
             FROM
                 jobtask
@@ -1105,9 +1105,9 @@ class JobtaskModel extends Model {
             GROUP BY
                 CASE 
                     WHEN (ecp.customer_type = 'vip' or ecp.customer_type = 'VIP') and  tagscategory.category_name = 'RX' THEN 'rx_keyin_vip_d1'
-                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = '') and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard_d1'
+                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = ''  OR ecp.customer_type IS NULL) and  tagscategory.category_name = 'RX' THEN 'rx_keyin_standard_d1'
                     WHEN (ecp.customer_type = 'vip' or ecp.customer_type = 'VIP') and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_vip_d1'
-                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = '') and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard_d1'
+                    WHEN (ecp.customer_type = 'standard' OR ecp.customer_type = ''  OR ecp.customer_type IS NULL) and  tagscategory.category_name = 'Stock' THEN 'stock_keyin_standard_d1'
                 END
         ";
         $result = $db->query($query)->getResultArray();
@@ -1140,6 +1140,4 @@ class JobtaskModel extends Model {
         ";
         $result = $db->query($query)->getResultArray();
     }
-
-
 }

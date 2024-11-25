@@ -155,6 +155,13 @@ class Keyin extends BaseController{
         $tasks = $jobtask->where('DATE_FORMAT(callJabdate, "%Y-%m-%d %H:%i") <=', $thirtyMinutesAgo) // แก้ไขรูปแบบวันที่
                          ->where('jobStatus', 2) // เปลี่ยนตามสถานะที่ต้องการ
                          ->findAll();
+        // ค้นหางานที่มี callJabdate เก่ากว่า 30 นาที
+        $tasksQC = $jobtask->where('DATE_FORMAT(updateqcdate, "%Y-%m-%d %H:%i") <=', $thirtyMinutesAgo) // แก้ไขรูปแบบวันที่
+                         ->where('callQC', 'Y') // เปลี่ยนตามสถานะที่ต้องการ
+                         ->where('comment IS NULL', NULL ,true)
+                         ->where('QCStatus IS NULL', NULL ,true)
+                         ->where('commentQC IS NULL', NULL ,true)
+                         ->findAll();
 
         foreach ($tasks as $task) {
             // ทำการคืนงานหรืออัปเดตสถานะที่ต้องการ
@@ -166,14 +173,26 @@ class Keyin extends BaseController{
             // บันทึกการคืนงานลงใน log
             log_message('info', 'Returned job ID: ' . $task['id']); // เพิ่มบันทึก log
         }
-        
-        $response = [
-            'status' => 'success',
-            'message' => 'สำเร็จในการคืนงานที่เก่ากว่า 30 นาที',
-            'data' => $tasks, // เปลี่ยนจาก var_dump เป็น $tasks เพื่อให้ข้อมูลถูกส่งกลับ
-            'datetime' => $thirtyMinutesAgo
-        ];
-
+        foreach ($tasksQC as $taskQC) {
+            // ทำการคืนงานหรืออัปเดตสถานะที่ต้องการ
+            $jobtask->update($taskQC['id'], [
+                'callQC' => null,
+                'callQCuser' => null
+            ]);
+        }
+        if($tasks || $tasksQC){
+            $response = [
+                'status' => 'success',
+                'message' => 'สำเร็จในการคืนงานที่เก่ากว่า 30 นาที',
+                'data' => $tasks ?: $tasksQC, // เปลี่ยนจาก var_dump เป็น $tasks หรือ $tasksQC เพื่อให้ข้อมูลถูกส่งกลับ
+                'datetime' => $thirtyMinutesAgo
+            ];
+        }else{
+            $response = [
+                'status' => 'warning',
+                'message' => 'ไม่พบงานที่เก่ากว่า 30 นาที',
+            ];
+        }
         return $this->response->setJSON($response);
     }
 }

@@ -372,14 +372,9 @@ class Data extends BaseController{
     
     public function exportExcel(){
         $db = db_connect();
-        // $query = $db->query("SELECT 
-        //                         e.customer_name,
-        //                         j.ecpcode
-        //                     FROM jobtask j 
-        //                     LEFT JOIN ecp e ON j.ecpid = e.id
-        //                     LEFT JOIN jobtask_image jti ON j.id = jti.jobid
-        //                     "
-        //                     );
+        $path = 'uploads/bk/base64/';
+        $base_url = base_url();
+        
         $query = $db->query('
                               SELECT
                                 jt.id,
@@ -388,7 +383,7 @@ class Data extends BaseController{
                                 jt.trackingId AS trackingId,
                                 GROUP_CONCAT(DISTINCT tb.tag_name SEPARATOR " , ") AS tagsBeta,
                                 GROUP_CONCAT(DISTINCT tj.tag_name SEPARATOR " , ") AS tagsJob,
-                                GROUP_CONCAT(DISTINCT ai.ass_imgg SEPARATOR " , ") AS image_url,
+                                GROUP_CONCAT(DISTINCT CONCAT("'.$base_url.'", "uploads/taskImage/", ai.ass_imgg) SEPARATOR " , ") AS image_url,
                                 ct.categoriesName,
                                 DATE_FORMAT(jt.createdate, "%d/%m/%Y %H:%i") AS createdate,
                                 js.statusname,
@@ -402,7 +397,7 @@ class Data extends BaseController{
                                 jt.qcstatus,
                                 jt.createuser,
                                 oc.cyclename,
-                                jt.orderCycleId as ocid
+                                jt.orderCycleId AS ocid
                             FROM jobtask jt
                             JOIN ecp e ON jt.ecpid = e.id
                             LEFT JOIN tagsbeta tbeta ON jt.id = tbeta.jobid
@@ -478,10 +473,21 @@ class Data extends BaseController{
             $sheet->setCellValue('A' . $row, $record['ecpcode']);
             $sheet->setCellValue('B' . $row, $record['customer_name']);
             $sheet->setCellValue('C' . $row, $record['trackingId']);
-            $sheet->setCellValue('D' . $row, $record['capture']);
+            $sheet->setCellValue('D' . $row, preg_replace_callback('/data:image\/[^;]+;base64,([^"]+)/', function($matches) use ($path) {
+                // สร้างชื่อไฟล์ที่ไม่ซ้ำกัน
+                $filename = 'img_' . uniqid() . '.png';
+                $filepath = $path . $filename;
+                
+                // แปลง base64 เป็นรูปภาพและบันทึก
+                $imageData = base64_decode($matches[1]);
+                file_put_contents($filepath, $imageData);
+                
+                // ส่งคืน URL ของรูปภาพ
+                return base_url('uploads/bk/base64/' . $filename);
+            }, preg_replace('/<p>(.*?)<\/p>/', '$1', str_replace('&nbsp;', ' ',  $record['capture']))));
             $sheet->setCellValue('E' . $row, $record['tagsBeta']);
             $sheet->setCellValue('F' . $row, $record['tagsJob']);
-            $sheet->setCellValue('G' . $row, base_url().'uploads/taskImage/' . $record['image_url']);
+            $sheet->setCellValue('G' . $row, !$record['image_url'] ? "" :  $record['image_url']);
             $sheet->setCellValue('H' . $row, $record['categoriesName']);
             $sheet->setCellValue('I' . $row, $record['createdate']);
             $sheet->setCellValue('J' . $row, $record['statusname']);

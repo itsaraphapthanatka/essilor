@@ -1,1 +1,1 @@
-<iframe src="<?=$config['value'];?>" width="100%" height="350" frameborder="0"></iframe>
+<?=$config['value'];?>

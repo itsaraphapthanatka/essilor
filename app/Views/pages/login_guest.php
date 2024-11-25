@@ -104,7 +104,7 @@
 						<!--begin::Wrapper-->
 						<div class="w-lg-650px w-xl-700px p-10 p-lg-15 mx-auto">
 							<!--begin::Form-->
-							<form class="my-auto pb-5"  action="<?php echo base_url();?>loginLevel" method="post" enctype="multipart/form-data">
+							<form class="my-auto pb-5"  id="form" action="<?php echo base_url();?>loginLevel" method="post" enctype="multipart/form-data">
 								<!--begin::Step 1-->
 								
 								<!--begin::Step 2-->
@@ -223,7 +223,7 @@
 												<div class="mr-2">
 												</div>
 												<div>
-													<button type="submit" class="btn btn-lg btn-primary">
+													<button type="button" name="submit" id="submit" class="btn btn-lg btn-primary">
 														<span class="indicator-label">Complete
 														<i class="ki-duotone ki-arrow-right fs-4 ms-2">
 															<span class="path1"></span>
@@ -300,6 +300,30 @@
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="<?php echo base_url();?>theme/dist/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="<?php echo base_url();?>theme/dist/assets/js/scripts.bundle.js"></script>
+		<script>
+				$('#submit').click(function(){
+					const level = $('input[name="level"]:checked').val();
+					const submit = document.getElementById('submit');
+					var form = document.getElementById('form');
+					submit.setAttribute("data-kt-indicator", "on");
+					submit.disabled = true;
+					$.ajax({
+						url: form.action,
+						type: form.method,
+						data: {'level': level},
+						success: function(data) {
+							console.log(data);
+							if(data.data == 'success'){
+								window.location.href = '<?php echo base_url();?>main';
+							}else{
+								
+								submit.setAttribute("data-kt-indicator", "off");
+								submit.disabled = false;
+							}
+						}
+					});
+				});
+		</script>
 
 	</body>
 	<!--end::Body-->

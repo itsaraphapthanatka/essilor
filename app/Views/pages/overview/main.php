@@ -152,7 +152,7 @@
 										<div class="accordion-item">
 											<h2 class="accordion-header" id="kt_accordion_1_header_1">
 												<button class="accordion-button fs-4 fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_1" aria-expanded="true" aria-controls="kt_accordion_1_body_1">
-													Setup Iframe
+													Setup Iframe for Call Center
 												</button>
 											</h2>
 											<div id="kt_accordion_1_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_1" data-bs-parent="#kt_accordion_1">
@@ -167,7 +167,7 @@
 															<!--begin::Content-->
 															<div class="mb-3 mb-md-0 fw-semibold">
 																<h4 class="text-gray-900 fw-bold">Iframe</h4>
-																<div class="fs-6 text-gray-700 pe-7">Enable Iframe Link</div>
+																<div class="fs-6 text-gray-700 pe-7">Enable Iframe Link for Call Center</div>
 															</div>
 															<!--end::Content-->
 															
@@ -189,7 +189,7 @@
 									<!--begin::Table container-->
 									<div id="loadiframe">
 										<!--begin::Table-->
-										<iframe src="<?=$config['value'];?>" width="100%" height="350" frameborder="0"></iframe>
+										<?=$config['value'];?>
 									</div>
 									<!--end::Table-->
 								</div>
@@ -513,7 +513,7 @@
 			<div class="modal-body scroll-y pt-10 pb-15 px-lg-17">
 				<form data-kt-element="apps-form" class="form" action="#">
 					<div class="mb-3 text-start">
-						<label class="fs-6 fw-semibold mb-2">iframe</label>
+						<label class="fs-6 fw-semibold mb-2">Iframe <span class="text-primary">(Setup width="100%" height="350")</span></label>
 						<textarea type="text" rows="5" class="form-control form-control-solid" placeholder="iframe" 
 							name="iframe" id="takeiframe"><?=$config['value'];?></textarea>
 					</div>
@@ -554,9 +554,10 @@
 			success: function(result) {
 				var json = result;
 				console.log(json);
-				$('#loadiframe').html("loading..");
+				$("#loadiframe").html("loading..");
 				$("#loadiframe").load('<?=base_url();?>loadiframe');
-				$('#kt_modal_two_factor_authentication').modal('hide');
+				$("#kt_modal_two_factor_authentication").modal('hide');
+				$("#kt_accordion_1_body_1").collapse('toggle');
 				toastr.success(json.status);
 			}
 		});

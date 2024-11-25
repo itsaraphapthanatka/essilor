@@ -128,7 +128,12 @@ class Auth extends BaseController{
             'logged_in' => TRUE,
             ];
             $session->set($sess_data);
-          return redirect()->to('/main');
+            $arr = [
+                "data" => "success",
+                "level" => $level['level'],
+            ];
+            return $this->response->setJSON($arr);
+          // return redirect()->to('/main');
     }
 
     public function home(){
