@@ -473,18 +473,26 @@ class Data extends BaseController{
             $sheet->setCellValue('A' . $row, $record['ecpcode']);
             $sheet->setCellValue('B' . $row, $record['customer_name']);
             $sheet->setCellValue('C' . $row, $record['trackingId']);
-            $sheet->setCellValue('D' . $row, preg_replace_callback('/data:image\/[^;]+;base64,([^"]+)/', function($matches) use ($path) {
-                // สร้างชื่อไฟล์ที่ไม่ซ้ำกัน
-                $filename = 'img_' . uniqid() . '.png';
-                $filepath = $path . $filename;
-                
-                // แปลง base64 เป็นรูปภาพและบันทึก
-                $imageData = base64_decode($matches[1]);
-                file_put_contents($filepath, $imageData);
-                
-                // ส่งคืน URL ของรูปภาพ
-                return base_url('uploads/bk/base64/' . $filename);
-            }, preg_replace('/<p>(.*?)<\/p>/', '$1', str_replace('&nbsp;', ' ',  $record['capture']))));
+            $sheet->setCellValue('D' . $row, preg_replace_callback(
+                '/data:image\/[^;]+;base64,([^"]+)/', 
+                function($matches) use ($path) {
+                    // สร้างชื่อไฟล์ที่ไม่ซ้ำกัน
+                    $filename = 'img_' . uniqid() . '.png';
+                    $filepath = $path . $filename;
+                    
+                    // แปลง base64 เป็นรูปภาพและบันทึก
+                    $imageData = base64_decode($matches[1]);
+                    file_put_contents($filepath, $imageData);
+                    
+                    // ส่งคืน URL ของรูปภาพ
+                    return base_url('uploads/bk/base64/' . $filename);
+                 }, preg_replace(
+                    '/<img[^>]*src="([^"]*)"/i', '$1', 
+                        preg_replace('/<p>(.*?)<\/p>/', ' $1',
+                            str_replace('&nbsp;', ' ', $record['capture'])
+                        )
+                )
+            ));
             $sheet->setCellValue('E' . $row, $record['tagsBeta']);
             $sheet->setCellValue('F' . $row, $record['tagsJob']);
             $sheet->setCellValue('G' . $row, !$record['image_url'] ? "" :  $record['image_url']);
