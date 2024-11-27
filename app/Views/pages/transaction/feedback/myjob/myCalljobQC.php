@@ -25,7 +25,20 @@
                                 <!--begin::Item-->
                                 <div class="d-flex flex-stack">
                                     <!--begin::Section-->
-                                    <a href="#" class="text-primary fw-semibold fs-6 me-2" data-bs-toggle="modal" data-bs-target="#task<?=$value->id;?>"><?=$value->ecpcode;?>: <?=$value->trackingId;?></a>
+                                    <a href="#" class="text-primary fw-semibold fs-6 me-2" data-bs-toggle="modal" data-bs-target="#task<?=$value->id;?>"><?=$value->ecpcode;?>:
+                                    <?php 
+                                        $trackingIds = explode(',', $value->trackingId);
+                                        $formattedTrackingIds = '';
+                                        foreach ($trackingIds as $index => $id) {
+                                            $formattedTrackingIds .= $id;
+                                            if (($index + 1) % 3 == 0 && $index + 1 != count($trackingIds)) {
+                                                $formattedTrackingIds .= ',<br>';
+                                            } else if ($index + 1 != count($trackingIds)) {
+                                                $formattedTrackingIds .= ',';
+                                            }
+                                        }
+                                        echo $formattedTrackingIds;
+                                    ?></a>
                                     <!--end::Section-->
                                     <!--begin::Action-->
                                     <button type="button" class="btn btn-icon btn-sm h-auto btn-color-gray-400 btn-active-color-primary justify-content-end" data-bs-toggle="modal" data-bs-target="#task<?=$value->id;?>">
@@ -45,7 +58,20 @@
                                     <div class="modal-dialog modal-fullscreen">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h3 class="modal-title">Tracking ID: <?=$value->trackingId;?>
+                                                <h3 class="modal-title">Tracking ID: 
+                                                <?php 
+                                                    $trackingIds = explode(',', $value->trackingId);
+                                                    $formattedTrackingIds = '';
+                                                    foreach ($trackingIds as $index => $id) {
+                                                        $formattedTrackingIds .= $id;
+                                                        if (($index + 1) % 5 == 0 && $index + 1 != count($trackingIds)) {
+                                                            $formattedTrackingIds .= ',<br>';
+                                                        } else if ($index + 1 != count($trackingIds)) {
+                                                            $formattedTrackingIds .= ',';
+                                                        }
+                                                    }
+                                                    echo $formattedTrackingIds;
+                                                ?>
                                                 <button data-action="copy" data-tracking-id="<?=$value->trackingId;?>" class="btn btn-active-color-primary btn-color-gray-500 btn-icon btn-sm btn-outline-light">
                                                     <i class="ki-duotone ki-copy fs-1"></i>
                                                 </button>
@@ -78,7 +104,21 @@
                                                             </div>
                                                             <div class="row gx-10 mb-5">
                                                                 <div class="col-lg-6">
-                                                                    <label class="form-label fs-4 fw-bold text-gray-500 mb-3">Tracking No :  <span class="text-gray-500 mt-1 fw-semibold fs-4" data-bs-target="trackingId"><?=$value->trackingId;?></span> 
+                                                                    <label class="form-label fs-4 fw-bold text-gray-500 mb-3">Tracking No :  <span class="text-gray-500 mt-1 fw-semibold fs-4" data-bs-target="trackingId">
+                                                                        <?php 
+                                                                            $trackingIds = explode(',', $value->trackingId);
+                                                                            $formattedTrackingIds = '';
+                                                                            foreach ($trackingIds as $index => $id) {
+                                                                                $formattedTrackingIds .= $id;
+                                                                                if (($index + 1) % 5 == 0 && $index + 1 != count($trackingIds)) {
+                                                                                    $formattedTrackingIds .= ',<br>';
+                                                                                } else if ($index + 1 != count($trackingIds)) {
+                                                                                    $formattedTrackingIds .= ',';
+                                                                                }
+                                                                            }
+                                                                            echo $formattedTrackingIds;
+                                                                        ?>  
+                                                                    </span> 
                                                                     <button data-action="copy" data-tracking-id="<?=$value->trackingId;?>" class="btn btn-active-color-primary btn-color-gray-500 btn-icon btn-sm btn-outline-light">
                                                                         <i class="ki-duotone ki-copy fs-1"></i>
                                                                     </button>
@@ -180,7 +220,16 @@
                                             </div>
 
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" id="saveReject<?=$value->id;?>" onclick="showSelectedComment('<?=$value->id;?>')">Save changes</button>
+                                                <!-- <button type="button" class="btn btn-primary" id="saveReject<?=$value->id;?>" onclick="showSelectedComment('<?=$value->id;?>')">Save changes</button> -->
+                                                <button type="submit" id="saveReject<?=$value->id;?>"  onclick="showSelectedComment('<?=$value->id;?>')" class="btn btn-light-danger">
+														<span class="indicator-label">Reject
+                                                        <i class="ki-duotone ki-arrow-right fs-4 ms-2">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i></span>
+														<span class="indicator-progress">Please wait...
+                                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -218,6 +267,9 @@
         if (selectedComment) {
             const taskID = document.getElementById('taskID' + rowid).value;
             const rejectNote = document.getElementById('rejectNote' + rowid).value;
+            const submit = document.getElementById('saveReject' + rowid);
+            submit.setAttribute("data-kt-indicator", "on");
+            submit.disabled = true;
             // Swal.fire({
             //     html: "Under Construction!!<br/>Selected Comment Value: " + selectedComment + "<br/>TaskID: " + taskID + "<br/>Note: " + rejectNote,
             //     icon: "warning",
@@ -239,9 +291,12 @@
                 },
                 success: function(response) {
                     // console.log(response);
-                    window.location.href = "<?= base_url('main') ?>";  // Use PHP to dynamically generate the URL
+                    toastr.success(response.message);
+                    window.location.href = "<?= base_url('myCalljobqc') ?>";  // Use PHP to dynamically generate the URL
                 },
                 error: function(xhr, status, error) {
+                    submit.removeAttribute("data-kt-indicator");
+                    submit.disabled = false;
                     console.error('AJAX error:', status, error);
                 }
             });
@@ -255,27 +310,32 @@
             title: "Do You Want to Save it ?"+rowid,
             html: "If you need to save it Click <span class='text-primary'>Confirm</span> button.but if not Click <span class='text-danger'>Close</span>. ",
             buttonsStyling: false,
+            showCancelButton: true,
             confirmButtonText: "Confirm",
+            cancelButtonText: "Close",
             customClass: {
-                confirmButton: "btn btn-primary"
+                confirmButton: "btn btn-primary",
+                cancelButton: "btn btn-danger"
             }
         }).then((result) => {
-            $.ajax({
-                type: 'POST',
-                url:'<?= base_url(); ?>SaveQC',
-                data: {
-                    id: rowid
-                },
-                success: function(response) {
-                console.log('Success:', response);
-                if (response.status == 'success') {
-                    toastr.success(response.message);
-                    window.location.href = '<?=base_url();?>myCalljobqc';
-                }else{
-                    toastr.error(response.message);
-                }
-            },
-            });
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url:'<?= base_url(); ?>SaveQC',
+                    data: {
+                        id: rowid
+                    },
+                    success: function(response) {
+                        console.log('Success:', response);
+                        if (response.status == 'success') {
+                            toastr.success(response.message);
+                            window.location.href = '<?=base_url();?>myCalljobqc';
+                        }else{
+                            toastr.error(response.message);
+                        }
+                    },
+                });
+            }
         });
     }
 

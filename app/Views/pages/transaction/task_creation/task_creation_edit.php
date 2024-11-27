@@ -410,41 +410,89 @@
 							submitButton.setAttribute('data-kt-indicator', 'on');
 							// Disable submit button whilst loading
 							submitButton.disabled = true;
-							var frm = $('#add_form');
-							frm.submit(function (ev) {
-                                tinymce.triggerSave();
-								$.ajax({
-									type: frm.attr('method'),
-									url: frm.attr('action'),
-									data: frm.serialize(),
-										success: function (data) {
-											console.log(data);
+                            var trckid = document.getElementById('tracking').value;
+                                if(trckid){
+                                    var regex = /^(RX|BL)\d{10}$/;
+                                    if (!regex.test(trckid)) {
+                                        toastr.warning('Tracking ID must start with RX or BL followed by 12 digits');
+                                        submitButton.disabled = false;
+                                        submitButton.removeAttribute('data-kt-indicator');
+                                        document.getElementById('tracking').focus();
+                                    }else{
+                                        var frm = $('#add_form');
+                                        frm.submit(function (ev) {
+                                            tinymce.triggerSave();
+                                        
+                                            $.ajax({
+                                                    type: frm.attr('method'),
+                                                    url: frm.attr('action'),
+                                                    data: frm.serialize(),
+                                                    success: function (data) {
+                                                        console.log(data);
 
-                                        // setTimeout(function () {
-											submitButton.removeAttribute('data-kt-indicator');
-											Swal.fire({
-												text: data.message,
-												icon: data.status,
-												buttonsStyling: false,
-												confirmButtonText: "Ok, got it!",
-												customClass: {
-													confirmButton: "btn btn-primary"
-												}
-											}).then(function (result) {
-												if (result.isConfirmed) {
-													// Enable submit button after loading
-													submitButton.disabled = false;
-													// Redirect to customers list page
-													window.location.href = "<?php echo base_url();?>main";
-												}
-											});
-										// }, 2000);
-									}
-								});
-								ev.preventDefault();
+                                                        // setTimeout(function () {
+                                                        submitButton.removeAttribute('data-kt-indicator');
+                                                        Swal.fire({
+                                                            text: data.message,
+                                                            icon: data.status,
+                                                            buttonsStyling: false,
+                                                            confirmButtonText: "Ok, got it!",
+                                                            customClass: {
+                                                                confirmButton: "btn btn-primary"
+                                                            }
+                                                        }).then(function (result) {
+                                                            if (result.isConfirmed) {
+                                                                // Enable submit button after loading
+                                                                submitButton.disabled = false;
+                                                                // Redirect to customers list page
+                                                                window.location.href = "<?php echo base_url();?>main";
+                                                            }
+                                                        });
+                                                    // }, 2000);
+                                                    }
+                                                });
+                                                ev.preventDefault();
+                                        });
+                                        $("#add_form").submit();
+                                    }
+                                }else{
+                                    var frm = $('#add_form');
+                                        frm.submit(function (ev) {
+                                            tinymce.triggerSave();
+                                        
+                                            $.ajax({
+                                                    type: frm.attr('method'),
+                                                    url: frm.attr('action'),
+                                                    data: frm.serialize(),
+                                                    success: function (data) {
+                                                        console.log(data);
 
-							});
-							$("#add_form").submit();
+                                                        // setTimeout(function () {
+                                                        submitButton.removeAttribute('data-kt-indicator');
+                                                        Swal.fire({
+                                                            text: data.message,
+                                                            icon: data.status,
+                                                            buttonsStyling: false,
+                                                            confirmButtonText: "Ok, got it!",
+                                                            customClass: {
+                                                                confirmButton: "btn btn-primary"
+                                                            }
+                                                        }).then(function (result) {
+                                                            if (result.isConfirmed) {
+                                                                // Enable submit button after loading
+                                                                submitButton.disabled = false;
+                                                                // Redirect to customers list page
+                                                                window.location.href = "<?php echo base_url();?>main";
+                                                            }
+                                                        });
+                                                    // }, 2000);
+                                                    }
+                                                });
+                                                ev.preventDefault();
+                                        });
+                                        $("#add_form").submit();
+                                }
+
 						}
 					});
 				}

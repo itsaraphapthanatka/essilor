@@ -378,6 +378,17 @@
 						target: 0,
 						visible: false,
 					},
+                    {   target: 2,
+                        render: function(data,type,row){
+                            return `
+                                <div class="text-gray-800 fw-bold">
+                                    ${row.trackingId.split(',').map((id, index) => {
+                                        return (index + 1) % 3 === 0 ? id + '<br>' : id + ',';
+                                    }).join('')}
+                                </div>
+                            `;
+                        }
+                    },  
                     {   target: 3,
                         render: function(data,type,row){
                             return `
@@ -477,7 +488,11 @@
 								textColor = 'danger';
 							}
                             return `
-                                <div class="text-${textColor} fw-bold">${row.trackingId}</div>
+                                <div class="text-${textColor} fw-bold">
+                                    ${row.trackingId.split(',').map((id, index) => {
+                                        return (index + 1) % 3 === 0 ? id + '<br>' : id + ',';
+                                    }).join('')}
+                                </div>
                             `;
                         }
 					},

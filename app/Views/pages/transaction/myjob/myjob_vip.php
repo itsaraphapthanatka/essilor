@@ -77,6 +77,7 @@
 									<th class="text-center min-w-200px">TAG</th>
 									<th class="min-w-125px">CATEGORIZE</th>
 									<th class="min-w-200px">TASK CREATE DATE/TIME</th>
+									<th class="text-center min-w-125px">User Create</th>
 									<th class="min-w-200px">CUSTOMER TYPE</th>
 									<th class="text-center min-w-150px" data-priority="2">ACTION1</th>
 									<th class="text-center min-w-150px" data-priority="1">ACTION2</th>
@@ -194,7 +195,8 @@
 					{ data: 'tagsJob' },
 					{ data: 'categoriesName' },
 					{ data: 'createdate' },
-                    { data: 'customer_type' },
+					{ data: 'createuser' },
+					{ data: 'customer_type' },
 					{ data: null },
 					{ data: null },
 				],
@@ -206,10 +208,31 @@
 					{
 						targets: 1,
 						render: function(data, type, row) {
+							function convertDate(dateString) {
+								// ตรวจสอบว่า dateString ไม่ว่างเปล่าและมีรูปแบบที่ถูกต้อง
+								if (!dateString || !dateString.includes('/')) {
+									console.error("Invalid date string:", dateString);
+									return null; // คืนค่า null หาก dateString ไม่ถูกต้อง
+								}
+								const dateParts = dateString.split(' ')[0].split('/'); // แยกโดยใช้พื้นที่ว่างเพื่อไม่สนใจเวลา จากนั้นแยกโดยใช้ '/'
+								const day = dateParts[0];
+								const month = dateParts[1];
+								const year = dateParts[2];
+								return `${year}-${month}-${day}`; // ส่งคืนในรูปแบบ 'YYYY-MM-DD'
+							}
+							const today = new Date().toISOString().split('T')[0]; 
+							const formattedUpdateDate = convertDate(row.createdate);
+							console.log("Today: "+ today +" > CreateDate: "+ formattedUpdateDate);
+							let textColor = 'gray-800';
+							let textColorspan = 'gray-400';
+							if (formattedUpdateDate < today) {
+								textColor = 'danger';
+								textColorspan = 'danger';
+							}
 							return `<div class="d-flex align-items-center">
                                         <div class="d-flex justify-content-start flex-column">
-                                            <div class="text-gray-800 fw-bold mb-1 fs-5">${row.ecpcode}</div>
-                                            <span class="text-gray-400 fw-semibold d-block fs-6">${row.customer_name}</span>
+                                            <div class="text-${textColor} fw-bold mb-1 fs-5">${row.ecpcode}</div>
+                                            <span class="text-${textColorspan} fw-semibold d-block fs-6">${row.customer_name}</span>
                                         </div>
                                     </div>`;
 						}
@@ -237,6 +260,10 @@
 					{
 						target: 5,
 						visible: false,
+					},
+					{
+						targets: 8,
+						className: 'text-center',
 					},
                     {
 						targets: -3,

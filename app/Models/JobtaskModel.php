@@ -241,7 +241,8 @@ class JobtaskModel extends Model {
             jt.shipto,
             jt.totalOrder,
             DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat,
-            u.user_name AS calluser
+            u.user_name AS calluser,
+            jt.createuser
         ');
 
         $builder->join('ecp e', 'jt.ecpid = e.id');
@@ -315,7 +316,9 @@ class JobtaskModel extends Model {
             jt.orderCycleId as ocid,
             jt.shipto,
             jt.totalOrder,
-            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat
+            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat,
+            us.user_name as calluser,
+            jt.createuser
         ');
 
         $builder->join('ecp e', 'jt.ecpid = e.id');
@@ -328,6 +331,7 @@ class JobtaskModel extends Model {
         $builder->join('categories ct', 'jt.categoryId = ct.id', 'left');
         $builder->join('jobstatus js', 'jt.jobStatus = js.id', 'left');
         $builder->join('ordercycle oc', 'jt.orderCycleId = oc.id', 'left');
+        $builder->join('users us', 'jt.calluser = us.id', 'left');
         $builder->where('jt.trackingId IS NULL', NULL, FALSE);
         // $builder->where(['e.customer_type !=' => 'VIP']);
         if ($sag1 == 1) {
@@ -400,7 +404,9 @@ class JobtaskModel extends Model {
             jt.orderCycleId as ocid,
             jt.shipto,
             jt.totalOrder,
-            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat
+            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat,
+            us.user_name as calluser,
+            jt.createuser
         ');
 
         $builder->join('ecp e', 'jt.ecpid = e.id');
@@ -413,6 +419,7 @@ class JobtaskModel extends Model {
         $builder->join('categories ct', 'jt.categoryId = ct.id', 'left');
         $builder->join('jobstatus js', 'jt.jobStatus = js.id', 'left');
         $builder->join('ordercycle oc', 'jt.orderCycleId = oc.id', 'left');
+        $builder->join('users us', 'jt.calluser = us.id', 'left');
         if($sag1 == 2){
             $builder->whereIn('e.customer_type', ['vip','VIP']);
             $builder->where(['jt.calljob' => 'Y']);
@@ -484,7 +491,9 @@ class JobtaskModel extends Model {
             jt.orderCycleId as ocid,
             jt.shipto,
             jt.totalOrder,
-            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat
+            DATE_FORMAT(jt.createdate, "%Y-%m-%d") AS createdatenoformat,
+            us.user_name as calluser,
+            jt.createuser
         ');
 
         $builder->join('ecp e', 'jt.ecpid = e.id');
@@ -497,6 +506,7 @@ class JobtaskModel extends Model {
         $builder->join('categories ct', 'jt.categoryId = ct.id', 'left');
         $builder->join('jobstatus js', 'jt.jobStatus = js.id', 'left');
         $builder->join('ordercycle oc', 'jt.orderCycleId = oc.id', 'left');
+        $builder->join('users us', 'jt.calluser = us.id', 'left');
         if($sag1 == 1){
             $builder->where(['jt.jobStatus' => 1]);
         }

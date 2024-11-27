@@ -77,6 +77,7 @@
                                 <th class="text-center min-w-200px">TAG</th>
                                 <th class="min-w-125px">CATEGORIZE</th>
                                 <th class="min-w-200px">TASK CREATE DATE/TIME</th>
+								<th class="text-center min-w-125px">User Create</th>
                                 <th class="text-center min-w-150px" data-priority="2">ACTION1</th>
 								<th class="text-center min-w-150px" data-priority="1">ACTION2</th>
                             </tr>
@@ -192,6 +193,7 @@
 					{ data: 'tagsJob' },
 					{ data: 'categoriesName' },
 					{ data: 'createdate' },
+					{ data: 'createuser' },
 					{ data: null },
 					{ data: null },
 				],
@@ -203,10 +205,31 @@
 					{
 						targets: 1,
 						render: function(data, type, row) {
+							function convertDate(dateString) {
+								// ตรวจสอบว่า dateString ไม่ว่างเปล่าและมีรูปแบบที่ถูกต้อง
+								if (!dateString || !dateString.includes('/')) {
+									console.error("Invalid date string:", dateString);
+									return null; // คืนค่า null หาก dateString ไม่ถูกต้อง
+								}
+								const dateParts = dateString.split(' ')[0].split('/'); // แยกโดยใช้พื้นที่ว่างเพื่อไม่สนใจเวลา จากนั้นแยกโดยใช้ '/'
+								const day = dateParts[0];
+								const month = dateParts[1];
+								const year = dateParts[2];
+								return `${year}-${month}-${day}`; // ส่งคืนในรูปแบบ 'YYYY-MM-DD'
+							}
+							const today = new Date().toISOString().split('T')[0]; 
+							const formattedUpdateDate = convertDate(row.createdate);
+							console.log("Today: "+ today +" > CreateDate: "+ formattedUpdateDate);
+							let textColor = 'gray-800';
+							let textColorspan = 'gray-400';
+							if (formattedUpdateDate < today) {
+								textColor = 'danger';
+								textColorspan = 'danger';
+							}
 							return `<div class="d-flex align-items-center">
                                         <div class="d-flex justify-content-start flex-column">
-                                            <div class="text-gray-800 fw-bold mb-1 fs-5">${row.ecpcode}</div>
-                                            <span class="text-gray-400 fw-semibold d-block fs-6">${row.customer_name}</span>
+                                            <div class="text-${textColor} fw-bold mb-1 fs-5">${row.ecpcode}</div>
+                                            <span class="text-${textColorspan} fw-semibold d-block fs-6">${row.customer_name}</span>
                                         </div>
                                     </div>`;
 						}
@@ -234,6 +257,10 @@
 					{
 						target: 5,
 						visible: false,
+					},
+					{
+						targets: 8,
+						className: 'text-center',
 					},
 					{
 						targets: -2,
@@ -577,42 +604,63 @@
 										const trimmedID = $.trim(trackingID); // jQuery trim method
 										const trackingIDs = trimmedID.split(','); // แยก trackingID เป็น array
 										const isValidTrackingID = trackingIDs.every(id => trackingPattern.test(id) && id.length == 12); // เช็คว่าแต่ละ ID ถูกต้องและไม่เกิน 12 ตัว
-
-										if (isValidTrackingID) {
-											// Check if the trackingID is in the orderTotal and the orderTotal has 4 items
-											if(orderTotal >= 1){
-												// เช็คจำนวน orderTotal กับ trackingID
-												if(trimmedID.split(',').length == orderTotal){ // เปลี่ยน aa เป็น orderTotal
-													$.ajax({
-														type: 'POST',
-														url: '<?= base_url("SaveCommentByTrackingID") ?>', // Ensure the URL is correct
-														data: { 
-															trackingID: trimmedID, 
-															comment: selectedComment, 
-															commentDesc: commentDesc,
-															taskID: taskID 
-														},
-														success: function(response) {
-															console.log(response);
-															window.location.href = "<?= base_url('myjobstock') ?>"; // Ensure the URL is correct
-														},
-														error: function(xhr, status, error) {
-															console.error('AJAX error:', status, error);
-															toastr.error("AJAX error:', status, error");
-														}
-													});
+										if(selectedComment != 8){
+											if (isValidTrackingID) {
+												// Check if the trackingID is in the orderTotal and the orderTotal has 4 items
+												if(orderTotal >= 1){
+													// เช็คจำนวน orderTotal กับ trackingID
+													if(trimmedID.split(',').length == orderTotal){ // เปลี่ยน aa เป็น orderTotal
+														$.ajax({
+															type: 'POST',
+															url: '<?= base_url("SaveCommentByTrackingID") ?>', // Ensure the URL is correct
+															data: { 
+																trackingID: trimmedID, 
+																comment: selectedComment, 
+																commentDesc: commentDesc,
+																taskID: taskID 
+															},
+															success: function(response) {
+																console.log(response);
+																window.location.href = "<?= base_url('myjobstock') ?>"; // Ensure the URL is correct
+															},
+															error: function(xhr, status, error) {
+																console.error('AJAX error:', status, error);
+																toastr.error("AJAX error:', status, error");
+															}
+														});
+													}else{
+														button.removeAttribute("data-kt-indicator");
+														toastr.warning("กรุณาตรวจสอบ trackingID.");
+													}
 												}else{
 													button.removeAttribute("data-kt-indicator");
-													toastr.warning("กรุณาตรวจสอบ trackingID.");
+													toastr.warning("กรุณาตรวจสอบจำนวน trackingID ");
 												}
-											}else{
+
+											} else {
 												button.removeAttribute("data-kt-indicator");
-												toastr.warning("กรุณาตรวจสอบจำนวน trackingID ");
+												toastr.warning("กรุณาตรวจสอบ trackingID , ต้องเป็นรูปแบบ 'RX' หรือ 'BL' และไม่เกิน 12 ตัวอักษร.");
 											}
-										} else {
-										 	button.removeAttribute("data-kt-indicator");
-											toastr.warning("กรุณาตรวจสอบ trackingID , ต้องเป็นรูปแบบ 'RX' หรือ 'BL' และไม่เกิน 12 ตัวอักษร.");
-										}
+										}else{
+												$.ajax({
+													type: 'POST',
+													url: '<?= base_url("SaveCommentByTrackingID") ?>', // Ensure the URL is correct
+													data: { 
+														trackingID: trimmedID, 
+														comment: selectedComment, 
+														commentDesc: commentDesc,
+														taskID: taskID 
+													},
+													success: function(response) {
+														console.log(response);
+														window.location.href = "<?= base_url('myjobstock') ?>"; // Ensure the URL is correct
+													},
+													error: function(xhr, status, error) {
+														console.error('AJAX error:', status, error);
+														toastr.error("AJAX error:', status, error");
+													}
+												});
+											}
 									}
 									
 									function showSelectedCommentNoTracking(rowid,orderTotal) {

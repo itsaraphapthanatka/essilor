@@ -73,7 +73,7 @@
                                 <th class="min-w-125px">CATEGORIZE</th>
                                 <th class="min-w-200px">TASK CREATE DATE/TIME</th>
                                 <th class="min-w-200px">CUSTOMER TYPE</th>
-                                <th class="min-w-100px" data-priority="2">STATUS</th>
+                                <th class="min-w-150px" data-priority="2">Users : STATUS</th>
                                 <th class="min-w-100px" data-priority="1">DETAILS</th>
                             </tr>
                         </thead>
@@ -256,7 +256,7 @@
 						render: function (data, type, row) {
 							if(data.jobStatus === '1'){
 								return `
-									<span class="badge badge-light-primary fs-6">${data.statusname}</span>
+									<span class="badge badge-light-primary fs-6">${data.createuser} : ${data.statusname}</span>
 								`;
 							}
 							if(data.jobStatus === '2'){
